@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="office")
+
 public class Office {
 
     @Id
@@ -14,6 +15,9 @@ public class Office {
     /*@ManyToOne
     @JoinColumn(name = "organization_id")                   ************ DISABLED FOR DEV PURPOSE******
     private Organization organizationId ;*/
+
+    @Column (name="org_id", columnDefinition ="INT",  nullable = false)
+    private Integer orgId;
 
     @Column(name="office_name", columnDefinition ="VARCHAR(50)", nullable = false)
     private String officeName;
@@ -63,4 +67,12 @@ public class Office {
 
     public String getOfficeName() {return officeName;}
     public void setOfficeName(String officeName) {this.officeName = officeName;}
+
+    public Integer getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Integer orgId) {
+        this.orgId = orgId;
+    }
 }
