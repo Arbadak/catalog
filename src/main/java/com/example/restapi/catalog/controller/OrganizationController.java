@@ -29,7 +29,8 @@ public class OrganizationController {
     }
 
     @GetMapping("{id}")
-    public Organization org(@PathVariable("id") Organization organization){return organization; }
+    //public Organization org(@PathVariable("id") Organization organization){return organization; }
+    public String org(@PathVariable("id") Integer id){return organizationService.getOne(id); }
 
     @PostMapping("/save")
     public Organization save(@RequestBody Organization organization) { return organizationService.add(organization);}

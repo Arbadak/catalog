@@ -11,7 +11,7 @@ public class Office {
     @Column(name = "id", columnDefinition = "INT", nullable = false)
     private Integer officeId;
 
-    @OneToOne
+    @ManyToOne ///ИЗМЕНИЛ
     @JoinColumn(name = "organization_id", nullable = false)
     private Organization orgId;
 
@@ -88,4 +88,4 @@ public class Office {
     public void setMain(Boolean main) {
         isMain = main;
     }
-}
+   }
