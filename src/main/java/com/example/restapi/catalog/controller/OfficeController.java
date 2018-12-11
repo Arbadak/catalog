@@ -2,11 +2,12 @@ package com.example.restapi.catalog.controller;
 
 import com.example.restapi.catalog.model.Office;
 import com.example.restapi.catalog.repos.OfficeRepo;
+import com.example.restapi.catalog.repos.OrganizationRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("office")
@@ -20,9 +21,10 @@ public class OfficeController {
     }
 
 
-    @GetMapping
-    public List<Office> list() {
-        return  officeRepo.findAll();
+    @GetMapping("/list/{id}")
+    public Optional<Office> list(@PathVariable("orgID") Integer orgId) {
+
+      return  officeRepo.findById(orgId);
     }
 
     @GetMapping("{id}")

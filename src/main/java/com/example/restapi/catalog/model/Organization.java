@@ -9,28 +9,20 @@ public class Organization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "org_id", columnDefinition = "INT", nullable = false)
+    @Column(name="id", columnDefinition ="INT", nullable = false)
     private Integer orgId;
 
-    @Column(name = "inn", columnDefinition = "INT(12)", nullable = false)
+    @Column(name="inn", columnDefinition ="INT(12)", nullable = false)
     private Integer inn;
 
-    @Column(name = "full_name", columnDefinition = "VARCHAR(60)", nullable = false)
-    private String fullNameOranization;
+    @Column(name="name", columnDefinition ="VARCHAR(60)", nullable = false)
+    private String NameOfOranization;
 
-    @Column(name = "short_name", columnDefinition = "VARCHAR(30)", nullable = true)
-    private String shortNameOranization;
+    @Column(name="short_name", columnDefinition ="VARCHAR(30)", nullable = true)
+    private String shortNameOfOranization;
 
-    @Column(name = "kpp", columnDefinition = "INT(9)")
+    @Column(name="kpp", columnDefinition ="INT(9)")
     private Integer kpp;
-
-    public Organization(Integer orgId, Integer inn, String fullNameOranization, String shortNameOranization, Integer kpp) {
-        this.orgId = orgId;
-        this.inn = inn;
-        this.fullNameOranization = fullNameOranization;
-        this.shortNameOranization = shortNameOranization;
-        this.kpp = kpp;
-    }
 
     public Organization() {
     }
@@ -51,20 +43,20 @@ public class Organization {
         this.inn = inn;
     }
 
-    public String getFullNameOranization() {
-        return fullNameOranization;
+    public String getNameOfOranization() {
+        return NameOfOranization;
     }
 
-    public void setFullNameOranization(String fullNameOranization) {
-        this.fullNameOranization = fullNameOranization;
+    public void setNameOfOranization(String nameOfOranization) {
+        NameOfOranization = nameOfOranization;
     }
 
-    public String getShortNameOranization() {
-        return shortNameOranization;
+    public String getShortNameOfOranization() {
+        return shortNameOfOranization;
     }
 
-    public void setShortNameOranization(String shortNameOranization) {
-        this.shortNameOranization = shortNameOranization;
+    public void setShortNameOfOranization(String shortNameOfOranization) {
+        this.shortNameOfOranization = shortNameOfOranization;
     }
 
     public Integer getKpp() {
