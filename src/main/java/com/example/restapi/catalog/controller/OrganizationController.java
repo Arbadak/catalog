@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/***
+ *  этот контроллер недоделан и будет дополнен
+ *
+ */
 @RestController
 @RequestMapping("organization")
 public class OrganizationController {

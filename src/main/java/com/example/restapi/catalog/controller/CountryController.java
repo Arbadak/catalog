@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/** Этот контроллер ненужен и будет удален
+ *
+ */
+
 @RestController
 @RequestMapping("country")
 public class CountryController {

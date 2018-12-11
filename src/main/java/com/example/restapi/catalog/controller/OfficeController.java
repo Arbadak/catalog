@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+/*** Этот контроллер неправильный и будет переделан
+ *
+ */
+
 @RestController
 @RequestMapping("office")
 public class OfficeController {
