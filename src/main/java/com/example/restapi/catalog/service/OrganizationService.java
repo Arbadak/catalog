@@ -30,29 +30,25 @@ public class OrganizationService {
     }
 @Transactional
     public List<RawOrganization> getOrgList(RawOrganization rawOrganization) {
-        List<Organization>all = organizationRepo.findOrgByName(rawOrganization.getName());
-        List<RawOrganization>result=new ArrayList<>();
+        List<Organization>all = organizationRepo.findOrgByName(rawOrganization.getName()); //находим все по обязательному полю
+        List<RawOrganization>result=new ArrayList<>();  //лист который вернется пользователю
+
             if (rawOrganization.getInn() != null) {  ///Если указан ИНН
-            all.removeIf(x ->  !rawOrganization.getInn().equals(x.getInn()) ); ///Выкидываем всех у кого не такой ИНН как указан
-        }
-        if (rawOrganization.getIsActive() != null) { // Если задан isActive
-            for (Iterator<Organization> iterableOrg = all.iterator(); iterableOrg.hasNext();){
-                
-                Office bindedOffice=officeRepo.findByOrgIdAndIsMain((iterableOrg.next()),true);
-                   /// if ( (officeRepo.findByOrgIdAndIsMain(iterableOrg,true)).getActive()!=rawOrganization.getIsActive()){  /// Выкидываем всех у кого не такой же isActive как указан
-              if (!bindedOffice.getActive().equals(rawOrganization.getIsActive())){
-            //    if (!(officeRepo.findByOrgIdAndIsMain((iterableOrg.next()),true).getActive()).equals(rawOrganization.getIsActive())){
-                     iterableOrg.remove();
-                }
+                all.removeIf(x ->  !rawOrganization.getInn().equals(x.getInn()) ); ///Выкидываем всех у кого не такой ИНН как указан
             }
-        }
-        ///BeanUtils.copyProperties(all, result, "inn","fullName","kpp"); ///Убираем нафиг ненужные поля путем переборса нужной инфы в POJO для возврата
-    for (Organization source:all){
 
-        Office tempOff=officeRepo.findByOrgIdAndIsMain(source,true);
-        result.add(new RawOrganization(source.getOrgId(),source.getName(),tempOff.getActive()));
-    }
+            for (Iterator<Organization> iterableOrg = all.iterator(); iterableOrg.hasNext();){ ///цикл для из сбиска с учетом фильторв имя и инн, в список который вернется пользователю с учетом поля isActive
 
+                Organization currentOrg=iterableOrg.next();
+                Office bindedOffice=officeRepo.findByOrgIdAndIsMain(currentOrg,true);
+                if (rawOrganization.getIsActive() != null) { // Если задан isActive
+                    if (!bindedOffice.getActive().equals(rawOrganization.getIsActive())) {  ///Если статусы несопадают
+                        iterableOrg.remove(); //выкидываем из списка и на следующую итерацию
+                        continue;
+                    }
+                }
+                result.add(new RawOrganization(currentOrg.getOrgId(),currentOrg.getName(),bindedOffice.getActive()));
+            }
 
         return result; ///Возвращаем крокодила пользователю
     }
