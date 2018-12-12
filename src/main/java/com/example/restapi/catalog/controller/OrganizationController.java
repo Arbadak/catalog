@@ -1,6 +1,8 @@
 package com.example.restapi.catalog.controller;
 
+import com.example.restapi.catalog.model.Office;
 import com.example.restapi.catalog.model.Organization;
+import com.example.restapi.catalog.rawModel.RawOrganization;
 import com.example.restapi.catalog.repos.OrganizationRepo;
 import com.example.restapi.catalog.service.OrganizationService;
 import org.springframework.beans.BeanUtils;
@@ -24,21 +26,23 @@ public class OrganizationController {
 
     /// api/organization/list
 
-    @GetMapping("/list")
-    public List<Organization> orgList() {return  organizationService.getOrgList();
+    @PostMapping("/list")
+    public List<RawOrganization> orgList(@RequestBody RawOrganization rawOrganization) {return  organizationService.getOrgList(rawOrganization);
     }
 
     @GetMapping("{id}")
-    //public Organization org(@PathVariable("id") Organization organization){return organization; }
     public String org(@PathVariable("id") Integer id){return organizationService.getOne(id); }
 
     @PostMapping("/save")
-    public Organization save(@RequestBody Organization organization) { return organizationService.add(organization);}
+    public String save(@RequestBody RawOrganization rawOrganization){
+
+        return organizationService.add(rawOrganization);
+    }
 
     @PostMapping("update/{id}")
-    public Organization update(
+    public String update(
             @PathVariable("id") Organization organizationFromDB,
-            @RequestBody Organization organizationFromWeb){
+            @RequestBody RawOrganization organizationFromWeb){
          return organizationService.update(organizationFromWeb, organizationFromDB);
     }
 

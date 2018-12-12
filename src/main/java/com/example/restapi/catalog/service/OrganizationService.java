@@ -3,13 +3,19 @@ package com.example.restapi.catalog.service;
 
 import com.example.restapi.catalog.model.Office;
 import com.example.restapi.catalog.model.Organization;
+import com.example.restapi.catalog.rawModel.RawOrganization;
 import com.example.restapi.catalog.repos.OfficeRepo;
 import com.example.restapi.catalog.repos.OrganizationRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+
 
 @Service
 public class OrganizationService {
@@ -22,38 +28,74 @@ public class OrganizationService {
         this.organizationRepo = organizationRepo;
         this.officeRepo = officeRepo;
     }
+@Transactional
+    public List<RawOrganization> getOrgList(RawOrganization rawOrganization) {
+        List<Organization>all = organizationRepo.findOrgByName(rawOrganization.getName());
+        List<RawOrganization>result=new ArrayList<>();
+            if (rawOrganization.getInn() != null) {  ///Если указан ИНН
+            all.removeIf(x ->  !rawOrganization.getInn().equals(x.getInn()) ); ///Выкидываем всех у кого не такой ИНН как указан
+        }
+        if (rawOrganization.getIsActive() != null) { // Если задан isActive
+            for (Iterator<Organization> iterableOrg = all.iterator(); iterableOrg.hasNext();){
+                
+                Office bindedOffice=officeRepo.findByOrgIdAndIsMain((iterableOrg.next()),true);
+                   /// if ( (officeRepo.findByOrgIdAndIsMain(iterableOrg,true)).getActive()!=rawOrganization.getIsActive()){  /// Выкидываем всех у кого не такой же isActive как указан
+              if (!bindedOffice.getActive().equals(rawOrganization.getIsActive())){
+            //    if (!(officeRepo.findByOrgIdAndIsMain((iterableOrg.next()),true).getActive()).equals(rawOrganization.getIsActive())){
+                     iterableOrg.remove();
+                }
+            }
+        }
+        ///BeanUtils.copyProperties(all, result, "inn","fullName","kpp"); ///Убираем нафиг ненужные поля путем переборса нужной инфы в POJO для возврата
+    for (Organization source:all){
 
-    public List<Organization> getOrgList() {
-
-        List<Organization> all = organizationRepo.findAll();
-        return all;
+        Office tempOff=officeRepo.findByOrgIdAndIsMain(source,true);
+        result.add(new RawOrganization(source.getOrgId(),source.getName(),tempOff.getActive()));
     }
 
-    public Organization add(Organization organization) {
-        return organizationRepo.save(organization);
+
+        return result; ///Возвращаем крокодила пользователю
+    }
+@Transactional
+    public String add(RawOrganization rawOrganization) {
+
+        Organization organization= new Organization();
+        BeanUtils.copyProperties(rawOrganization,organization);
+        Organization result=organizationRepo.save(organization);
+        Office mainOffice= new Office(result, rawOrganization.getFullName(), rawOrganization.getAddress(),rawOrganization.getPhone(),rawOrganization.getIsActive(),true);
+        officeRepo.save(mainOffice);
+         return "{ \"result\":\"success\" }";
     }
 
-    public Organization update(Organization orgSource, Organization orgDest) {
-        BeanUtils.copyProperties(orgSource, orgDest, "id");
-        return organizationRepo.save(orgDest);
+    public String update(RawOrganization rawOrganization, Organization orgDest) {
+        BeanUtils.copyProperties(rawOrganization, orgDest, "id");
+        Office storedOffice=officeRepo.findByOrgIdAndIsMain(orgDest,true);
+        Office updatingOffice= new Office(storedOffice.getOfficeId(), orgDest,  /// Избавляемся от Null полей в обновляемом офисе
+                (rawOrganization.getFullName() == (null)) ? rawOrganization.getFullName() : storedOffice.getOfficeName(),
+                (rawOrganization.getAddress() == (null)) ? storedOffice.getAddress(): rawOrganization.getAddress(),
+                (rawOrganization.getPhone() == (null))? storedOffice.getPhoneOffice(): rawOrganization.getPhone(),
+                (rawOrganization.getIsActive() == (null))? storedOffice.getActive() : rawOrganization.getIsActive(),
+                true);
+        officeRepo.save(updatingOffice);
+        organizationRepo.save(orgDest);
+        return "{ \"result\":\"success\" }";
     }
 
     public String getOne(Integer id) {
-
         Organization organization = organizationRepo.findOrgByOrgId(id);
         Office mainOffice = officeRepo.findByOrgIdAndIsMain(organization, true);
-        //return organization.toString()+mainOffice.toString();
-        String result= new StringBuilder()
+        //return mainOffice;
+       String result= new StringBuilder()
                 .append("{\n ").append("id:").append(organization.getOrgId())
-                .append("\nname:").append(organization.getShortNameOfOranization())
-                .append("\nfullName:").append(organization.getNameOfOranization())
+                .append("\nname:").append(organization.getName())
+                .append("\nfullName:").append(organization.getFullName())
                 .append("\ninn:").append(organization.getInn())
                 .append("\nkpp:").append(organization.getKpp())
                 .append("\naddress:").append(mainOffice.getAddress())
                 .append("\nphone:").append(mainOffice.getPhoneOffice())
                 .append("\nisActive:").append(mainOffice.getActive())
                 .append("\n}").toString();
-        return result;
+       return result;
 
 
     }

@@ -33,6 +33,25 @@ public class Office {
     public Office() {
     }
 
+    public Office(Organization orgId, String officeName, String address, Integer phoneOffice, Boolean isActive, Boolean isMain) {
+        this.orgId = orgId;
+        this.officeName=officeName;
+        this.address = address;
+        this.phoneOffice = phoneOffice;
+        this.isActive = isActive;
+        this.isMain = isMain;
+    }
+    public Office(Integer officeId, Organization orgId, String officeName, String address, Integer phoneOffice, Boolean isActive, Boolean isMain) {
+        this.officeId=officeId;
+        this.orgId = orgId;
+        this.officeName=officeName;
+        this.address = address;
+        this.phoneOffice = phoneOffice;
+        this.isActive = isActive;
+        this.isMain = isMain;
+    }
+
+
     public Integer getOfficeId() {
         return officeId;
     }

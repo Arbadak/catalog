@@ -16,16 +16,17 @@ public class Organization {
     private Integer inn;
 
     @Column(name="name", columnDefinition ="VARCHAR(60)", nullable = false)
-    private String NameOfOranization;
+    private String fullName;
 
     @Column(name="short_name", columnDefinition ="VARCHAR(30)", nullable = true)
-    private String shortNameOfOranization;
+    private String name;
 
     @Column(name="kpp", columnDefinition ="INT(9)")
     private Integer kpp;
 
     public Organization() {
     }
+
 
     public Integer getOrgId() {
         return orgId;
@@ -43,20 +44,20 @@ public class Organization {
         this.inn = inn;
     }
 
-    public String getNameOfOranization() {
-        return NameOfOranization;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setNameOfOranization(String nameOfOranization) {
-        NameOfOranization = nameOfOranization;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getShortNameOfOranization() {
-        return shortNameOfOranization;
+    public String getName() {
+        return name;
     }
 
-    public void setShortNameOfOranization(String shortNameOfOranization) {
-        this.shortNameOfOranization = shortNameOfOranization;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getKpp() {
