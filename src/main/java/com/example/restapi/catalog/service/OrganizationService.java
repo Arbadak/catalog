@@ -4,6 +4,7 @@ package com.example.restapi.catalog.service;
 import com.example.restapi.catalog.model.Office;
 import com.example.restapi.catalog.model.Organization;
 import com.example.restapi.catalog.rawModel.RawOrganization;
+import com.example.restapi.catalog.rawModel.resultResponce;
 import com.example.restapi.catalog.repos.OfficeRepo;
 import com.example.restapi.catalog.repos.OrganizationRepo;
 import org.springframework.beans.BeanUtils;
@@ -53,17 +54,17 @@ public class OrganizationService {
         return result; ///Возвращаем крокодила пользователю
     }
 @Transactional
-    public String add(RawOrganization rawOrganization) {
+    public resultResponce add(RawOrganization rawOrganization) {
 
         Organization organization= new Organization();
         BeanUtils.copyProperties(rawOrganization,organization);
         Organization result=organizationRepo.save(organization);
         Office mainOffice= new Office(result, rawOrganization.getFullName(), rawOrganization.getAddress(),rawOrganization.getPhone(),rawOrganization.getIsActive(),true);
         officeRepo.save(mainOffice);
-         return "{ \"result\":\"success\" }";
+        return new resultResponce("success");
     }
 
-    public String update(RawOrganization rawOrganization, Organization orgDest) {
+    public resultResponce  update(RawOrganization rawOrganization, Organization orgDest) {
         BeanUtils.copyProperties(rawOrganization, orgDest, "id");
         Office storedOffice=officeRepo.findByOrgIdAndIsMain(orgDest,true);
         Office updatingOffice= new Office(storedOffice.getOfficeId(), orgDest,  /// Избавляемся от Null полей в обновляемом офисе
@@ -74,23 +75,20 @@ public class OrganizationService {
                 true);
         officeRepo.save(updatingOffice);
         organizationRepo.save(orgDest);
-        return "{ \"result\":\"success\" }";
+        // return "{ \"result\":\"success\" }";
+//        return new Object (){ String result="success";};
+
+                return new resultResponce("success");
     }
 
-    public String getOne(Integer id) {
+    public RawOrganization getOne(Integer id) {
         Organization organization = organizationRepo.findOrgByOrgId(id);
         Office mainOffice = officeRepo.findByOrgIdAndIsMain(organization, true);
-        //return mainOffice;
-       String result= new StringBuilder()
-                .append("{\n ").append("id:").append(organization.getOrgId())
-                .append("\nname:").append(organization.getName())
-                .append("\nfullName:").append(organization.getFullName())
-                .append("\ninn:").append(organization.getInn())
-                .append("\nkpp:").append(organization.getKpp())
-                .append("\naddress:").append(mainOffice.getAddress())
-                .append("\nphone:").append(mainOffice.getPhoneOffice())
-                .append("\nisActive:").append(mainOffice.getActive())
-                .append("\n}").toString();
+        RawOrganization result =new RawOrganization();
+         BeanUtils.copyProperties(organization, result);
+          result.setAddress(mainOffice.getAddress());
+          result.setPhone(mainOffice.getPhoneOffice());
+          result.setIsActive(mainOffice.getActive());
        return result;
 
 

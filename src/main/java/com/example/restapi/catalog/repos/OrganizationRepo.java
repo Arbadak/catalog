@@ -10,7 +10,7 @@ public interface OrganizationRepo extends JpaRepository<Organization, Integer> {
 
     Organization findOrgByOrgId(Integer orgId);
     List<Organization> findOrgByName(String name);
-   // List<RawOrganization> findOrgByName(String name);
+   /// List<RawOrganization> findOrgByName(String name);
 
 }
 

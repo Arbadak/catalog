@@ -9,6 +9,7 @@ public class Office {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", columnDefinition = "INT", nullable = false)
+    //private Integer officeId;
     private Integer officeId;
 
     @ManyToOne ///ИЗМЕНИЛ
