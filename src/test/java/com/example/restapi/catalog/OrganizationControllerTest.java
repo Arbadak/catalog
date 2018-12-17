@@ -34,6 +34,7 @@ import java.io.UnsupportedEncodingException;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@Sql(value = {"classpath:filldatabase.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class OrganizationControllerTest {
 
     @Autowired
@@ -62,7 +63,7 @@ public class OrganizationControllerTest {
         // Поиск организации
         this.mockMvc.perform(get("/organization/1"))
                 .andDo(print()).andExpect(status().isOk())
-                .andExpect(content().json("{'data':{'inn':'123456789012','kpp':'321','address':'Ново-Свистуново','phone':557222,'isActive':true,'name':'Вектор','fullName':'ООО Вектор'}}"));
+                .andExpect(content().json("{'data':{'inn':'123456789012','kpp':'321321321','address':'Ново-Свистуново','phone':557222,'isActive':true,'name':'Вектор','fullName':'ООО Вектор'}}"));
         //несущевствующая организация
         this.mockMvc.perform(get("/organization/999"))
                 .andDo(print()).andExpect(status().isOk()).andExpect(content().json("{data:{}}"));  // ожидаем пустую организацию
@@ -78,7 +79,7 @@ public class OrganizationControllerTest {
         /// Сущевствующее имя
         requeststring ="{\"name\":\"Луч\"}";
         this.mockMvc.perform(post("/organization/list/").contentType(MediaType.APPLICATION_JSON).content(requeststring)).andDo(print())
-                .andExpect(content().json("{'data':[{isActive: true, name: 'Луч', id: 20},{isActive: false, name: 'Луч', id: 13}]}"));
+                .andExpect(content().json("{'data':[{isActive: true, name: 'Луч', id: 8},{isActive: false, name: 'Луч', id: 5}]}"));
 
         //несущевствующее имя
         requeststring ="{\"name\":\"DDSBGFKEfs\"}";
@@ -106,19 +107,19 @@ public class OrganizationControllerTest {
         requestBody.setIsActive(false);
         String requestJson=ow.writeValueAsString(requestBody);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-        .andExpect(content().json("{'data':[{'isActive':false,'name':'Луч','id':13}]}"));
+        .andExpect(content().json("{'data':[{'isActive':false,'name':'Луч','id':5}]}"));
 
         /// Поле true isActive true
         requestBody.setIsActive(true);
         requestJson=ow.writeValueAsString(requestBody);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-         .andExpect(content().json("{'data':[{'isActive':true,'id':20,'name':'Луч'}]}"));
+         .andExpect(content().json("{'data':[{'isActive':true,'id':8,'name':'Луч'}]}"));
 
         /// указан инн и поле isActive true
         requestBody.setInn("567890123456");
         requestJson=ow.writeValueAsString(requestBody);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json("{'data':[{'isActive':true,'id':20,'name':'Луч'}]}"));
+                .andExpect(content().json("{'data':[{'isActive':true,'id':8,'name':'Луч'}]}"));
 
         /// указан инн и поле isActive true
         requestBody.setInn("567890123456");
