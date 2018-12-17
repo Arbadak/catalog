@@ -1,10 +1,15 @@
 package com.example.restapi.catalog.rawModel;
 
+import com.example.restapi.catalog.Validators.OrgListValidator;
+
+import javax.validation.constraints.NotNull;
+
 public class RawOffice {
 
     private Integer Id;
 
     private Integer orgId;
+
 
     private String name;
 

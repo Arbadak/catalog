@@ -12,8 +12,8 @@ public class Organization {
     @Column(name="id", columnDefinition ="INT", nullable = false)
     private Integer orgId;
 
-    @Column(name="inn", columnDefinition ="INT(12)", nullable = false)
-    private Integer inn;
+    @Column(name="inn", columnDefinition ="VARCHAR(12)", nullable = false)
+    private String inn;
 
     @Column(name="name", columnDefinition ="VARCHAR(60)", nullable = false)
     private String fullName;
@@ -21,8 +21,8 @@ public class Organization {
     @Column(name="short_name", columnDefinition ="VARCHAR(30)", nullable = true)
     private String name;
 
-    @Column(name="kpp", columnDefinition ="INT(9)")
-    private Integer kpp;
+    @Column(name="kpp", columnDefinition ="VARCHAR(9)")
+    private String kpp;
 
     public Organization() {
     }
@@ -36,11 +36,11 @@ public class Organization {
         this.orgId = orgId;
     }
 
-    public Integer getInn() {
+    public String getInn() {
         return inn;
     }
 
-    public void setInn(Integer inn) {
+    public void setInn(String inn) {
         this.inn = inn;
     }
 
@@ -60,11 +60,11 @@ public class Organization {
         this.name = name;
     }
 
-    public Integer getKpp() {
+    public String getKpp() {
         return kpp;
     }
 
-    public void setKpp(Integer kpp) {
+    public void setKpp(String kpp) {
         this.kpp = kpp;
     }
 }

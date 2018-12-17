@@ -83,6 +83,7 @@ public class OrganizationService {
 
     public RawOrganization getOne(Integer id) {
         Organization organization = organizationRepo.findOrgByOrgId(id);
+        if (organization==null){return new RawOrganization();} ///Возвращаем пустую организацию в случае если нет такой
         Office mainOffice = officeRepo.findByOrgIdAndIsMain(organization, true);
         RawOrganization result =new RawOrganization();
          BeanUtils.copyProperties(organization, result);

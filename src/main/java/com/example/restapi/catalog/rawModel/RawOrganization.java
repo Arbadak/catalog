@@ -1,7 +1,13 @@
 package com.example.restapi.catalog.rawModel;
 
+import com.example.restapi.catalog.Validators.OrgListValidator;
 import com.example.restapi.catalog.model.Organization;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.json.simple.JSONObject;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RawOrganization {
@@ -9,9 +15,12 @@ public class RawOrganization {
 
     private Integer orgId;
     private String FullName;
+    //@NotNull(message = "Требуется название организации", groups = OrgListValidator.class)
+    @NotEmpty(message = "name cannot be null")
     private String Name;
-    private Integer inn;
-    private Integer kpp;
+
+    private String inn;
+    private String kpp;
     private String address;
     private Integer phone;
     private Boolean isActive;
@@ -24,6 +33,23 @@ public class RawOrganization {
         Name = name;
         this.isActive = isActive;
     }
+
+    /** For testing purpose - all fileds constructor
+     *
+     * @return
+     */
+    public RawOrganization(String fullName, String name, String inn, String kpp, String address, Integer phone, Boolean isActive) {
+        FullName = fullName;
+        Name = name;
+        this.inn = inn;
+        this.kpp = kpp;
+        this.address = address;
+        this.phone = phone;
+        this.isActive = isActive;
+    }
+
+
+
 
     public Integer getId() {
         return orgId;
@@ -49,19 +75,19 @@ public class RawOrganization {
         this.Name = Name;
     }
 
-    public Integer getInn() {
+    public String getInn() {
         return inn;
     }
 
-    public void setInn(Integer inn) {
+    public void setInn(String inn) {
         this.inn = inn;
     }
 
-    public Integer getKpp() {
+    public String getKpp() {
         return kpp;
     }
 
-    public void setKpp(Integer kpp) {
+    public void setKpp(String kpp) {
         this.kpp = kpp;
     }
 
