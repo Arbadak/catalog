@@ -1,9 +1,8 @@
 package com.example.restapi.catalog.rawModel;
 
-import com.example.restapi.catalog.Validators.OrgListValidator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.validation.constraints.NotNull;
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RawOffice {
 
     private Integer Id;
@@ -15,7 +14,7 @@ public class RawOffice {
 
     private String address;
 
-    private Integer phone;
+    private String phone;
 
     private Boolean isActive;
 
@@ -54,19 +53,19 @@ public class RawOffice {
         this.address = address;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public Boolean getActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
-
-    public void setActive(Boolean active) {
-        isActive = active;
+    //public void setActive(Boolean active) { isActive = active; }
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 }

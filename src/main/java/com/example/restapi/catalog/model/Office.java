@@ -3,27 +3,27 @@ package com.example.restapi.catalog.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="office")
+@Table(name = "office")
 public class Office {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", columnDefinition = "INT", nullable = false)
-    //private Integer officeId;
-    private Integer officeId;
+    //private Integer Id;
+    private Integer Id;
 
     @ManyToOne ///ИЗМЕНИЛ
     @JoinColumn(name = "organization_id", nullable = false)
     private Organization orgId;
 
     @Column(name = "name", columnDefinition = "VARCHAR(50)", nullable = false)
-    private String officeName;
+    private String name;
 
     @Column(name = "address", columnDefinition = "VARCHAR(100)", nullable = false)
     private String address;
 
-    @Column(name = "phone", columnDefinition = "INT(11)", nullable = true)
-    private Integer phoneOffice;
+    @Column(name = "phone", columnDefinition = "VARCHAR(11)", nullable = true)
+    private String phone;
 
     @Column(name = "is_active", columnDefinition = "BOOLEAN", nullable = true)
     private Boolean isActive;
@@ -34,31 +34,32 @@ public class Office {
     public Office() {
     }
 
-    public Office(Organization orgId, String officeName, String address, Integer phoneOffice, Boolean isActive, Boolean isMain) {
+    public Office(Organization orgId, String name, String address, String phone, Boolean isActive, Boolean isMain) {
         this.orgId = orgId;
-        this.officeName=officeName;
+        this.name = name;
         this.address = address;
-        this.phoneOffice = phoneOffice;
-        this.isActive = isActive;
-        this.isMain = isMain;
-    }
-    public Office(Integer officeId, Organization orgId, String officeName, String address, Integer phoneOffice, Boolean isActive, Boolean isMain) {
-        this.officeId=officeId;
-        this.orgId = orgId;
-        this.officeName=officeName;
-        this.address = address;
-        this.phoneOffice = phoneOffice;
+        this.phone = phone;
         this.isActive = isActive;
         this.isMain = isMain;
     }
 
-
-    public Integer getOfficeId() {
-        return officeId;
+    public Office(Integer Id, Organization orgId, String name, String address, String phone, Boolean isActive, Boolean isMain) {
+        this.Id = Id;
+        this.orgId = orgId;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.isActive = isActive;
+        this.isMain = isMain;
     }
 
-    public void setOfficeId(Integer officeId) {
-        this.officeId = officeId;
+
+    public Integer getId() {
+        return Id;
+    }
+
+    public void setId(Integer id) {
+        this.Id = id;
     }
 
     public Organization getOrganizationId() {
@@ -69,12 +70,12 @@ public class Office {
         this.orgId = orgId;
     }
 
-    public String getOfficeName() {
-        return officeName;
+    public String getName() {
+        return name;
     }
 
-    public void setOfficeName(String officeName) {
-        this.officeName = officeName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {
@@ -85,19 +86,19 @@ public class Office {
         this.address = address;
     }
 
-    public Integer getPhoneOffice() {
-        return phoneOffice;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPhoneOffice(Integer phoneOffice) {
-        this.phoneOffice = phoneOffice;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public Boolean getActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 
-    public void setActive(Boolean active) {
+    public void setIsActive(Boolean active) {
         isActive = active;
     }
 
@@ -108,4 +109,4 @@ public class Office {
     public void setMain(Boolean main) {
         isMain = main;
     }
-   }
+}

@@ -4,28 +4,28 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="user")
-public class User{
+@Table(name = "user")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id", columnDefinition ="INT", nullable = false)
+    @Column(name = "id", columnDefinition = "INT", nullable = false)
     private Integer id;
 
-    @Column(name="first_name", columnDefinition ="VARCHAR(15)", nullable = false)
+    @Column(name = "first_name", columnDefinition = "VARCHAR(15)", nullable = false)
     private String firstName;
 
-    @Column(name="second_name", columnDefinition ="VARCHAR(15)", nullable = true)
+    @Column(name = "second_name", columnDefinition = "VARCHAR(15)", nullable = true)
     private String secondName;
 
-    @Column(name="last_name", columnDefinition ="VARCHAR(15)", nullable = true)
+    @Column(name = "last_name", columnDefinition = "VARCHAR(15)", nullable = true)
     private String lastName;
 
-    @Column(name="position", columnDefinition ="VARCHAR(30)", nullable = false)
+    @Column(name = "position", columnDefinition = "VARCHAR(30)", nullable = false)
     private String position;
 
-    @Column(name="phone", columnDefinition ="INT(11)", nullable = true)
-    private Integer phone;
+    @Column(name = "phone", columnDefinition = "INT(11)", nullable = true)
+    private String phone;
 
     @OneToOne
     //@JoinColumn(name = "id")
@@ -37,7 +37,7 @@ public class User{
     //@Column(name="citizenship")
     private Country citizenship;
 
-    @Column(name="is_identified", columnDefinition ="BOOLEAN", nullable = true)
+    @Column(name = "is_identified", columnDefinition = "BOOLEAN", nullable = true)
     private Boolean isIdentified;
 
     @OneToOne
@@ -48,11 +48,11 @@ public class User{
     public User() {
     }
 
-    public Integer getUserId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setUserId(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -88,43 +88,43 @@ public class User{
         this.position = position;
     }
 
-    public Integer getUserPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setUserPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public DocData getUserDocument() {
+    public DocData getDocument() {
         return document;
     }
 
-    public void setUserDocument(DocData document) {
+    public void setDocument(DocData document) {
         this.document = document;
     }
 
-    public Country getCitizenshipCountry() {
+    public Country getCitizenship() {
         return citizenship;
     }
 
-    public void setCitizenshipCountry(Country citizenship) {
+    public void setCitizenship(Country citizenship) {
         this.citizenship = citizenship;
     }
 
-    public Boolean getIdentified() {
+    public Boolean getIsIdentified() {
         return isIdentified;
     }
 
-    public void setIdentified(Boolean identified) {
-        isIdentified = identified;
+    public void setIsIdentified(Boolean isIdentified) {
+        this.isIdentified = isIdentified;
     }
 
-    public Office getBindedOffice() {
+    public Office getOfficeEmp() {
         return officeEmp;
     }
 
-    public void setBindedOffice(Office officeEmp) {
+    public void setOfficeEmp(Office officeEmp) {
         this.officeEmp = officeEmp;
     }
 }

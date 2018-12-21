@@ -2,15 +2,15 @@ package com.example.restapi.catalog.controller;
 
 import com.example.restapi.catalog.model.Office;
 import com.example.restapi.catalog.rawModel.RawOffice;
-import com.example.restapi.catalog.repos.OfficeRepo;
-import com.example.restapi.catalog.repos.OrganizationRepo;
+import com.example.restapi.catalog.rawModel.ResponceWrapper;
+import com.example.restapi.catalog.rawModel.resultResponce;
 import com.example.restapi.catalog.service.OfficeService;
-import org.springframework.beans.BeanUtils;
+import org.aspectj.lang.annotation.AdviceName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.example.restapi.catalog.rawModel.resultResponce;
+
 import java.util.List;
-import java.util.Optional;
+import java.util.regex.Pattern;
 
 /*** Этот контроллер неправильный и будет переделан
  *
@@ -20,48 +20,53 @@ import java.util.Optional;
 @RequestMapping("office")
 public class OfficeController {
 
-   //private final OfficeRepo officeRepo;
+    //private final OfficeRepo officeRepo;
     private final OfficeService officeService;
 
-  @Autowired
+    @Autowired
     public OfficeController(OfficeService officeService) {
         this.officeService = officeService;
     }
 
 
-    @GetMapping("/list/{id}")
+    @PostMapping("/list")
     //public Optional<Office> list(@PathVariable("orgID") Integer orgId) {
-    public List<Office> officeList (@PathVariable("orgID") Integer orgId){
+    public ResponceWrapper officeList(@RequestBody RawOffice office) {
+        if (office.getPhone().length() > 11 || office.getName().length() > 50 ) {
+            new resultResponce(null, "превышена длинна значения");
+        }
 
-      return officeService.getOfficeList(orgId);
+        return new ResponceWrapper(officeService.getOfficeList(office));
     }
 
-    @GetMapping("{id}")
-         //public Office getOne(@PathVariable("id") Office office){  return office; }
-    public Office getOne (@PathVariable("id") Integer officeId){
 
-      return officeService.getOne (officeId);
+    @GetMapping("{id}")
+    //public Office getOne(@PathVariable("id") Office office){  return office; }
+    public ResponceWrapper getOne(@PathVariable("id") Integer officeId) {
+
+        return new ResponceWrapper(officeService.getOne(officeId));
     }
 
     @PostMapping("save")
-    public resultResponce save(@RequestBody RawOffice office) {
-      return officeService.add(office);
+    public ResponceWrapper save(@RequestBody RawOffice office) {
+        if (office.getPhone().length() > 11 || office.getName().length() > 50 || office.getAddress().length() > 100) {
+            new resultResponce(null, "превышена длинна значения");
+        }
+        if (!(Pattern.compile("\\d{11}").matcher(office.getPhone())).find()) {
+            return new ResponceWrapper(new resultResponce(null, "номер телефон должен содержать только цифры"));
+        }
+        return new ResponceWrapper(officeService.add(office));
     }
 
     @PostMapping("update")
-    public resultResponce update(@RequestBody RawOffice office) {
-        return officeService.update(office);
+    public ResponceWrapper update(@RequestBody RawOffice office) {
+        if (office.getPhone().length() > 11 || office.getName().length() > 50 || office.getAddress().length() > 100) {
+            new resultResponce(null, "превышена длинна значения");
+        }
+        if (!(Pattern.compile("\\d{11}").matcher(office.getPhone())).find()) {
+            return new ResponceWrapper(new resultResponce(null, "номер телефон должен содержать только цифры"));
+        }
+
+        return new ResponceWrapper(officeService.update(office));
     }
-
-   /* @PostMapping("update/{id}")
-    public Office update(
-            @PathVariable("id") Office officeFromDB,
-            @RequestBody Office officeFromWeb
-    ){
-        BeanUtils.copyProperties(officeFromWeb, officeFromDB, "id");
-        return officeRepo.save(officeFromDB);
-    }*/
-
-
-
-}
+   }

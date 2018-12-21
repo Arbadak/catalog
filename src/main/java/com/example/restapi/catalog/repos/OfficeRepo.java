@@ -10,8 +10,11 @@ import java.util.List;
 
 public interface OfficeRepo extends JpaRepository<Office, Integer> {
     List<Office> findByOrgId(Organization orgClassId);
-    Office findByOrgIdAndIsMain (Organization OrgId, Boolean IsMain);
+
+    Office findByOrgIdAndIsMain(Organization OrgId, Boolean IsMain);
+    //Office findById(Integer Id);
+
     //Office findByOrgId(RawOrganization orgClassId);
-    List<Office> findAllByOrgId (Organization orgId);
+    List<Office> findAllByOrgId(Organization orgId);
 
 }

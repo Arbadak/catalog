@@ -4,18 +4,18 @@ package com.example.restapi.catalog.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="country")
+@Table(name = "country")
 public class Country {
 
     @Id
-    @Column (name = "id", columnDefinition = "INT", nullable = false)
+    @Column(name = "id", columnDefinition = "INT", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer citizinshipId;
 
-    @Column(name="code", columnDefinition ="VARCHAR(3)", nullable = false)
+    @Column(name = "code", columnDefinition = "VARCHAR(3)", nullable = false)
     private String citizenshipCode;
 
-    @Column(name="name", columnDefinition = "VARCHAR(60)", nullable = false)
+    @Column(name = "name", columnDefinition = "VARCHAR(60)", nullable = false)
     private String citizenshipName;
 
     public Country() {

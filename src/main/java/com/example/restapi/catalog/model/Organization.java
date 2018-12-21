@@ -3,25 +3,25 @@ package com.example.restapi.catalog.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="organization")
+@Table(name = "organization")
 
 public class Organization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id", columnDefinition ="INT", nullable = false)
+    @Column(name = "id", columnDefinition = "INT", nullable = false)
     private Integer orgId;
 
-    @Column(name="inn", columnDefinition ="VARCHAR(12)", nullable = false)
+    @Column(name = "inn", columnDefinition = "VARCHAR(12)", nullable = false)
     private String inn;
 
-    @Column(name="name", columnDefinition ="VARCHAR(60)", nullable = false)
+    @Column(name = "name", columnDefinition = "VARCHAR(60)", nullable = false)
     private String fullName;
 
-    @Column(name="short_name", columnDefinition ="VARCHAR(30)", nullable = true)
+    @Column(name = "short_name", columnDefinition = "VARCHAR(30)", nullable = true)
     private String name;
 
-    @Column(name="kpp", columnDefinition ="VARCHAR(9)")
+    @Column(name = "kpp", columnDefinition = "VARCHAR(9)")
     private String kpp;
 
     public Organization() {

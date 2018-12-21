@@ -1,12 +1,8 @@
 package com.example.restapi.catalog.rawModel;
 
-import com.example.restapi.catalog.Validators.OrgListValidator;
-import com.example.restapi.catalog.model.Organization;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.json.simple.JSONObject;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,7 +18,7 @@ public class RawOrganization {
     private String inn;
     private String kpp;
     private String address;
-    private Integer phone;
+    private String phone;
     private Boolean isActive;
 
     public RawOrganization() {
@@ -34,11 +30,12 @@ public class RawOrganization {
         this.isActive = isActive;
     }
 
-    /** For testing purpose - all fileds constructor
+    /**
+     * For testing purpose - all fileds constructor
      *
      * @return
      */
-    public RawOrganization(String fullName, String name, String inn, String kpp, String address, Integer phone, Boolean isActive) {
+    public RawOrganization(String fullName, String name, String inn, String kpp, String address, String phone, Boolean isActive) {
         FullName = fullName;
         Name = name;
         this.inn = inn;
@@ -47,8 +44,6 @@ public class RawOrganization {
         this.phone = phone;
         this.isActive = isActive;
     }
-
-
 
 
     public Integer getId() {
@@ -99,11 +94,11 @@ public class RawOrganization {
         this.address = address;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

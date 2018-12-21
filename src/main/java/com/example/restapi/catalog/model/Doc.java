@@ -7,18 +7,23 @@ import javax.persistence.*;
 public class Doc {
 
     @Id
-    @Column(name="id", columnDefinition ="INT", nullable = false)
+    @Column(name = "id", columnDefinition = "INT", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer docId;
 
 
-    @Column(name="name", columnDefinition ="VARCHAR(115)", nullable = false)
+    @Column(name = "name", columnDefinition = "VARCHAR(115)", nullable = false)
     private String docName;
 
-    @Column(name="code", columnDefinition ="VARCHAR(3)",nullable = false)
+    @Column(name = "code", columnDefinition = "VARCHAR(3)", nullable = false)
     private String docCode;
 
     public Doc() {
+    }
+
+    public Doc(String docName, String docCode) {
+        this.docName = docName;
+        this.docCode = docCode;
     }
 
     public Integer getDocId() {
