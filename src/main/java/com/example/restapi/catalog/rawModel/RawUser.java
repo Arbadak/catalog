@@ -1,22 +1,52 @@
 package com.example.restapi.catalog.rawModel;
 
+import com.example.restapi.catalog.groups.GroupAdd;
+import com.example.restapi.catalog.groups.GroupList;
+import com.example.restapi.catalog.groups.GroupUpdate;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.util.Date;
+
 
 public class RawUser {
+    @NotNull (message = "Не указан id", groups = {GroupUpdate.class})
     private Integer id;
+
+    @NotNull (message = "Не указано имя", groups = {GroupAdd.class})
+    @Pattern(regexp = "\\D{2,15}", message = "Ошибка в поле имя",  groups = {GroupAdd.class, GroupUpdate.class, GroupList.class} )
     private String firstName;
+    @Pattern(regexp = "\\D{2,15}", message = "Ошибка в поле отчество",  groups = {GroupAdd.class, GroupUpdate.class})
     private String secondName;
+    @Pattern(regexp = "\\D{2,15}", message = "Ошибка в поле фамилия",  groups = {GroupAdd.class, GroupUpdate.class})
     private String lastName;
+
+    @NotNull  (message = "Поле должность должно быть указано",groups = {GroupAdd.class,GroupUpdate.class})
     private String position;
+
+    @Pattern(regexp = "\\d{5,11}", message = "Ошибка в поле телефон",  groups = {GroupAdd.class, GroupUpdate.class})
     private String phone;
+
+    @Pattern(regexp = "\\D{5,115}", message = "Ошибка в поле документ",  groups = {GroupAdd.class, GroupUpdate.class})
     private String docName;
+
+    @Pattern(regexp = "\\d{10}", message = "Ошибка в поле номер документа",  groups = {GroupAdd.class, GroupUpdate.class})
     private String docNumber;
+
     private LocalDate docDate;
+
+    @Pattern(regexp = "\\d{2}", message = "Ошибка в поле код документа",  groups = {GroupAdd.class})
     private String docCode;
+
+    @Pattern(regexp = "\\D{3,60}", message = "Ошибка в поле наименование гражданства",  groups = {GroupAdd.class, GroupUpdate.class})
     private String citizenshipName;
+
+    @Pattern(regexp = "\\d{3}", message = "Ошибка в поле код страны",  groups = {GroupAdd.class, GroupUpdate.class})
     private String citizenshipCode;
+
     private Boolean isIdentified;
+
+    @NotNull  (message = "Поле officeId должно быть указано",groups = {GroupList.class})
     private Integer officeId;
 
 

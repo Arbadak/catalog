@@ -87,20 +87,16 @@ public RawUser getOne(Integer id) {
        result.setCitizenship(newCountry);
        result.setDocument(newDocData);
        result.setOfficeEmp(newOffice);
-
        userRepo.save(result);
-
     return new resultResponce("success");}
 
-public resultResponce update(RawUser rawUser){
-
-        if (rawUser.getId()==null || rawUser.getFirstName()==null || rawUser.getPosition()==null) {return new resultResponce(null,"Не указан обязательный параметр");}  ///TODO это обязательные параметры
-
+@Transactional
+    public resultResponce update(RawUser rawUser){
     User updatingUser = userRepo.findById(rawUser.getId()).orElse(null);
         if (updatingUser==null) { return new resultResponce(null,"пользователь не найден");}
     utils.copyNonNullProperties(rawUser, updatingUser);  ///перекидываем ненулевые свойства
 
-    Doc updatingDoc = new Doc();  ///если документ пустой
+    Doc updatingDoc = new Doc();  ///Болванка типа документа
     if (rawUser.getDocName()!=null) {  ///Если имя документа не пустое - меняем тип документа пользователя
         updatingDoc = docRepo.findByDocName(rawUser.getDocName());  ///Ищем в справочнике документ с именем и кодом
         if (updatingDoc == null) {  ///TODO если не нашли то ошибка неверное имя документа
@@ -114,8 +110,8 @@ public resultResponce update(RawUser rawUser){
         } //TODO не нашли измененную страну ошибка
         updatingUser.setCitizenship(updatingCountry);
     }
-    if (rawUser.getDocDate()!=null && rawUser.getDocNumber()!=null) {
-        DocData updatingDocData = new DocData(rawUser.getDocDate(), rawUser.getDocNumber(), ((updatingDoc == null) ? updatingUser.getDocument().getDocType() : updatingDoc)); /// Если тип документа не искался то берем то что сохранено
+    if ((rawUser.getDocDate()!=null) && rawUser.getDocNumber()!=null) {
+        DocData updatingDocData = new DocData(rawUser.getDocDate(), rawUser.getDocNumber(), ((updatingDoc.getDocId() == null) ? updatingUser.getDocument().getDocType() : updatingDoc)); /// Если ИД документа нулл значит это блованка, он не менялся, берем то что в базе было
         docdDataRepo.save(updatingDocData); ///сохраняем тугамент
     }
     if (rawUser.getOfficeId()!=null) {

@@ -1,9 +1,13 @@
 package com.example.restapi.catalog.controller;
 
+import com.example.restapi.catalog.groups.GroupAdd;
 import com.example.restapi.catalog.rawModel.RawUser;
 import com.example.restapi.catalog.rawModel.ResponceWrapper;
+import com.example.restapi.catalog.rawModel.resultResponce;
 import com.example.restapi.catalog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -41,9 +45,11 @@ public class UserController {
     }
 
     @PostMapping("update")
-    public ResponceWrapper update(@RequestBody RawUser user) {
+    public ResponceWrapper update(@RequestBody @Validated({ GroupAdd.class }) RawUser user, BindingResult result) {
 
-
+        if(result.hasErrors()) {
+            return new ResponceWrapper (new resultResponce(null,(result.getFieldError().getDefaultMessage())));
+        }
         return new ResponceWrapper(userService.update(user));
     }
 }
