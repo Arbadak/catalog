@@ -1,5 +1,6 @@
 package com.example.restapi.catalog.service;
 
+import com.example.restapi.catalog.exceptions.NotFoundException;
 import com.example.restapi.catalog.model.Office;
 import com.example.restapi.catalog.model.Organization;
 import com.example.restapi.catalog.rawModel.RawOffice;
@@ -57,7 +58,9 @@ public class OfficeService {
 
     @Transactional
     public resultResponce add(RawOffice office) {
-        if (office.getOrgId()==null){return new resultResponce(null,"не указана организация");}  /// не будем создавать "висячие" офисы
+
+        //if (office.getOrgId()==null){return new resultResponce(null,"не указана организация");}  /// не будем создавать "висячие" офисы
+
         Office newoffice = new Office();
         BeanUtils.copyProperties(office, newoffice, "orgId","Id");
         newoffice.setOrganizationId(organizationRepo.findOrgByOrgId(office.getOrgId())); ///Выдергиваем организацию из номера в сырой модели, и суем уже обьект
@@ -70,8 +73,13 @@ public class OfficeService {
 
         /// TODO решить вариант если указали больше параметров чем нужно orgID например
 
-        if (getOne(office.getId())==null) {return new resultResponce(null,"не сущевствует оффиса с укащанным id");} /// проверим если ли то что собираемся апдейтить
-        if (office.getId()==null || office.getName()==null || office.getAddress()==null || office.getIsActive()==null) {return new resultResponce(null,"не указан обязательный параметр");}
+        RawOffice checkoffice=getOne(office.getId());
+        if (checkoffice.getId()==null) {
+            throw new NotFoundException("Офис с указаным id не найден, выйдите в окно");
+        }
+        //if (getOne(office.getId())==null) { throw new NotFoundException("Не сущевствует оффиса с укащанным id");}
+            //return new resultResponce(null,"не сущевствует оффиса с укащанным id");} /// проверим если ли то что собираемся апдейтить
+        //if (office.getId()==null || office.getName()==null || office.getAddress()==null || office.getIsActive()==null) {return new resultResponce(null,"не указан обязательный параметр");}
 
         Office newoffice = officeRepo.findById(office.getId()).orElse(null); //вытскиваем из базы хранимый офис для редактирования
         BeanUtils.copyProperties(office, newoffice, "orgId","phone");  //orgid не указывается а phone необязательнй потому их не копируем
