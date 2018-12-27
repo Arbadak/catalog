@@ -29,17 +29,14 @@ public class OrganizationService {
         this.officeRepo = officeRepo;
     }
 
-    @Transactional
     public List<RawOrganization> getOrgList(RawOrganization rawOrganization) {
         List<Organization> all = organizationRepo.findOrgByName(rawOrganization.getName()); //находим все по обязательному полю
         List<RawOrganization> result = new ArrayList<>();  //лист который вернется пользователю
-
         if (rawOrganization.getInn() != null) {  ///Если указан ИНН
             all.removeIf(x -> !rawOrganization.getInn().equals(x.getInn())); ///Выкидываем всех у кого не такой ИНН как указан
         }
 
-        for (Iterator<Organization> iterableOrg = all.iterator(); iterableOrg.hasNext(); ) { ///цикл для из сбиска с учетом фильторв имя и инн, в список который вернется пользователю с учетом поля isActive
-
+        for (Iterator<Organization> iterableOrg = all.iterator(); iterableOrg.hasNext(); ) { ///цикл для из списка с учетом фильторв имя и инн, в список который вернется пользователю с учетом поля isActive
             Organization currentOrg = iterableOrg.next();
             Office bindedOffice = officeRepo.findByOrgIdAndIsMain(currentOrg, true);
             if (rawOrganization.getIsActive() != null) { // Если задан isActive
@@ -50,7 +47,6 @@ public class OrganizationService {
             }
             result.add(new RawOrganization(currentOrg.getOrgId(), currentOrg.getName(), bindedOffice.getIsActive()));
         }
-
         return result; ///Возвращаем крокодила пользователю
     }
 
@@ -65,10 +61,11 @@ public class OrganizationService {
         return new resultResponce("success");
     }
 
+    @Transactional
     public resultResponce update(RawOrganization rawOrganization, Organization orgDest) {
         BeanUtils.copyProperties(rawOrganization, orgDest, "id");
         Office storedOffice = officeRepo.findByOrgIdAndIsMain(orgDest, true);
-        Office updatingOffice = new Office(storedOffice.getId(), orgDest,  /// Избавляемся от Null полей в обновляемом офисе
+        Office updatingOffice = new Office(storedOffice.getId(), orgDest,  /// Заменяем непередданые данные данными из базы в обновляемом офисе
                 (rawOrganization.getFullName() == (null)) ? rawOrganization.getFullName() : storedOffice.getName(),
                 (rawOrganization.getAddress() == (null)) ? storedOffice.getAddress() : rawOrganization.getAddress(),
                 (rawOrganization.getPhone() == (null)) ? storedOffice.getPhone() : rawOrganization.getPhone(),
@@ -76,9 +73,6 @@ public class OrganizationService {
                 true);
         officeRepo.save(updatingOffice);
         organizationRepo.save(orgDest);
-        // return "{ \"result\":\"success\" }";
-//        return new Object (){ String result="success";};
-
         return new resultResponce("success");
     }
 
@@ -94,8 +88,5 @@ public class OrganizationService {
         result.setPhone(mainOffice.getPhone());
         result.setIsActive(mainOffice.getIsActive());
         return result;
-
-
     }
-
 }

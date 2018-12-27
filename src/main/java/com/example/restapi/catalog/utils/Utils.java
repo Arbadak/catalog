@@ -11,6 +11,14 @@ import java.util.stream.Stream;
 @Component
 public class Utils{
 
+    /**
+     *  Функция копирования property без нулевых значений
+     *
+     * @param source - View
+     * @param destination - Entity
+     * @return
+     */
+
    public Object copyNonNullProperties(Object source, Object destination) {
         String[] ignore = getNullPropertyNames(source);
         BeanUtils.copyProperties(source, destination, ignore);

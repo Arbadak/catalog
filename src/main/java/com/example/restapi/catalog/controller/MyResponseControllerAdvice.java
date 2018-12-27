@@ -1,6 +1,6 @@
 package com.example.restapi.catalog.controller;
 
-
+/*
 import com.example.restapi.catalog.rawModel.RawOffice;
 import com.example.restapi.catalog.rawModel.ResponceWrapper;
 import com.example.restapi.catalog.rawModel.resultResponce;
@@ -42,4 +42,4 @@ public class MyResponseControllerAdvice implements ResponseBodyAdvice<ResponceWr
         }
 
 
-}
+}*/

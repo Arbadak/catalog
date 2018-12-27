@@ -15,6 +15,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.UnsupportedEncodingException;
 
@@ -132,21 +133,21 @@ public class OrganizationControllerTest {
         requestBody.setIsActive(null);
         requestJson = ow.writeValueAsString(requestBody);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json("{'data':{'error': 'инн введен неверно'}}"));
+                .andExpect(content().json("{'data':{'error': 'ИНН организации введен неверно'}}"));
 
         //Цифр меньше
         requestBody.setInn("1234567");
         requestBody.setIsActive(null);
         requestJson = ow.writeValueAsString(requestBody);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json("{'data':{'error': 'инн введен неверно'}}"));
+                .andExpect(content().json("{'data':{'error': 'ИНН организации введен неверно'}}"));
 
         //Цифр больше
         requestBody.setInn("12345678901234567890");
         requestBody.setIsActive(null);
         requestJson = ow.writeValueAsString(requestBody);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json("{'data':{'error': 'инн введен неверно'}}"));
+                .andExpect(content().json("{'data':{'error': 'ИНН организации введен неверно'}}"));
     }
 
     @Test
@@ -176,14 +177,14 @@ public class OrganizationControllerTest {
         requestBody.setName(null);
         requestJson = ow.writeValueAsString(requestBody);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json("{'data':{'error':'не указан обязательный параметр'}}"));
+                .andExpect(content().json("{'data':{'error':'Не указано имя организации'}}"));
 
         /// обязательный параметр указан не верно
 
         requestBody.setName("Эта строка будет длиннее поля в 30 симолов");
         requestJson = ow.writeValueAsString(requestBody);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json("{'data':{'error':'превышена длинна значения'}}"));
+                .andExpect(content().json("{'data':{'error':'Имя организации не может быть длинее 30 символов'}}"));
 
         /// кпп указано неверно
         /// не соответствует длинне
@@ -191,14 +192,14 @@ public class OrganizationControllerTest {
         requestBody.setKpp("1234");
         requestJson = ow.writeValueAsString(requestBody);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json("{'data':{'error':'кпп введен неверно'}}"));
+                .andExpect(content().json("{'data':{'error':'КПП организации введен неверно'}}"));
 
         /// кпп указано неверно
         /// некорректный
         requestBody.setKpp("1234567ЖЩ");
         requestJson = ow.writeValueAsString(requestBody);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json("{'data':{'error':'кпп введен неверно'}}"));
+                .andExpect(content().json("{'data':{'error':'КПП организации введен неверно'}}"));
 
         /// инн указано неверно
         /// не соответствует длинне
@@ -206,14 +207,14 @@ public class OrganizationControllerTest {
         requestBody.setInn("123456789012345");
         requestJson = ow.writeValueAsString(requestBody);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json("{'data':{'error':'инн введен неверно'}}"));
+                .andExpect(content().json("{'data':{'error':'ИНН организации введен неверно'}}"));
 
         /// инн указано неверно
         /// некорректный
         requestBody.setKpp("1234567890АБ");
         requestJson = ow.writeValueAsString(requestBody);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json("{'data':{'error':'инн введен неверно'}}"));
+                .andExpect(content().json("{'data':{'error':'ИНН организации введен неверно'}}"));
 
 
     }

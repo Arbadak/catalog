@@ -1,24 +1,46 @@
 package com.example.restapi.catalog.rawModel;
 
+import com.example.restapi.catalog.groups.GroupAdd;
+import com.example.restapi.catalog.groups.GroupList;
+import com.example.restapi.catalog.groups.GroupUpdate;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RawOrganization {
 
-
+    @NotNull(message = "Не указан идентификатор организации",  groups = {GroupUpdate.class})
+    @Pattern(regexp = "\\d+", message = "Идентификатор организации указан не правильно",  groups = {GroupUpdate.class})
     private Integer orgId;
+
+    @NotNull(message = "Не указано полное имя организации",  groups = {GroupAdd.class, GroupUpdate.class})
+    @Size(min =2, message = "Полное имя организации не может быть короче 2 символов", groups = {GroupAdd.class, GroupUpdate.class, GroupList.class})
+    @Size(max =60, message = "Полное имя организации не может быть длинее 60 символов", groups = {GroupAdd.class, GroupUpdate.class, GroupList.class})
     private String FullName;
-    //@NotNull(message = "Требуется название организации", groups = OrgListValidator.class)
-    @NotEmpty(message = "name cannot be null")
+
+    @NotNull(message = "Не указано имя организации",  groups = {GroupAdd.class, GroupUpdate.class, GroupList.class})
+    @Size(min = 2, message = "Имя организации не может быть короче 2 символов", groups = {GroupAdd.class, GroupUpdate.class, GroupList.class})
+    @Size (max = 30, message = "Имя организации не может быть длинее 30 символов", groups = {GroupAdd.class, GroupUpdate.class, GroupList.class})
     private String Name;
 
+    @NotNull(message = "Не указан ИНН",  groups = {GroupAdd.class, GroupUpdate.class})
+    @Pattern(regexp = "\\d{8,12}", message = "ИНН организации введен неверно",  groups = {GroupAdd.class, GroupUpdate.class, GroupList.class})
     private String inn;
+
+    @NotNull(message = "Не указан КПП",  groups = {GroupAdd.class, GroupUpdate.class})
+    @Pattern(regexp = "\\d{9}", message = "КПП организации введен неверно",  groups = {GroupAdd.class, GroupUpdate.class})
     private String kpp;
+
+    @NotNull(message = "Не указан адрес организации",  groups = {GroupAdd.class, GroupUpdate.class})
+    @Size(min =2, message = "Адрес организации не может быть короче 2 символов", groups = {GroupAdd.class, GroupUpdate.class})
+    @Size(max =100, message = "Адрес организации не может быть длинее 100 символов", groups = {GroupAdd.class, GroupUpdate.class})
     private String address;
+
+    @Pattern(regexp = "\\d{5,11}", message = "Телефон организации введен неверно",  groups = {GroupAdd.class, GroupUpdate.class})
     private String phone;
+
     private Boolean isActive;
 
     public RawOrganization() {

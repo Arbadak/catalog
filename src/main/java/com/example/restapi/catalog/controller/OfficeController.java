@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.regex.Pattern;
 
-/*** Этот контроллер неправильный и будет переделан
+/***
  *
  */
 
@@ -20,7 +20,6 @@ import java.util.regex.Pattern;
 @RequestMapping("office")
 public class OfficeController {
 
-    //private final OfficeRepo officeRepo;
     private final OfficeService officeService;
 
     @Autowired
@@ -30,7 +29,6 @@ public class OfficeController {
 
 
     @PostMapping("/list")
-    //public Optional<Office> list(@PathVariable("orgID") Integer orgId) {
     public ResponceWrapper officeList(@RequestBody RawOffice office) {
         if (office.getPhone().length() > 11 || office.getName().length() > 50 ) {
             new resultResponce(null, "превышена длинна значения");
@@ -41,9 +39,7 @@ public class OfficeController {
 
 
     @GetMapping("{id}")
-    //public Office getOne(@PathVariable("id") Office office){  return office; }
     public ResponceWrapper getOne(@PathVariable("id") Integer officeId) {
-
         return new ResponceWrapper(officeService.getOne(officeId));
     }
 
@@ -66,7 +62,6 @@ public class OfficeController {
         if (!(Pattern.compile("\\d{11}").matcher(office.getPhone())).find()) {
             return new ResponceWrapper(new resultResponce(null, "номер телефон должен содержать только цифры"));
         }
-
         return new ResponceWrapper(officeService.update(office));
     }
    }

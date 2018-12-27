@@ -1,6 +1,7 @@
 package com.example.restapi.catalog.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 @Table(name = "organization")
