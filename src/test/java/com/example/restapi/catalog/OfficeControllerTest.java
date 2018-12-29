@@ -55,7 +55,8 @@ public class OfficeControllerTest {
 
         String requestJson = ow.writeValueAsString(request);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json("{'data':{'result':'success'}}"));
+                .andExpect(content().json("{'data':{'result':'success'}}"))
+                .andReturn();
 }
     @Test
     public void AddOfficeEmptyRequiredField() throws Exception {
@@ -75,7 +76,7 @@ public class OfficeControllerTest {
 
         String requestJson = ow.writeValueAsString(request);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json(" {data:{'error':'не указана организация'}}"));
+                .andExpect(content().json(" {data:{'error':'Не указан идентификатор организации'}}"));
     }
 
 

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-//@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RawOffice {
 
 
@@ -17,7 +17,7 @@ public class RawOffice {
     //@Pattern(regexp = "\\d+", message = "Идентификатор организации указан не правильно",  groups = {GroupAdd.class, GroupUpdate.class})
     private Integer Id;
 
-    @NotNull(message = "Не указан идентификатор организации",  groups = {GroupList.class})
+    @NotNull(message = "Не указан идентификатор организации",  groups = {GroupAdd.class, GroupList.class})
     //@Pattern(regexp = "\\d+", message = "Идентификатор организации указан не правильно",  groups = {GroupAdd.class, GroupUpdate.class, GroupList.class})
     private Integer orgId;
 

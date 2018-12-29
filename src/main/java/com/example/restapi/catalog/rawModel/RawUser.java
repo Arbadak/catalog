@@ -46,12 +46,13 @@ public class RawUser {
 
     private Boolean isIdentified;
 
-    @NotNull  (message = "Поле officeId должно быть указано",groups = {GroupList.class})
+    //@NotNull  (message = "Поле officeId должно быть указано",groups = {GroupList.class})
     private Integer officeId;
 
 
     public RawUser() {
     }
+
 
     public Integer getId() {
         return id;

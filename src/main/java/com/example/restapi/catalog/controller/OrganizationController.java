@@ -38,35 +38,8 @@ public class OrganizationController {
     public ResponceWrapper orgList(@RequestBody @Validated({ GroupList.class }) RawOrganization rawOrganization) {
        return new ResponceWrapper(organizationService.getOrgList(rawOrganization));
     }
-
-    /** Обработчик ошибок маппинга парамтров на модель
-     *
-     * @param e
-     * @return error:неверный тип данных
-     */
-
-    ///TODO Эту всю радость бы в контроллер адвайс...
-    /// При неверноем типе поля будет выдаваться ошибка
-    @ExceptionHandler(com.fasterxml.jackson.databind.exc.InvalidFormatException.class)
-    public @ResponseBody
-    ResponceWrapper handleDeserializeException(com.fasterxml.jackson.databind.exc.InvalidFormatException e) {
-
-        return new ResponceWrapper(new resultResponce(null, "неверный тип данных"));
-    }
-    @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
-        public @ResponseBody
-        ResponceWrapper handleValidationException(org.springframework.web.bind.MethodArgumentNotValidException e) {
-
-            return new ResponceWrapper(new resultResponce(null,( e.getBindingResult()
-                                                                            .getAllErrors()
-                                                                            .listIterator()
-                                                                            .next()
-                                                                            .getDefaultMessage() ) ));
-    }
-
     /**
      * Обработка запросов organization/ID
-     *
      * @param id
      * @return Organization с указанным id, либо пустой результат если организации с таким ID не найдено
      */
@@ -79,7 +52,6 @@ public class OrganizationController {
 
     /**
      * Добавление новой организации
-     *
      * @param rawOrganization
      * @return success, либо ошибка в случае если
      */
