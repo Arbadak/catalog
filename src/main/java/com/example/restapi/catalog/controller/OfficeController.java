@@ -8,17 +8,26 @@ import com.example.restapi.catalog.rawModel.ResponceWrapper;
 import com.example.restapi.catalog.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+
 
 /***
- *
+ * Рест контроллер запросов Office
  */
+
 
 @RestController
 @RequestMapping("office")
 public class OfficeController {
 
     private final OfficeService officeService;
+
 
     @Autowired
     public OfficeController(OfficeService officeService) {
@@ -27,7 +36,7 @@ public class OfficeController {
 
 
     @PostMapping("/list")
-    public ResponceWrapper officeList(@RequestBody @Validated({ GroupList.class }) RawOffice office) {
+    public ResponceWrapper officeList(@RequestBody @Validated({GroupList.class}) RawOffice office) {
         return new ResponceWrapper(officeService.getOfficeList(office));
     }
 
@@ -38,12 +47,12 @@ public class OfficeController {
     }
 
     @PostMapping("save")
-    public ResponceWrapper save(@RequestBody @Validated({ GroupAdd.class }) RawOffice office) {
+    public ResponceWrapper save(@RequestBody @Validated({GroupAdd.class}) RawOffice office) {
         return new ResponceWrapper(officeService.add(office));
     }
 
     @PostMapping("update")
-    public ResponceWrapper update(@RequestBody @Validated({ GroupUpdate.class }) RawOffice office) {
-            return new ResponceWrapper(officeService.update(office));
+    public ResponceWrapper update(@RequestBody @Validated({GroupUpdate.class}) RawOffice office) {
+        return new ResponceWrapper(officeService.update(office));
     }
- }
+}

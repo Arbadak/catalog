@@ -91,7 +91,7 @@ public class OrganizationControllerTest {
      * @throws Exception
      */
     @Test
-    public void ListByNameAnd() throws Exception {
+    public void listByNameAnd() throws Exception {
         String url = "/organization/list/";
         RawOrganization requestBody = new RawOrganization();
 
@@ -151,7 +151,7 @@ public class OrganizationControllerTest {
 
     @Test
     @Sql(value = {"classpath:delete_organization.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void AddOrganization() throws Exception {
+    public void addOrganization() throws Exception {
         String url = "/organization/save/";
 
 

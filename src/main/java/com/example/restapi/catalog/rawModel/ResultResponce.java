@@ -6,21 +6,21 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * В случае удачного реультата конструктор с result, при ошибке игнорим result в null, пишем в error
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class resultResponce {
+public class ResultResponce {
 
     private String result;
     private String error;
 
-    public resultResponce(String result) {
+    public ResultResponce(String result) {
         this.result = result;
     }
 
-    public resultResponce(String result, String error) {
+    public ResultResponce(String result, String error) {
         this.result = result;
         this.error = error;
     }
 
-    public resultResponce() {
+    public ResultResponce() {
     }
 
     public String getResult() {

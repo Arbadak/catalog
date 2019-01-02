@@ -4,6 +4,7 @@ import com.example.restapi.catalog.groups.GroupAdd;
 import com.example.restapi.catalog.groups.GroupList;
 import com.example.restapi.catalog.groups.GroupUpdate;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -12,25 +13,25 @@ import javax.validation.constraints.Size;
 public class RawOffice {
 
 
-    @NotNull(message = "Не указан идентификатор организации",  groups = {GroupUpdate.class})
+    @NotNull(message = "Не указан идентификатор организации", groups = {GroupUpdate.class})
     //@Pattern(regexp = "\\d+", message = "Идентификатор организации указан не правильно",  groups = {GroupAdd.class, GroupUpdate.class})
     private Integer Id;
 
-    @NotNull(message = "Не указан идентификатор организации",  groups = {GroupAdd.class, GroupList.class})
+    @NotNull(message = "Не указан идентификатор организации", groups = {GroupAdd.class, GroupList.class})
     //@Pattern(regexp = "\\d+", message = "Идентификатор организации указан не правильно",  groups = {GroupAdd.class, GroupUpdate.class, GroupList.class})
     private Integer orgId;
 
-    @NotNull(message = "Не указано имя организации",  groups = {GroupUpdate.class})
+    @NotNull(message = "Не указано имя организации", groups = {GroupUpdate.class})
     @Size(min = 2, message = "Имя организации не может быть короче 2 символов", groups = {GroupAdd.class, GroupUpdate.class, GroupList.class})
-    @Size (max = 30, message = "Имя организации не может быть длинее 30 символов", groups = {GroupAdd.class, GroupUpdate.class, GroupList.class})
+    @Size(max = 30, message = "Имя организации не может быть длинее 30 символов", groups = {GroupAdd.class, GroupUpdate.class, GroupList.class})
     private String name;
 
-    @NotNull(message = "Не указан адрес организации",  groups = {GroupUpdate.class})
-    @Size(min =2, message = "Адрес организации не может быть короче 2 символов", groups = {GroupAdd.class, GroupUpdate.class})
-    @Size(max =100, message = "Адрес организации не может быть длинее 100 символов", groups = {GroupAdd.class, GroupUpdate.class})
+    @NotNull(message = "Не указан адрес организации", groups = {GroupUpdate.class})
+    @Size(min = 2, message = "Адрес организации не может быть короче 2 символов", groups = {GroupAdd.class, GroupUpdate.class})
+    @Size(max = 100, message = "Адрес организации не может быть длинее 100 символов", groups = {GroupAdd.class, GroupUpdate.class})
     private String address;
 
-    @Pattern(regexp = "\\d{5,11}", message = "Телефон организации введен неверно",  groups = {GroupAdd.class, GroupUpdate.class})
+    @Pattern(regexp = "\\d{5,11}", message = "Телефон организации введен неверно", groups = {GroupAdd.class, GroupUpdate.class})
     private String phone;
 
     private Boolean isActive;
@@ -81,6 +82,7 @@ public class RawOffice {
     public Boolean getIsActive() {
         return isActive;
     }
+
     //public void setActive(Boolean active) { isActive = active; }
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;

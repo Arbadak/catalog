@@ -35,10 +35,11 @@ public class OfficeControllerTest {
 
     /**
      * Добавление офиса
+     *
      * @throws Exception
      */
     @Test
-    public void AddOfficeNormal() throws Exception {
+    public void addOfficeNormal() throws Exception {
 
         final String url = "/office/save/";
 
@@ -57,9 +58,10 @@ public class OfficeControllerTest {
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
                 .andExpect(content().json("{'data':{'result':'success'}}"))
                 .andReturn();
-}
+    }
+
     @Test
-    public void AddOfficeEmptyRequiredField() throws Exception {
+    public void addOfficeEmptyRequiredField() throws Exception {
 
         final String url = "/office/save/";
 
@@ -80,23 +82,23 @@ public class OfficeControllerTest {
     }
 
 
-@Test
+    @Test
     public void getOfficeByOrgIdNormal() throws Exception {
-    final String url = "/office/list";
-    // Поиск организации
+        final String url = "/office/list";
+        // Поиск организации
 
-    RawOffice request = new RawOffice();
-    request.setOrgId(5);
-    request.setIsActive(true);
+        RawOffice request = new RawOffice();
+        request.setOrgId(5);
+        request.setIsActive(true);
 
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-    ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
 
-    String requestJson = ow.writeValueAsString(request);
-    this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-            .andExpect(content().json("{'data':[{'id':10,'isActive':true,'name':'Особо зеленый оффис'}]}"));
-}
+        String requestJson = ow.writeValueAsString(request);
+        this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
+                .andExpect(content().json("{'data':[{'id':10,'isActive':true,'name':'Особо зеленый оффис'}]}"));
+    }
 
 
     @Test
@@ -140,7 +142,7 @@ public class OfficeControllerTest {
     }
 
     @Test
-    public void getOfficebyOfficeId() throws Exception{
+    public void getOfficebyOfficeId() throws Exception {
 
         this.mockMvc.perform(get("/office/10"))
                 .andDo(print()).andExpect(status().isOk())

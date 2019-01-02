@@ -5,12 +5,17 @@ import com.example.restapi.catalog.groups.GroupList;
 import com.example.restapi.catalog.groups.GroupUpdate;
 import com.example.restapi.catalog.rawModel.RawUser;
 import com.example.restapi.catalog.rawModel.ResponceWrapper;
-import com.example.restapi.catalog.rawModel.resultResponce;
+import com.example.restapi.catalog.rawModel.ResultResponce;
 import com.example.restapi.catalog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
@@ -26,7 +31,7 @@ public class UserController {
 
 
     @PostMapping("/list")
-    public ResponceWrapper UserList(@RequestBody @Validated({ GroupList.class }) RawUser user) {
+    public ResponceWrapper userList(@RequestBody @Validated({GroupList.class}) RawUser user) {
         return new ResponceWrapper(userService.getUserList(user));
     }
 
@@ -37,16 +42,16 @@ public class UserController {
     }
 
 
-  @PostMapping("save")
-    public ResponceWrapper save(@RequestBody @Validated({ GroupAdd.class }) RawUser user) {
+    @PostMapping("save")
+    public ResponceWrapper save(@RequestBody @Validated({GroupAdd.class}) RawUser user) {
         return new ResponceWrapper(userService.add(user));
     }
 
     @PostMapping("update")
-    public ResponceWrapper update(@RequestBody @Validated({ GroupUpdate.class }) RawUser user, BindingResult result) {
+    public ResponceWrapper update(@RequestBody @Validated({GroupUpdate.class}) RawUser user, BindingResult result) {
 //TODO проверить нужно ли
-        if(result.hasErrors()) {
-            return new ResponceWrapper (new resultResponce(null,(result.getFieldError().getDefaultMessage())));
+        if (result.hasErrors()) {
+            return new ResponceWrapper(new ResultResponce(null, (result.getFieldError().getDefaultMessage())));
         }
         return new ResponceWrapper(userService.update(user));
     }

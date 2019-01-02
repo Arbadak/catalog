@@ -27,143 +27,139 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+//@Sql(value = {"classpath:filldatabase.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+public class UserControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private UserController controller;
+
+    protected static Integer createdOrgId;
+    protected static Integer createdOfficeId;
+    protected static JSONObject resultJson;
 
 
-    @RunWith(SpringRunner.class)
-    @SpringBootTest
-    @AutoConfigureMockMvc
-    //@Sql(value = {"classpath:filldatabase.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    public class UserControllerTest {
+    /**
+     * Полная цепочка создания пользователя
+     *
+     * @throws Exception
+     */
+    @Test
+    @Sql(value = {"classpath:fillsprav.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void addUserNormal() throws Exception {
+        /// Содаем организацию
+        String url = "/organization/save/";
+        RawOrganization addOrganization = new RawOrganization();
+        addOrganization.setName("Светлое будущее");
+        addOrganization.setFullName("ООО Светлое будущее");
+        addOrganization.setInn("309030903090");
+        addOrganization.setKpp("784784784");
+        addOrganization.setAddress("Бульвар Освобождения 526");
+        addOrganization.setIsActive(true);
+        this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(makeMeJson(addOrganization))).andDo(print())
+                .andExpect(content().json("{'data':{'result':'success'}}"));
 
-        @Autowired
-        private MockMvc mockMvc;
+        /// Чтобы создать дополнительный офис в созданой организации, достаем ее ID.
+        url = "/organization/list/";
+        MvcResult getOrgId = mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content("{\"name\":\"Светлое будущее\"}")).andReturn();
+        //Вытаскиваем id из JSON ответа
+        JSONObject jsonOrgId = new JSONObject(getOrgId.getResponse().getContentAsString());
+        /// Не буду убирать, еще может понадобиться
+        createdOrgId = jsonOrgId.getJSONArray("data")
+                .getJSONObject(0)
+                .getInt("id");
+        /// Создаем дополнительный офис в организации
+        url = "/office/save/";
+        RawOffice addOffice = new RawOffice();
+        addOffice.setIsActive(true);
+        addOffice.setAddress("Площадь революции 19");
+        addOffice.setOrgId(createdOrgId);   ///Получил номер организации для офиса
+        addOffice.setName("Революционный");
+        addOffice.setPhone("19172019");
+        MvcResult resulRequest = mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(makeMeJson(addOffice))).andDo(print())
+                .andExpect(content().json("{'data':{'result':'success'}}")).andReturn();
+        ///Чтобы создать пользователя в конкретном офисе конкртеной организации получаем ID офиса
+        url = "/office/list/";
+        MvcResult getOfficeId = mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content("{\"name\":\"Революционный\", \"orgId\":" + createdOrgId + "}")).andReturn();
+        createdOfficeId = new JSONObject(getOfficeId.getResponse().getContentAsString()).getJSONArray("data").getJSONObject(0).getInt("id");
+        /// Создаем пользователя, все поля заполнены, новый документ и тип документа.
+        url = "/user/save/";
+        RawUser addUserRequest = new RawUser();
+        addUserRequest.setOfficeId(createdOfficeId);
+        addUserRequest.setFirstName("Владимир");
+        addUserRequest.setSecondName("Ильичь");
+        addUserRequest.setLastName("Ульянов");
+        addUserRequest.setPosition("Юрист");
+        addUserRequest.setPhone("12341234123");
+        addUserRequest.setDocCode("81");
+        addUserRequest.setDocName("Паспорт гражданиана Российской Империи");
+        addUserRequest.setDocNumber("1234567890");
+        addUserRequest.setCitizenshipCode("901");
+        addUserRequest.setIsIdentified(true);
+        String requestJson = makeMeJson(addUserRequest);
+        requestJson = requestJson.replaceAll("\"docDate\" : null", "\"docDate\" : \"1890-04-10\""); ///Потому что вьюмодель у насл с Localdate а UserController ждет просто String
+        this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
+                .andExpect(content().json("{'data':{'result':'success'}}"));
+    }
 
-        @Autowired
-        private UserController controller;
-
-        protected static Integer createdOrgId;
-        protected static Integer createdOfficeId;
-        protected static JSONObject resultJson;
-
-
-        /**
-         * Полная цепочка создания пользователя
-         * @throws Exception
-         */
-        @Test
-        @Sql(value = {"classpath:fillsprav.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-        public void AddUserNormal () throws Exception{
-            /// Содаем организацию
-            String url = "/organization/save/";
-            RawOrganization addOrganization = new RawOrganization();
-            addOrganization.setName("Светлое будущее");
-            addOrganization.setFullName("ООО Светлое будущее");
-            addOrganization.setInn("309030903090");
-            addOrganization.setKpp("784784784");
-            addOrganization.setAddress("Бульвар Освобождения 526");
-            addOrganization.setIsActive(true);
-            this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(makeMeJson(addOrganization))).andDo(print())
-                    .andExpect(content().json("{'data':{'result':'success'}}"));
-
-            /// Чтобы создать дополнительный офис в созданой организации, достаем ее ID.
-            url = "/organization/list/";
-            MvcResult getOrgId = mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content("{\"name\":\"Светлое будущее\"}")).andReturn();
-            //Вытаскиваем id из JSON ответа
-            JSONObject jsonOrgId = new JSONObject(getOrgId.getResponse().getContentAsString());
-            /// Не буду убирать, еще может понадобиться
-            createdOrgId = jsonOrgId.getJSONArray("data")
-                    .getJSONObject(0)
-                    .getInt("id");
-            /// Создаем дополнительный офис в организации
-            url = "/office/save/";
-            RawOffice addOffice = new RawOffice();
-            addOffice.setIsActive(true);
-            addOffice.setAddress("Площадь революции 19");
-            addOffice.setOrgId(createdOrgId);   ///Получил номер организации для офиса
-            addOffice.setName("Революционный");
-            addOffice.setPhone("19172019");
-            MvcResult resulRequest = mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(makeMeJson(addOffice))).andDo(print())
-                    .andExpect(content().json("{'data':{'result':'success'}}")).andReturn();
-            ///Чтобы создать пользователя в конкретном офисе конкртеной организации получаем ID офиса
-            url = "/office/list/";
-            MvcResult getOfficeId = mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content("{\"name\":\"Революционный\", \"orgId\":"+createdOrgId+"}")).andReturn();
-            createdOfficeId =new JSONObject(getOfficeId.getResponse().getContentAsString()).getJSONArray("data").getJSONObject(0).getInt("id");
-            /// Создаем пользователя, все поля заполнены, новый документ и тип документа.
-            url = "/user/save/";
-            RawUser addUserRequest = new RawUser();
-            addUserRequest.setOfficeId(createdOfficeId);
-            addUserRequest.setFirstName("Владимир");
-            addUserRequest.setSecondName("Ильичь");
-            addUserRequest.setLastName("Ульянов");
-            addUserRequest.setPosition("Юрист");
-            addUserRequest.setPhone("12341234123");
-            addUserRequest.setDocCode("81");
-            addUserRequest.setDocName("Паспорт гражданиана Российской Империи");
-            addUserRequest.setDocNumber("1234567890");
-            addUserRequest.setCitizenshipCode("901");
-            addUserRequest.setIsIdentified(true);
-            String requestJson = makeMeJson(addUserRequest);
-            requestJson = requestJson.replaceAll("\"docDate\" : null","\"docDate\" : \"1890-04-10\""); ///Потому что вьюмодель у насл с Localdate а UserController ждет просто String
-            this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                    .andExpect(content().json("{'data':{'result':'success'}}"));
-        }
-           @Test
-            public void addAnotherUserInSameOffice () throws Exception {
-                /// Создаем пользователя, все поля заполнены, новый документ и тип документа.
-                String url = "/user/save/";
-                RawUser addUserRequest = new RawUser();
-                addUserRequest.setOfficeId(createdOfficeId);
-                addUserRequest.setFirstName("Лейба");
-                addUserRequest.setSecondName("Давидович");
-                addUserRequest.setLastName("Бронштейн");
-                addUserRequest.setPosition("Председатель исполкома");
-                addUserRequest.setPhone("47295627453");
-                addUserRequest.setDocCode("81");
-                addUserRequest.setDocName("Паспорт гражданиана Российской Империи");
-                addUserRequest.setDocNumber("3848695460");
-                addUserRequest.setCitizenshipCode("901");
-                addUserRequest.setIsIdentified(true);
-                String requestJson = makeMeJson(addUserRequest);
-                requestJson = requestJson.replaceAll("\"docDate\" : null","\"docDate\" : \"1899-08-26\""); ///Потому что модель у нас с Localdate а UserController ждет просто String
-                this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                        .andExpect(content().json("{'data':{'result':'success'}}"));
-            }
+    @Test
+    public void addAnotherUserInSameOffice() throws Exception {
+        /// Создаем пользователя, все поля заполнены, новый документ и тип документа.
+        String url = "/user/save/";
+        RawUser addUserRequest = new RawUser();
+        addUserRequest.setOfficeId(createdOfficeId);
+        addUserRequest.setFirstName("Лейба");
+        addUserRequest.setSecondName("Давидович");
+        addUserRequest.setLastName("Бронштейн");
+        addUserRequest.setPosition("Председатель исполкома");
+        addUserRequest.setPhone("47295627453");
+        addUserRequest.setDocCode("81");
+        addUserRequest.setDocName("Паспорт гражданиана Российской Империи");
+        addUserRequest.setDocNumber("3848695460");
+        addUserRequest.setCitizenshipCode("901");
+        addUserRequest.setIsIdentified(true);
+        String requestJson = makeMeJson(addUserRequest);
+        requestJson = requestJson.replaceAll("\"docDate\" : null", "\"docDate\" : \"1899-08-26\""); ///Потому что модель у нас с Localdate а UserController ждет просто String
+        this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
+                .andExpect(content().json("{'data':{'result':'success'}}"));
+    }
 
 
-        @Test
-        public void listByOfficeId() throws Exception {
-            MvcResult responce = mockMvc.perform(post("/user/list/").contentType(MediaType.APPLICATION_JSON).content("{\"officeId\":" + createdOfficeId + "}")).andDo(print())
-                    .andExpect(content().json("{\"data\":[{\"firstName\":\"Владимир\",\"secondName\":\"Ильичь\",\"lastName\":\"Ульянов\",\"position\":\"Юрист\",\"phone\":null,\"docName\":null,\"docNumber\":null,\"docDate\":null,\"docCode\":null,\"citizenshipName\":null,\"citizenshipCode\":null,\"isIdentified\":null,\"officeId\":null},{\"firstName\":\"Лейба\",\"secondName\":\"Давидович\",\"lastName\":\"Бронштейн\",\"position\":\"Председатель исполкома\",\"phone\":null,\"docName\":null,\"docNumber\":null,\"docDate\":null,\"docCode\":null,\"citizenshipName\":null,\"citizenshipCode\":null,\"isIdentified\":null,\"officeId\":null}]}"))
-                    .andReturn();
-            resultJson= new JSONObject(responce.getResponse().getContentAsString());
-        }
+    @Test
+    public void listByOfficeId() throws Exception {
+        MvcResult responce = mockMvc.perform(post("/user/list/").contentType(MediaType.APPLICATION_JSON).content("{\"officeId\":" + createdOfficeId + "}")).andDo(print())
+                .andExpect(content().json("{\"data\":[{\"firstName\":\"Владимир\",\"secondName\":\"Ильичь\",\"lastName\":\"Ульянов\",\"position\":\"Юрист\",\"phone\":null,\"docName\":null,\"docNumber\":null,\"docDate\":null,\"docCode\":null,\"citizenshipName\":null,\"citizenshipCode\":null,\"isIdentified\":null,\"officeId\":null},{\"firstName\":\"Лейба\",\"secondName\":\"Давидович\",\"lastName\":\"Бронштейн\",\"position\":\"Председатель исполкома\",\"phone\":null,\"docName\":null,\"docNumber\":null,\"docDate\":null,\"docCode\":null,\"citizenshipName\":null,\"citizenshipCode\":null,\"isIdentified\":null,\"officeId\":null}]}"))
+                .andReturn();
+        resultJson = new JSONObject(responce.getResponse().getContentAsString());
+    }
 
-@Test
-public void listById() throws Exception {
-String requeststring = "/user/"+ resultJson.getJSONArray("data").getJSONObject(0).getInt("id");
+    @Test
+    public void listById() throws Exception {
+        String requeststring = "/user/" + resultJson.getJSONArray("data").getJSONObject(0).getInt("id");
 
-    this.mockMvc.perform(get(requeststring))
-            .andDo(print()).andExpect(status().isOk()).andDo(print())
-            //.andExpect(content().json("{'data':{'id':10,'isActive':true,'name':'НеОсобо зеленый оффис','address':'Полки 22','phone':'300301'}}"));
-            .andExpect(content().json("{'data':{'firstName':'Владимир'}}"));
-
-
-
-}
+        this.mockMvc.perform(get(requeststring))
+                .andDo(print()).andExpect(status().isOk()).andDo(print())
+                //.andExpect(content().json("{'data':{'id':10,'isActive':true,'name':'НеОсобо зеленый оффис','address':'Полки 22','phone':'300301'}}"));
+                .andExpect(content().json("{'data':{'firstName':'Владимир'}}"));
 
 
-
+    }
 
 
 ///////Utill
 
-        protected String makeMeJson (Object source) throws JsonProcessingException {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
-            ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-            String requestJson = ow.writeValueAsString(source);
+    protected String makeMeJson(Object source) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+        String requestJson = ow.writeValueAsString(source);
         return requestJson;
-        }
+    }
 
 
 }

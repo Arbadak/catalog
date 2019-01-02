@@ -4,13 +4,14 @@ package com.example.restapi.catalog.service;
 import com.example.restapi.catalog.model.Office;
 import com.example.restapi.catalog.model.Organization;
 import com.example.restapi.catalog.rawModel.RawOrganization;
-import com.example.restapi.catalog.rawModel.resultResponce;
+import com.example.restapi.catalog.rawModel.ResultResponce;
 import com.example.restapi.catalog.repos.OfficeRepo;
 import com.example.restapi.catalog.repos.OrganizationRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -50,18 +51,18 @@ public class OrganizationService {
     }
 
     @Transactional
-    public resultResponce add(RawOrganization rawOrganization) {
+    public ResultResponce add(RawOrganization rawOrganization) {
 
         Organization organization = new Organization();
         BeanUtils.copyProperties(rawOrganization, organization);
         Organization result = organizationRepo.save(organization);
         Office mainOffice = new Office(result, rawOrganization.getFullName(), rawOrganization.getAddress(), rawOrganization.getPhone(), rawOrganization.getIsActive(), true);
         officeRepo.save(mainOffice);
-        return new resultResponce("success");
+        return new ResultResponce("success");
     }
 
     @Transactional
-    public resultResponce update(RawOrganization rawOrganization, Organization orgDest) {
+    public ResultResponce update(RawOrganization rawOrganization, Organization orgDest) {
         BeanUtils.copyProperties(rawOrganization, orgDest, "id");
         Office storedOffice = officeRepo.findByOrgIdAndIsMain(orgDest, true);
         Office updatingOffice = new Office(storedOffice.getId(), orgDest,  /// Заменяем непередданые данные данными из базы в обновляемом офисе
@@ -72,7 +73,7 @@ public class OrganizationService {
                 true);
         officeRepo.save(updatingOffice);
         organizationRepo.save(orgDest);
-        return new resultResponce("success");
+        return new ResultResponce("success");
     }
 
     public RawOrganization getOne(Integer id) {
