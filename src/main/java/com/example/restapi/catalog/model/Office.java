@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 
+/** Сущность для хранения данных "офис"
+ *
+ */
 @Entity
 @Table(name = "office")
 public class Office {

@@ -1,4 +1,4 @@
-package com.example.restapi.catalog.controller;
+package com.example.restapi.catalog.utils;
 
 import com.example.restapi.catalog.rawModel.ResponceWrapper;
 import com.example.restapi.catalog.rawModel.ResultResponce;

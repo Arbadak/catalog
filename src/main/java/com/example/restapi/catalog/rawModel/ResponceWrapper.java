@@ -1,7 +1,7 @@
 package com.example.restapi.catalog.rawModel;
 
 /**
- * Обертка для отдаваемых данных, data{XXXXX} крокодил должен быть красиво упакован
+ * Обертка для отдаваемых данных, data{XXXXX}
  */
 public class ResponceWrapper {
 

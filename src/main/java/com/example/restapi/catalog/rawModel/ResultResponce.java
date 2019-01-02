@@ -3,8 +3,10 @@ package com.example.restapi.catalog.rawModel;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- * В случае удачного реультата конструктор с result, при ошибке игнорим result в null, пишем в error
+ * Обьект результата работы для методов которые не возвращают данные (add, update) в случае успеха заполняется поля result, в случае ошибки заполняется поле error
+ *
  */
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResultResponce {
 

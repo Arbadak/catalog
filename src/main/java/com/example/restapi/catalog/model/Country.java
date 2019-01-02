@@ -7,6 +7,9 @@ import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+/** Вспомогательная сущность-справочник для данных"гражданство"
+ *
+ */
 @Entity
 @Table(name = "country")
 public class Country {

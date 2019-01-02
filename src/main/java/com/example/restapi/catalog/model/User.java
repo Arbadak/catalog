@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.OneToOne;
 
+/**Сущность для хранения данных "пользователь"
+ *
+ */
 @Entity
 @Table(name = "user")
 public class User {

@@ -7,9 +7,11 @@ import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+/**Сущность для хренения данных "организация"
+ *
+  */
 @Entity
 @Table(name = "organization")
-
 public class Organization {
 
     @Id

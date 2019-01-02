@@ -7,6 +7,11 @@ import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+/** Вспомогательная сущность справочник для данных "тип документа пользователя"
+ *
+ */
+
+
 @Entity
 @Table(name = "doc")
 public class Doc {

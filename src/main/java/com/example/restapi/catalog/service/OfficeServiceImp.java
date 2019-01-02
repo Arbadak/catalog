@@ -81,9 +81,7 @@ public class OfficeServiceImp implements OfficeService {
         if (checkoffice.getId() == null) {
             throw new NotFoundException("Офис с указаным id не найден, выйдите в окно");
         }
-        //if (getOne(office.getId())==null) { throw new NotFoundException("Не сущевствует оффиса с укащанным id");}
-        //return new ResultResponce(null,"не сущевствует оффиса с укащанным id");} /// проверим если ли то что собираемся апдейтить
-        //if (office.getId()==null || office.getName()==null || office.getAddress()==null || office.getIsActive()==null) {return new ResultResponce(null,"не указан обязательный параметр");}
+        if (getOne(office.getId())==null) { throw new NotFoundException("Не сущевствует оффиса с укащанным id");}
 
         Office newoffice = officeRepo.findById(office.getId()).orElse(null); //вытскиваем из базы хранимый офис для редактирования
         BeanUtils.copyProperties(office, newoffice, "orgId", "phone");  //orgid не указывается а phone необязательнй потому их не копируем

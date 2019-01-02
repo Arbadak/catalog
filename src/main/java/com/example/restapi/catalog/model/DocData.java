@@ -10,7 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.OneToOne;
 import java.time.LocalDate;
 
-
+/**
+ * Вспомогателная сущность для хранения данных о "документ пользователя"
+ *
+ */
 @Entity
 @Table(name = "doc_data")
 public class DocData {

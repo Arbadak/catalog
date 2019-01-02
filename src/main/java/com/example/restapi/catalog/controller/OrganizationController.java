@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /***
- *  Контроллер по запросам organization
+ *  Рест контроллер запросов обьекта organization
  *
  */
 @RestController
@@ -34,21 +34,22 @@ public class OrganizationController {
         this.organizationService = organizationService;
     }
 
-    /*** Обработка запросов по URI /organization/list
+    /*** Метод для отображения списка организаций по укащанным параметрам организации
      *
-     * @param rawOrganization
+     * @param rawOrganization   “name”:””, //обязательный параметр
+     *                          “inn”:””,
+     *                          “isActive”:””
      * @return List организаций с укааным OrgId, либо пустой лист если организаций с такмим реквизитами не найдено
      */
-
     @PostMapping("/list")
     public ResponceWrapper orgList(@RequestBody @Validated({GroupList.class}) RawOrganization rawOrganization) {
         return new ResponceWrapper(organizationService.getOrgList(rawOrganization));
     }
 
     /**
-     * Обработка запросов organization/ID
+     * Метод отображения организации по указанному идентификатору организации
      *
-     * @param id
+     * @param id URI с номером организации
      * @return Organization с указанным id, либо пустой результат если организации с таким ID не найдено
      */
 
@@ -59,10 +60,16 @@ public class OrganizationController {
     }
 
     /**
-     * Добавление новой организации
+     * Метод добавления новой организации
      *
-     * @param rawOrganization
-     * @return success, либо ошибка в случае если
+     * @param rawOrganization “name”:””, //обязательный параметр
+     *                        “fullName”:””, //обязательный параметр
+     *                        “inn”:””, //обязательный параметр
+     *                        “kpp”:””, //обязательный параметр
+     *                        “address”:””, //обязательный параметр
+     *                        “phone”,””,
+     *                        “isActive”:
+     * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
     @PostMapping("/save")
     public ResponceWrapper save(@RequestBody @Validated({GroupAdd.class}) RawOrganization rawOrganization) {
@@ -70,11 +77,18 @@ public class OrganizationController {
     }
 
     /**
-     * Обнволение параметров сущевствующей организации
+     * Метод обновления данных сущевствующей организации
      *
      * @param organizationFromDB
-     * @param organizationFromWeb
-     * @return
+     * @param organizationFromWeb “id”:””, //обязательный параметр
+     *                            “name”:””, //обязательный параметр
+     *                            “fullName”:””, //обязательный параметр
+     *                            “inn”:””, //обязательный параметр
+     *                            “kpp”:””,  //обязательный параметр
+     *                            “address”:””, //обязательный параметр
+     *                            “phone”,””,
+     *                            “isActive”:
+     * @return s"result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
     @PostMapping("update/{id}")
     public ResultResponce update(@PathVariable("id") Organization organizationFromDB, @RequestBody @Validated({GroupUpdate.class}) RawOrganization organizationFromWeb) {
