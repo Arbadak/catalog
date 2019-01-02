@@ -4,7 +4,6 @@ import com.example.restapi.catalog.groups.GroupAdd;
 import com.example.restapi.catalog.groups.GroupList;
 import com.example.restapi.catalog.groups.GroupUpdate;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;

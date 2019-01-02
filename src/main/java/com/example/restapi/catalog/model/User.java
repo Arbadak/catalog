@@ -1,7 +1,12 @@
 package com.example.restapi.catalog.model;
 
-import javax.persistence.*;
-import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.OneToOne;
 
 @Entity
 @Table(name = "user")
@@ -28,21 +33,15 @@ public class User {
     private String phone;
 
     @OneToOne
-    //@JoinColumn(name = "id")
-    //@Column(name="document")
     private DocData document;
 
     @OneToOne
-    //@JoinColumn(name = "id")
-    //@Column(name="citizenship")
     private Country citizenship;
 
     @Column(name = "is_identified", columnDefinition = "BOOLEAN", nullable = true)
     private Boolean isIdentified;
 
     @OneToOne
-    //@Column(name="office_emp")
-    //@JoinColumn(name = "id")
     private Office officeEmp;
 
     public User() {

@@ -2,19 +2,16 @@ package com.example.restapi.catalog.service;
 
 import com.example.restapi.catalog.exceptions.NotFoundException;
 import com.example.restapi.catalog.model.Office;
-import com.example.restapi.catalog.model.Organization;
 import com.example.restapi.catalog.rawModel.RawOffice;
+import com.example.restapi.catalog.rawModel.resultResponce;
 import com.example.restapi.catalog.repos.OfficeRepo;
 import com.example.restapi.catalog.repos.OrganizationRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.restapi.catalog.rawModel.resultResponce;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OfficeService {

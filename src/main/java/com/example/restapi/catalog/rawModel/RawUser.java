@@ -3,7 +3,6 @@ package com.example.restapi.catalog.rawModel;
 import com.example.restapi.catalog.groups.GroupAdd;
 import com.example.restapi.catalog.groups.GroupList;
 import com.example.restapi.catalog.groups.GroupUpdate;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
@@ -46,7 +45,7 @@ public class RawUser {
 
     private Boolean isIdentified;
 
-    //@NotNull  (message = "Поле officeId должно быть указано",groups = {GroupList.class})
+    @NotNull  (message = "Поле officeId должно быть указано",groups = {GroupList.class})
     private Integer officeId;
 
 

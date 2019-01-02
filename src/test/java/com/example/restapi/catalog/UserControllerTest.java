@@ -1,6 +1,5 @@
 package com.example.restapi.catalog;
 
-import com.example.restapi.catalog.controller.OrganizationController;
 import com.example.restapi.catalog.controller.UserController;
 import com.example.restapi.catalog.rawModel.RawOffice;
 import com.example.restapi.catalog.rawModel.RawOrganization;
@@ -9,12 +8,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
-import org.junit.runner.Request;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,10 +19,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

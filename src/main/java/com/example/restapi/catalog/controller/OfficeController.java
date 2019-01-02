@@ -46,26 +46,4 @@ public class OfficeController {
     public ResponceWrapper update(@RequestBody @Validated({ GroupUpdate.class }) RawOffice office) {
             return new ResponceWrapper(officeService.update(office));
     }
-  /*
-   //TODO Удалить
-
-   @ExceptionHandler(com.example.restapi.catalog.exceptions.NotFoundException.class)
-    public @ResponseBody
-    ResponceWrapper handleNotFoundException(com.example.restapi.catalog.exceptions.NotFoundException e) {
-
-        return new ResponceWrapper(new resultResponce(null,( e.getMessage())));
-    }
-    @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
-    public @ResponseBody
-    ResponceWrapper handleValidationException(org.springframework.web.bind.MethodArgumentNotValidException e) {
-
-        return new ResponceWrapper(new resultResponce(null,( e.getBindingResult()
-                .getAllErrors()
-                .listIterator()
-                .next()
-                .getDefaultMessage() ) ));
-    }*/
-
-
-
-   }
+ }
