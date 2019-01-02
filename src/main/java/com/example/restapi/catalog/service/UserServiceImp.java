@@ -71,8 +71,8 @@ public class UserServiceImp implements UserService {
     @Transactional
     public ResultResponce add(RawUser rawUser) {
 //TODO здесь будет фильтр
-        if (rawUser.getFirstName() == null || rawUser.getPosition() == null) {
-        }  ///TODO это обязательные параметры
+       /* if (rawUser.getFirstName() == null || rawUser.getPosition() == null) {
+        }  ///TODO это обязательные параметры*/
         User result = new User();
         BeanUtils.copyProperties(rawUser, result);
         ///Вроде справочники не должны быть доступны для записи но тем не менее
@@ -84,7 +84,7 @@ public class UserServiceImp implements UserService {
 
         Country newCountry = countryRepo.findByCitizenshipCode(rawUser.getCitizenshipCode());
 ///TODO если country пустая - валимся с ошибкой
-        DocData newDocData = new DocData(rawUser.getDocDate(), rawUser.getDocNumber(), newDoc); /// Создаем юзеру тугамент
+        DocData newDocData = new DocData(rawUser.getDocDate(), rawUser.getDocNumber(), newDoc); /// Создаем юзеру документ
         docdDataRepo.save(newDocData); ///сохраняем тугамент
         Office newOffice = officeRepo.findById(rawUser.getOfficeId()).orElse(null);  ///Либо офис либо ноль, ноль если ничего не указали или фигню указали, может быть здесь нужен фильр
         result.setCitizenship(newCountry);
@@ -118,7 +118,7 @@ public class UserServiceImp implements UserService {
         }
         if ((rawUser.getDocDate() != null) && rawUser.getDocNumber() != null) {
             DocData updatingDocData = new DocData(rawUser.getDocDate(), rawUser.getDocNumber(), ((updatingDoc.getDocId() == null) ? updatingUser.getDocument().getDocType() : updatingDoc)); /// Если ИД документа нулл значит это блованка, он не менялся, берем то что в базе было
-            docdDataRepo.save(updatingDocData); ///сохраняем тугамент
+            docdDataRepo.save(updatingDocData); ///сохраняем документ
         }
         if (rawUser.getOfficeId() != null) {
             Office updatingOffice = officeRepo.findById(rawUser.getOfficeId()).orElse(null);  ///Либо офис либо ноль, ноль если ничего не указали или фигню указали, может быть здесь нужен фильр

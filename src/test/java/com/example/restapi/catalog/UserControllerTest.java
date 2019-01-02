@@ -9,8 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.json.JSONObject;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,10 +29,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
+/** Тест контроллера USER, в сявзи с тем что junit по умолчанию запускает тесты в абы каком порядке, в классе форсирован порядок запуска тестов по алфавитному порядку
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 //@Sql(value = {"classpath:filldatabase.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserControllerTest {
 
     @Autowired
@@ -51,7 +57,7 @@ public class UserControllerTest {
      */
     @Test
     @Sql(value = {"classpath:fillsprav.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    public void addUserNormal() throws Exception {
+    public void a_addUserNormal() throws Exception {
         /// Содаем организацию
         String url = "/organization/save/";
         RawOrganization addOrganization = new RawOrganization();
@@ -107,11 +113,16 @@ public class UserControllerTest {
                 .andExpect(content().json("{'data':{'result':'success'}}"));
     }
 
+    /**
+     * Добавляем пользователя в сущевствующую организацию
+     * @throws Exception
+     */
     @Test
-    public void addAnotherUserInSameOffice() throws Exception {
+    @Sql(value = {"classpath:fillsprav.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    public void b_addAnotherUserInSameOffice() throws Exception {
         /// Создаем пользователя, все поля заполнены, новый документ и тип документа.
-        String url = "/user/save/";
-        RawUser addUserRequest = new RawUser();
+        String  url = "/user/save/";
+       RawUser addUserRequest = new RawUser();
         addUserRequest.setOfficeId(createdOfficeId);
         addUserRequest.setFirstName("Лейба");
         addUserRequest.setSecondName("Давидович");
@@ -129,17 +140,24 @@ public class UserControllerTest {
                 .andExpect(content().json("{'data':{'result':'success'}}"));
     }
 
-
+    /** Выводим список пользователей в конкретной организации
+     *
+     * @throws Exception
+     */
     @Test
-    public void listByOfficeId() throws Exception {
+    public void c_listByOfficeId() throws Exception {
         MvcResult responce = mockMvc.perform(post("/user/list/").contentType(MediaType.APPLICATION_JSON).content("{\"officeId\":" + createdOfficeId + "}")).andDo(print())
                 .andExpect(content().json("{\"data\":[{\"firstName\":\"Владимир\",\"secondName\":\"Ильичь\",\"lastName\":\"Ульянов\",\"position\":\"Юрист\",\"phone\":null,\"docName\":null,\"docNumber\":null,\"docDate\":null,\"docCode\":null,\"citizenshipName\":null,\"citizenshipCode\":null,\"isIdentified\":null,\"officeId\":null},{\"firstName\":\"Лейба\",\"secondName\":\"Давидович\",\"lastName\":\"Бронштейн\",\"position\":\"Председатель исполкома\",\"phone\":null,\"docName\":null,\"docNumber\":null,\"docDate\":null,\"docCode\":null,\"citizenshipName\":null,\"citizenshipCode\":null,\"isIdentified\":null,\"officeId\":null}]}"))
                 .andReturn();
         resultJson = new JSONObject(responce.getResponse().getContentAsString());
     }
 
+    /**
+     * Находим пользоватля по идентификатору
+     * @throws Exception
+     */
     @Test
-    public void listById() throws Exception {
+    public void d_listById() throws Exception {
         String requeststring = "/user/" + resultJson.getJSONArray("data").getJSONObject(0).getInt("id");
 
         this.mockMvc.perform(get(requeststring))

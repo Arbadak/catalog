@@ -32,7 +32,7 @@ public class User {
     @Column(name = "position", columnDefinition = "VARCHAR(30)", nullable = false)
     private String position;
 
-    @Column(name = "phone", columnDefinition = "INT(11)", nullable = true)
+    @Column(name = "phone", columnDefinition = "VARCHAR(11)", nullable = true)
     private String phone;
 
     @OneToOne
