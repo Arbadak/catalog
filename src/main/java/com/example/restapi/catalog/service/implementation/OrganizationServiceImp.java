@@ -3,8 +3,8 @@ package com.example.restapi.catalog.service.implementation;
 
 import com.example.restapi.catalog.model.Office;
 import com.example.restapi.catalog.model.Organization;
-import com.example.restapi.catalog.rawModel.RawOrganization;
-import com.example.restapi.catalog.rawModel.ResultResponce;
+import com.example.restapi.catalog.rawmodel.RawOrganization;
+import com.example.restapi.catalog.rawmodel.ResultResponce;
 import com.example.restapi.catalog.repos.OfficeRepo;
 import com.example.restapi.catalog.repos.OrganizationRepo;
 import com.example.restapi.catalog.service.OrganizationService;

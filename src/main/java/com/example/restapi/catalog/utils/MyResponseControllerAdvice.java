@@ -1,7 +1,7 @@
 package com.example.restapi.catalog.utils;
 
-import com.example.restapi.catalog.rawModel.ResponceWrapper;
-import com.example.restapi.catalog.rawModel.ResultResponce;
+import com.example.restapi.catalog.rawmodel.ResponceWrapper;
+import com.example.restapi.catalog.rawmodel.ResultResponce;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;

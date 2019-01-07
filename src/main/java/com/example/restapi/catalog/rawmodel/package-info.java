@@ -2,4 +2,4 @@
  * Пакет содержит в себе модели для маппинга данных запросов (requestbody) и маппинга данных сущности в ответ (Responcebody)
  * в отличии от сущностей содержит все возможгые поля из запроса.
  */
-package com.example.restapi.catalog.rawModel;
+package com.example.restapi.catalog.rawmodel;

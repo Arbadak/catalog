@@ -1,4 +1,4 @@
-package com.example.restapi.catalog.rawModel;
+package com.example.restapi.catalog.rawmodel;
 
 /**
  * Обертка для отдаваемых данных, data{XXXXX}

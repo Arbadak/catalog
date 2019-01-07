@@ -1,7 +1,7 @@
 package com.example.restapi.catalog.service;
 
-import com.example.restapi.catalog.rawModel.RawOffice;
-import com.example.restapi.catalog.rawModel.ResultResponce;
+import com.example.restapi.catalog.rawmodel.RawOffice;
+import com.example.restapi.catalog.rawmodel.ResultResponce;
 
 import java.util.List;
 

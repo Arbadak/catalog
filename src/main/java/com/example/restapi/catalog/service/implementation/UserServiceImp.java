@@ -2,8 +2,8 @@ package com.example.restapi.catalog.service.implementation;
 
 import com.example.restapi.catalog.exceptions.NotFoundException;
 import com.example.restapi.catalog.model.*;
-import com.example.restapi.catalog.rawModel.RawUser;
-import com.example.restapi.catalog.rawModel.ResultResponce;
+import com.example.restapi.catalog.rawmodel.RawUser;
+import com.example.restapi.catalog.rawmodel.ResultResponce;
 import com.example.restapi.catalog.repos.*;
 import com.example.restapi.catalog.service.UserService;
 import com.example.restapi.catalog.utils.Utils;

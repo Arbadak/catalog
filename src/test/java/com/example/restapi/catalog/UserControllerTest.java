@@ -1,9 +1,9 @@
 package com.example.restapi.catalog;
 
 import com.example.restapi.catalog.controller.UserController;
-import com.example.restapi.catalog.rawModel.RawOffice;
-import com.example.restapi.catalog.rawModel.RawOrganization;
-import com.example.restapi.catalog.rawModel.RawUser;
+import com.example.restapi.catalog.rawmodel.RawOffice;
+import com.example.restapi.catalog.rawmodel.RawOrganization;
+import com.example.restapi.catalog.rawmodel.RawUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;

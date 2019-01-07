@@ -1,4 +1,4 @@
-package com.example.restapi.catalog.rawModel;
+package com.example.restapi.catalog.rawmodel;
 
 import com.example.restapi.catalog.groups.GroupAdd;
 import com.example.restapi.catalog.groups.GroupList;
