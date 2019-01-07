@@ -9,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 import java.time.LocalDate;
+
 
 /**
  * Вспомогателная сущность для хранения данных о "документ пользователя"
@@ -18,6 +20,11 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "doc_data")
 public class DocData {
+
+    @Version
+    @Column(name="OPTLOCK")
+    private Integer optlock;
+
 
     @Id
     @Column(name = "id", columnDefinition = "INT"/*, nullable = false*/)

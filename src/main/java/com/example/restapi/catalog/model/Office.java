@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
+import javax.persistence.Version;
 
 /** Сущность для хранения данных "офис"
  *
@@ -15,6 +16,11 @@ import javax.persistence.JoinColumn;
 @Entity
 @Table(name = "office")
 public class Office {
+
+    @Version
+    @Column(name="OPTLOCK")
+    private Integer optlock;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

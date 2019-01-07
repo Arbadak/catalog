@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
+import javax.persistence.Version;
 
 /**
  * Сущность для хранения данных "пользователь"
@@ -15,6 +16,11 @@ import javax.persistence.JoinColumn;
 @Entity
 @Table(name = "user")
 public class User {
+
+    @Version
+    @Column(name="OPTLOCK")
+    private Integer optlock;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +47,6 @@ public class User {
     private DocData document;
 
     @OneToOne
-    //@PrimaryKeyJoinColumn
     @JoinColumn(name = "citizenship")
     private Country citizenship;
 
@@ -49,7 +54,6 @@ public class User {
     private Boolean isIdentified;
 
     @OneToOne
-    //@PrimaryKeyJoinColumn
     @JoinColumn(name = "officeEmp")
     private Office officeEmp;
 
@@ -135,4 +139,15 @@ public class User {
     public void setOfficeEmp(Office officeEmp) {
         this.officeEmp = officeEmp;
     }
+
+    public Integer getOptlock() {
+        return optlock;
+    }
+
+    public void setOptlock(Integer optlock) {
+        this.optlock = optlock;
+    }
 }
+
+
+

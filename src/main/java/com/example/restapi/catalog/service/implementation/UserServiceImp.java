@@ -80,13 +80,13 @@ public class UserServiceImp implements UserService {
         }
 
         Country newCountry = countryRepo.findByCitizenshipCode(rawUser.getCitizenshipCode());
-        if (getOne(newCountry.getCitizinshipId()) == null) {
+        if (newCountry == null) {
             throw new NotFoundException("Указанная страна не числится в справочнике стран id");
         }
         DocData newDocData = new DocData(rawUser.getDocDate(), rawUser.getDocNumber(), newDoc); /// Создаем юзеру документ
         docdDataRepo.save(newDocData); ///сохраняем документ
         Office newOffice = officeRepo.findById(rawUser.getOfficeId()).orElse(null);  ///Либо офис либо ноль, ноль если ничего не указали или фигню указали, может быть здесь нужен фильр
-        result.setCitizenship(newCountry);
+                result.setCitizenship(newCountry);
         result.setDocument(newDocData);
         result.setOfficeEmp(newOffice);
         userRepo.save(result);

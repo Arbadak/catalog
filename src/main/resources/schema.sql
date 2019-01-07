@@ -10,7 +10,6 @@ CREATE TABLE doc (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	code VARCHAR(3) NOT NULL,
 	name VARCHAR(115) NOT NULL);
-    /*PRIMARY KEY (id));*/
     COMMENT ON COLUMN doc.id IS 'Идентификатор типа документа';
     COMMENT ON COLUMN doc.code IS 'Номер документа';
     COMMENT ON COLUMN doc.name IS 'Наименование документа';
@@ -18,11 +17,12 @@ CREATE TABLE doc (
 
 CREATE TABLE organization (
 	id INT(11) PRIMARY KEY AUTO_INCREMENT,
+	OPTLOCK INT default 0,
 	name VARCHAR(60) NOT NULL,
 	inn VARCHAR(12) NOT NULL,
 	kpp VARCHAR(9) NOT NULL,
 	short_name VARCHAR(30));
-	/*PRIMARY KEY (id));*/
+	COMMENT ON COLUMN organization.OPTLOCK IS 'Поле версии';
     COMMENT ON COLUMN organization.id IS 'Идентификатор организации';
     COMMENT ON COLUMN organization.name IS 'Полное имя организации';
     COMMENT ON COLUMN organization.inn IS 'ИНН организации';
@@ -31,8 +31,8 @@ CREATE TABLE organization (
 
 
 CREATE TABLE office (
-	/*id INT NOT NULL AUTO_INCREMENT,*/
 	id INT PRIMARY KEY AUTO_INCREMENT,
+    OPTLOCK INT default 0,
 	organization_id INT(11) NOT NULL,
 	CONSTRAINT FK_link_organization FOREIGN KEY (organization_id) REFERENCES organization (id),
 	name VARCHAR(50) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE office (
 	address VARCHAR(100) NOT NULL,
 	is_active BOOLEAN DEFAULT NULL,
 	is_main BOOLEAN DEFAULT NULL);
- 	/*PRIMARY KEY (id));*/
+ 	COMMENT ON COLUMN office.OPTLOCK IS 'Поле версии';
     CREATE INDEX IX_organization_organization_id ON office (organization_id);
     COMMENT ON COLUMN office.id IS 'Идентификатор офиса';
     COMMENT ON COLUMN office.organization_id IS 'Идентификатор организации которой принадлежит офис';
@@ -52,11 +52,12 @@ CREATE TABLE office (
 
  CREATE TABLE doc_data (
 	id INT PRIMARY KEY AUTO_INCREMENT,
+	OPTLOCK INT default 0,
 	date DATE NOT NULL,
 	number VARCHAR(10) NOT NULL,
 	doc_Type INT(11) NOT NULL,
 	CONSTRAINT FK_link_doc FOREIGN KEY (doc_Type) REFERENCES `doc` (id));
-	/*PRIMARY KEY (id));*/
+	COMMENT ON COLUMN doc_data.OPTLOCK IS 'Поле версии';
 	COMMENT ON COLUMN doc_data.id IS 'Идентификатор документа';
 	COMMENT ON COLUMN doc_data.date IS  'Дата выдачи документа';
 	COMMENT ON COLUMN doc_data.number IS  'Номер документа';
@@ -65,6 +66,7 @@ CREATE TABLE office (
 
 CREATE TABLE user (
 	id INT PRIMARY KEY AUTO_INCREMENT,
+	OPTLOCK INT default 0,
 	first_name VARCHAR(15) NOT NULL,
 	second_name VARCHAR(15),
 	last_name VARCHAR(15),
@@ -75,9 +77,9 @@ CREATE TABLE user (
 	CONSTRAINT FK_link_document FOREIGN KEY (document) REFERENCES doc_data (id),
 	citizenship INT NOT NULL,
 	CONSTRAINT FK_link_citizenship FOREIGN KEY (citizenship) REFERENCES country (id),
-	office_emp INT NOT NULL,
+	office_emp INT,
     CONSTRAINT FK_link_office FOREIGN KEY (office_emp) REFERENCES office (id));
-	/*PRIMARY KEY (id));*/
+	COMMENT ON COLUMN user.OPTLOCK IS 'Поле версии';
 	CREATE INDEX IX_doc_doc_id ON user (document);
     CREATE INDEX IX_country_citizenship_id ON user (citizenship);
     CREATE INDEX IX_office_office_id ON user (office_emp);
