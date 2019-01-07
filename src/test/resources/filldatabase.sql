@@ -21,4 +21,4 @@ REPLACE INTO `office` (`id`, `address`, `is_active`, `is_main`, `name`, `phone`,
 	(10, 'Улетаевка 1', 1, 0, 'Особо зеленый оффис', 3564653, 5),
 	(11, 'Мухловка 22', 1, 0, 'Не особо зеленый оффис', 3564677, 5);
 
-alter sequence HIBERNATE_SEQUENCE restart with 12;
+/// alter sequence HIBERNATE_SEQUENCE restart with 12;

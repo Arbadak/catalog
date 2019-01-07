@@ -208,12 +208,13 @@ public class OrganizationControllerTest {
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
                 .andExpect(content().json("{'data':{'error':'ИНН организации введен неверно'}}"));
 
-        /// инн указано неверно
+        /// КПП указано неверно
         /// некорректный
+        requestBody.setInn("098765432100");
         requestBody.setKpp("1234567890АБ");
         requestJson = ow.writeValueAsString(requestBody);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json("{'data':{'error':'ИНН организации введен неверно'}}"));
+                .andExpect(content().json("{'data':{'error':'КПП организации введен неверно'}}"));
 
 
     }

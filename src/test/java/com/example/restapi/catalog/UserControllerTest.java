@@ -45,9 +45,9 @@ public class UserControllerTest {
     @Autowired
     private UserController controller;
 
-    protected static Integer createdOrgId;
-    protected static Integer createdOfficeId;
-    protected static JSONObject resultJson;
+    private static Integer createdOrgId;
+    private static Integer createdOfficeId;
+    private static JSONObject resultJson;
 
 
     /**
@@ -118,7 +118,6 @@ public class UserControllerTest {
      * @throws Exception
      */
     @Test
-    @Sql(value = {"classpath:fillsprav.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void b_addAnotherUserInSameOffice() throws Exception {
         /// Создаем пользователя, все поля заполнены, новый документ и тип документа.
         String  url = "/user/save/";
@@ -138,6 +137,7 @@ public class UserControllerTest {
         requestJson = requestJson.replaceAll("\"docDate\" : null", "\"docDate\" : \"1899-08-26\""); ///Потому что модель у нас с Localdate а UserController ждет просто String
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
                 .andExpect(content().json("{'data':{'result':'success'}}"));
+       // .andExpect(content().string("{'data':{'result':'success'}}"));
     }
 
     /** Выводим список пользователей в конкретной организации

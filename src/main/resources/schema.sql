@@ -1,29 +1,28 @@
 CREATE TABLE country (
-    id INT NOT NULL AUTO_INCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
 	code VARCHAR(3) NOT NULL,
-	name VARCHAR(60) NOT NULL,
-    PRIMARY KEY (id));
+	name VARCHAR(60) NOT NULL);
     COMMENT ON COLUMN country.id IS 'Идентифиактор гражданства';
     COMMENT ON COLUMN country.code IS 'Код страны';
     COMMENT ON COLUMN country.name IS 'Наименование гражданства';
 
 CREATE TABLE doc (
-	id INT NOT NULL AUTO_INCREMENT,
+	id INT PRIMARY KEY AUTO_INCREMENT,
 	code VARCHAR(3) NOT NULL,
-	name VARCHAR(115) NOT NULL,
-    PRIMARY KEY (id));
+	name VARCHAR(115) NOT NULL);
+    /*PRIMARY KEY (id));*/
     COMMENT ON COLUMN doc.id IS 'Идентификатор типа документа';
     COMMENT ON COLUMN doc.code IS 'Номер документа';
     COMMENT ON COLUMN doc.name IS 'Наименование документа';
 
 
 CREATE TABLE organization (
-	id INT(11) NOT NULL AUTO_INCREMENT,
+	id INT(11) PRIMARY KEY AUTO_INCREMENT,
 	name VARCHAR(60) NOT NULL,
 	inn VARCHAR(12) NOT NULL,
 	kpp VARCHAR(9) NOT NULL,
-	short_name VARCHAR(30),
-	PRIMARY KEY (id));
+	short_name VARCHAR(30));
+	/*PRIMARY KEY (id));*/
     COMMENT ON COLUMN organization.id IS 'Идентификатор организации';
     COMMENT ON COLUMN organization.name IS 'Полное имя организации';
     COMMENT ON COLUMN organization.inn IS 'ИНН организации';
@@ -32,15 +31,16 @@ CREATE TABLE organization (
 
 
 CREATE TABLE office (
-	id INT NOT NULL AUTO_INCREMENT,
+	/*id INT NOT NULL AUTO_INCREMENT,*/
+	id INT PRIMARY KEY AUTO_INCREMENT,
 	organization_id INT(11) NOT NULL,
 	CONSTRAINT FK_link_organization FOREIGN KEY (organization_id) REFERENCES organization (id),
 	name VARCHAR(50) NOT NULL,
 	phone VARCHAR(11) NULL DEFAULT NULL,
 	address VARCHAR(100) NOT NULL,
 	is_active BOOLEAN DEFAULT NULL,
-	is_main BOOLEAN DEFAULT NULL,
- 	PRIMARY KEY (id));
+	is_main BOOLEAN DEFAULT NULL);
+ 	/*PRIMARY KEY (id));*/
     CREATE INDEX IX_organization_organization_id ON office (organization_id);
     COMMENT ON COLUMN office.id IS 'Идентификатор офиса';
     COMMENT ON COLUMN office.organization_id IS 'Идентификатор организации которой принадлежит офис';
@@ -51,20 +51,20 @@ CREATE TABLE office (
     COMMENT ON COLUMN office.is_main IS 'Головной офис';
 
  CREATE TABLE doc_data (
-	id INT NOT NULL AUTO_INCREMENT,
+	id INT PRIMARY KEY AUTO_INCREMENT,
 	date DATE NOT NULL,
 	number VARCHAR(10) NOT NULL,
-	type INT(11) NOT NULL,
-	CONSTRAINT FK_link_doc FOREIGN KEY (type) REFERENCES `doc` (id),
-	PRIMARY KEY (id));
+	doc_Type INT(11) NOT NULL,
+	CONSTRAINT FK_link_doc FOREIGN KEY (doc_Type) REFERENCES `doc` (id));
+	/*PRIMARY KEY (id));*/
 	COMMENT ON COLUMN doc_data.id IS 'Идентификатор документа';
 	COMMENT ON COLUMN doc_data.date IS  'Дата выдачи документа';
 	COMMENT ON COLUMN doc_data.number IS  'Номер документа';
-	COMMENT ON COLUMN doc_data.type IS  'Тип документа пользователя';
+	COMMENT ON COLUMN doc_data.doc_Type IS  'Тип документа пользователя';
 
 
 CREATE TABLE user (
-	id INT NOT NULL AUTO_INCREMENT,
+	id INT PRIMARY KEY AUTO_INCREMENT,
 	first_name VARCHAR(15) NOT NULL,
 	second_name VARCHAR(15),
 	last_name VARCHAR(15),
@@ -76,8 +76,8 @@ CREATE TABLE user (
 	citizenship INT NOT NULL,
 	CONSTRAINT FK_link_citizenship FOREIGN KEY (citizenship) REFERENCES country (id),
 	office_emp INT NOT NULL,
-    CONSTRAINT FK_link_office FOREIGN KEY (office_emp) REFERENCES office (id),
-	PRIMARY KEY (id));
+    CONSTRAINT FK_link_office FOREIGN KEY (office_emp) REFERENCES office (id));
+	/*PRIMARY KEY (id));*/
 	CREATE INDEX IX_doc_doc_id ON user (document);
     CREATE INDEX IX_country_citizenship_id ON user (citizenship);
     CREATE INDEX IX_office_office_id ON user (office_emp);
@@ -390,7 +390,7 @@ replace into `country` (`code`, `name`) VALUES
 ('887','Йемен'),
 ('894','Замбия');
 
-Replace into `DOC_DATA` (`date`, `number`, `type`) VALUES
+Replace into `DOC_DATA` (`date`, `number`, `doc_Type`) VALUES
 ('1976-12-03','2801763008','10'),
 ('1961-05-05','2346923455','7'),
 ('1991-08-15','5685942428','1'),

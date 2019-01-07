@@ -1,9 +1,11 @@
-package com.example.restapi.catalog.service;
+package com.example.restapi.catalog.service.implementation;
 
+import com.example.restapi.catalog.exceptions.NotFoundException;
 import com.example.restapi.catalog.model.*;
 import com.example.restapi.catalog.rawModel.RawUser;
 import com.example.restapi.catalog.rawModel.ResultResponce;
 import com.example.restapi.catalog.repos.*;
+import com.example.restapi.catalog.service.UserService;
 import com.example.restapi.catalog.utils.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ public class UserServiceImp implements UserService {
     private final Utils utils;
 
     @Autowired
-    public UserServiceImp (DocRepo docRepo, DocDataRepo docDataRepo, CountryRepo countryRepo, OfficeRepo officeRepo, UserRepo userRepo, Utils utils) {
+    public UserServiceImp(DocRepo docRepo, DocDataRepo docDataRepo, CountryRepo countryRepo, OfficeRepo officeRepo, UserRepo userRepo, Utils utils) {
         this.docRepo = docRepo;
         this.docdDataRepo = docDataRepo;
         this.countryRepo = countryRepo;
@@ -37,8 +39,6 @@ public class UserServiceImp implements UserService {
     public List<RawUser> getUserList(RawUser rawUser) {
         List<User> all = userRepo.findAllByOfficeEmp(officeRepo.findById(rawUser.getOfficeId()).orElse(null));
         List<RawUser> result = new ArrayList<>();
-//TODO тут будет фильтр
-
         for (User iterableUser : all) {
             RawUser currentRawUser = new RawUser();
             BeanUtils.copyProperties(iterableUser, currentRawUser, "phone", "document", "citizenship", "isIdentified", "officeEmp");
@@ -70,9 +70,6 @@ public class UserServiceImp implements UserService {
 
     @Transactional
     public ResultResponce add(RawUser rawUser) {
-//TODO здесь будет фильтр
-       /* if (rawUser.getFirstName() == null || rawUser.getPosition() == null) {
-        }  ///TODO это обязательные параметры*/
         User result = new User();
         BeanUtils.copyProperties(rawUser, result);
         ///Вроде справочники не должны быть доступны для записи но тем не менее
@@ -83,9 +80,11 @@ public class UserServiceImp implements UserService {
         }
 
         Country newCountry = countryRepo.findByCitizenshipCode(rawUser.getCitizenshipCode());
-///TODO если country пустая - валимся с ошибкой
+        if (getOne(newCountry.getCitizinshipId()) == null) {
+            throw new NotFoundException("Указанная страна не числится в справочнике стран id");
+        }
         DocData newDocData = new DocData(rawUser.getDocDate(), rawUser.getDocNumber(), newDoc); /// Создаем юзеру документ
-        docdDataRepo.save(newDocData); ///сохраняем тугамент
+        docdDataRepo.save(newDocData); ///сохраняем документ
         Office newOffice = officeRepo.findById(rawUser.getOfficeId()).orElse(null);  ///Либо офис либо ноль, ноль если ничего не указали или фигню указали, может быть здесь нужен фильр
         result.setCitizenship(newCountry);
         result.setDocument(newDocData);
@@ -105,15 +104,17 @@ public class UserServiceImp implements UserService {
         Doc updatingDoc = new Doc();  ///Болванка типа документа
         if (rawUser.getDocName() != null) {  ///Если имя документа не пустое - меняем тип документа пользователя
             updatingDoc = docRepo.findByDocName(rawUser.getDocName());  ///Ищем в справочнике документ с именем и кодом
-            if (updatingDoc == null) {  ///TODO если не нашли то ошибка неверное имя документа
+            if (updatingDoc == null) {
+                throw new NotFoundException("Указанная документ не числится в справочнике документов");
             }
             updatingUser.getDocument().setDocType(updatingDoc); /// меняем тип документа
             docdDataRepo.save(updatingUser.getDocument()); //засейвим
         }
         if (rawUser.getCitizenshipCode() != null) {
             Country updatingCountry = countryRepo.findByCitizenshipCode(rawUser.getCitizenshipCode());
-            if (updatingCountry == null) {
-            } //TODO не нашли измененную страну ошибка
+            if (updatingCountry.getCitizinshipId() == null) {
+                throw new NotFoundException("Указанная страна не числится в справочнике стран");
+            }
             updatingUser.setCitizenship(updatingCountry);
         }
         if ((rawUser.getDocDate() != null) && rawUser.getDocNumber() != null) {
@@ -123,7 +124,8 @@ public class UserServiceImp implements UserService {
         if (rawUser.getOfficeId() != null) {
             Office updatingOffice = officeRepo.findById(rawUser.getOfficeId()).orElse(null);  ///Либо офис либо ноль, ноль если ничего не указали или фигню указали, может быть здесь нужен фильр
             if (updatingOffice == null) {
-            } ///TODO Неправильно указан офис
+                throw new NotFoundException("Указанный офис не найден");
+            }
             updatingUser.setOfficeEmp(updatingOffice);
         }
         userRepo.save(updatingUser);

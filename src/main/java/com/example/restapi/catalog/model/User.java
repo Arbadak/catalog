@@ -7,17 +7,18 @@ import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
 
-/**Сущность для хранения данных "пользователь"
- *
+/**
+ * Сущность для хранения данных "пользователь"
  */
 @Entity
 @Table(name = "user")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "INT", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "INT")
     private Integer id;
 
     @Column(name = "first_name", columnDefinition = "VARCHAR(15)", nullable = false)
@@ -36,15 +37,20 @@ public class User {
     private String phone;
 
     @OneToOne
+    @JoinColumn(name = "document")
     private DocData document;
 
     @OneToOne
+    //@PrimaryKeyJoinColumn
+    @JoinColumn(name = "citizenship")
     private Country citizenship;
 
     @Column(name = "is_identified", columnDefinition = "BOOLEAN", nullable = true)
     private Boolean isIdentified;
 
     @OneToOne
+    //@PrimaryKeyJoinColumn
+    @JoinColumn(name = "officeEmp")
     private Office officeEmp;
 
     public User() {
@@ -54,7 +60,7 @@ public class User {
         return id;
     }
 
-    public void setId(Integer id) {
+    private void setId(Integer id) {
         this.id = id;
     }
 

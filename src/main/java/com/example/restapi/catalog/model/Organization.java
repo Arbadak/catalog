@@ -7,16 +7,16 @@ import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-/**Сущность для хренения данных "организация"
- *
-  */
+/**
+ * Сущность для хренения данных "организация"
+ */
 @Entity
 @Table(name = "organization")
 public class Organization {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "INT", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "INT")
     private Integer orgId;
 
     @Column(name = "inn", columnDefinition = "VARCHAR(12)", nullable = false)
@@ -39,7 +39,7 @@ public class Organization {
         return orgId;
     }
 
-    public void setOrgId(Integer orgId) {
+    private void setOrgId(Integer orgId) {
         this.orgId = orgId;
     }
 

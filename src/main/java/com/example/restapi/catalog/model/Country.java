@@ -15,8 +15,8 @@ import javax.persistence.GenerationType;
 public class Country {
 
     @Id
-    @Column(name = "id", columnDefinition = "INT", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", columnDefinition = "INT"/*, nullable = false*/)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer citizinshipId;
 
     @Column(name = "code", columnDefinition = "VARCHAR(3)", nullable = false)
@@ -32,7 +32,7 @@ public class Country {
         return citizinshipId;
     }
 
-    public void setCitizinshipId(Integer citizinshipId) {
+    private void setCitizinshipId(Integer citizinshipId) {
         this.citizinshipId = citizinshipId;
     }
 

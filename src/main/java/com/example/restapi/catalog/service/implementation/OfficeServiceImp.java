@@ -1,4 +1,4 @@
-package com.example.restapi.catalog.service;
+package com.example.restapi.catalog.service.implementation;
 
 import com.example.restapi.catalog.exceptions.NotFoundException;
 import com.example.restapi.catalog.model.Office;
@@ -6,6 +6,7 @@ import com.example.restapi.catalog.rawModel.RawOffice;
 import com.example.restapi.catalog.rawModel.ResultResponce;
 import com.example.restapi.catalog.repos.OfficeRepo;
 import com.example.restapi.catalog.repos.OrganizationRepo;
+import com.example.restapi.catalog.service.OfficeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,7 +82,7 @@ public class OfficeServiceImp implements OfficeService {
         if (checkoffice.getId() == null) {
             throw new NotFoundException("Офис с указаным id не найден, выйдите в окно");
         }
-        if (getOne(office.getId())==null) { throw new NotFoundException("Не сущевствует оффиса с укащанным id");}
+        if (getOne(office.getId())==null) { throw new NotFoundException("Не сущевствует оффиса с указанным id");}
 
         Office newoffice = officeRepo.findById(office.getId()).orElse(null); //вытскиваем из базы хранимый офис для редактирования
         BeanUtils.copyProperties(office, newoffice, "orgId", "phone");  //orgid не указывается а phone необязательнй потому их не копируем

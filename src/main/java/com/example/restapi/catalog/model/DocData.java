@@ -7,7 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 
 /**
@@ -19,8 +20,8 @@ import java.time.LocalDate;
 public class DocData {
 
     @Id
-    @Column(name = "id", columnDefinition = "INT", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", columnDefinition = "INT"/*, nullable = false*/)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer docId;
 
     @Column(name = "date", columnDefinition = "DATE", nullable = false)
@@ -29,8 +30,8 @@ public class DocData {
     @Column(name = "number", columnDefinition = "VARCHAR(10)", nullable = false)
     private String docNumber;
 
-    //@Column(name = "type", columnDefinition = "INT", nullable = false)
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "doc_Type", nullable = false)
     private Doc docType;
 
     public DocData() {
@@ -46,7 +47,7 @@ public class DocData {
         return docId;
     }
 
-    public void setDocId(Integer docId) {
+    private void setDocId(Integer docId) {
         this.docId = docId;
     }
 

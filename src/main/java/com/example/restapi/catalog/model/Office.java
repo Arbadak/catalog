@@ -17,11 +17,11 @@ import javax.persistence.JoinColumn;
 public class Office {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "INT", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "INT")
     private Integer Id;
 
-    @ManyToOne ///ИЗМЕНИЛ
+    @ManyToOne
     @JoinColumn(name = "organization_id", nullable = false)
     private Organization orgId;
 
@@ -67,7 +67,7 @@ public class Office {
         return Id;
     }
 
-    public void setId(Integer id) {
+    private void setId(Integer id) {
         this.Id = id;
     }
 
