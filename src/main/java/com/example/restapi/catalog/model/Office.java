@@ -28,7 +28,7 @@ public class Office {
 
     @ManyToOne
     @JoinColumn(name = "organization_id", nullable = false)
-    private Organization orgId;
+    private Organization organization;
 
     @Column(name = "name", columnDefinition = "VARCHAR(50)", nullable = false)
     private String name;
@@ -48,8 +48,8 @@ public class Office {
     public Office() {
     }
 
-    public Office(Organization orgId, String name, String address, String phone, Boolean isActive, Boolean isMain) {
-        this.orgId = orgId;
+    public Office(Organization organization, String name, String address, String phone, Boolean isActive, Boolean isMain) {
+        this.organization = organization;
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -57,9 +57,9 @@ public class Office {
         this.isMain = isMain;
     }
 
-    public Office(Integer Id, Organization orgId, String name, String address, String phone, Boolean isActive, Boolean isMain) {
+    public Office(Integer Id, Organization organization, String name, String address, String phone, Boolean isActive, Boolean isMain) {
         this.Id = Id;
-        this.orgId = orgId;
+        this.organization = organization;
         this.name = name;
         this.address = address;
         this.phone = phone;
@@ -76,12 +76,12 @@ public class Office {
         this.Id = id;
     }
 
-    public Organization getOrganizationId() {
-        return orgId;
+    public Organization getOrganization() {
+        return organization;
     }
 
-    public void setOrganizationId(Organization orgId) {
-        this.orgId = orgId;
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     public String getName() {

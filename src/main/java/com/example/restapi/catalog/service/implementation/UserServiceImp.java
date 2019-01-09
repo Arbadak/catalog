@@ -37,7 +37,7 @@ public class UserServiceImp implements UserService {
     }
 
     public List<RawUser> getUserList(RawUser rawUser) {
-        List<User> all = userRepo.findAllByOfficeEmp(officeRepo.findById(rawUser.getOfficeId()).orElse(null));
+        List<User> all = userRepo.findAllByOffice(officeRepo.findById(rawUser.getOfficeId()).orElse(null));
         List<RawUser> result = new ArrayList<>();
         for (User iterableUser : all) {
             RawUser currentRawUser = new RawUser();
@@ -63,7 +63,7 @@ public class UserServiceImp implements UserService {
         BeanUtils.copyProperties(bindedDocData, result, "docId", "docType");
         BeanUtils.copyProperties(bindedDoc, result, "docId");
         BeanUtils.copyProperties(citizinship, result, "citizinshipId");
-        result.setOfficeId(requestedUser.getOfficeEmp().getId());
+        result.setOfficeId(requestedUser.getOffice().getId());
 
         return result;
     }
@@ -88,7 +88,7 @@ public class UserServiceImp implements UserService {
         Office newOffice = officeRepo.findById(rawUser.getOfficeId()).orElse(null);  ///Либо офис либо ноль, ноль если ничего не указали или фигню указали, может быть здесь нужен фильр
                 result.setCitizenship(newCountry);
         result.setDocument(newDocData);
-        result.setOfficeEmp(newOffice);
+        result.setOffice(newOffice);
         userRepo.save(result);
         return new ResultResponce("success");
     }
@@ -126,7 +126,7 @@ public class UserServiceImp implements UserService {
             if (updatingOffice == null) {
                 throw new NotFoundException("Указанный офис не найден");
             }
-            updatingUser.setOfficeEmp(updatingOffice);
+            updatingUser.setOffice(updatingOffice);
         }
         userRepo.save(updatingUser);
         return new ResultResponce("success");

@@ -29,7 +29,7 @@ public class OfficeServiceImp implements OfficeService {
 
     public List<RawOffice> getOfficeList(RawOffice rawOffice) {
         // TODO Фильтрация некорректного orgid
-        List<Office> all = officeRepo.findAllByOrgId(organizationRepo.findOrgByOrgId(rawOffice.getOrgId())); /// создаем список всех оффисов в организации
+        List<Office> all = officeRepo.findAllByOrganization(organizationRepo.findOrgByOrgId(rawOffice.getOrgId())); /// создаем список всех оффисов в организации
         List<RawOffice> result = new ArrayList<>();
 
         if (rawOffice.getName() != null) {
@@ -57,7 +57,7 @@ public class OfficeServiceImp implements OfficeService {
         }
         RawOffice result = new RawOffice();
         BeanUtils.copyProperties(requestedOffice, result, "orgId");
-        result.setOrgId(requestedOffice.getOrganizationId().getOrgId());
+        result.setOrgId(requestedOffice.getOrganization().getOrgId());
         return result;
     }
 
@@ -68,7 +68,7 @@ public class OfficeServiceImp implements OfficeService {
 
         Office newoffice = new Office();
         BeanUtils.copyProperties(office, newoffice, "orgId", "Id");
-        newoffice.setOrganizationId(organizationRepo.findOrgByOrgId(office.getOrgId())); ///Выдергиваем организацию из номера в сырой модели, и суем уже обьект
+        newoffice.setOrganization(organizationRepo.findOrgByOrgId(office.getOrgId())); ///Выдергиваем организацию из номера в сырой модели, и суем уже обьект
         officeRepo.save(newoffice);
         return new ResultResponce("success");
     }

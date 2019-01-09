@@ -53,8 +53,8 @@ public class User {
     private Boolean isIdentified;
 
     @OneToOne
-    @JoinColumn(name = "officeEmp")
-    private Office officeEmp;
+    @JoinColumn(name = "office")
+    private Office office;
 
     public User() {
     }
@@ -129,12 +129,12 @@ public class User {
         this.isIdentified = isIdentified;
     }
 
-    public Office getOfficeEmp() {
-        return officeEmp;
+    public Office getOffice() {
+        return office;
     }
 
-    public void setOfficeEmp(Office officeEmp) {
-        this.officeEmp = officeEmp;
+    public void setOffice(Office office) {
+        this.office = office;
     }
 
     public Integer getOptlock() {

@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface UserRepo extends JpaRepository<User, Integer> {
 
-    List<User> findAllByOfficeEmp(Office officeId);
+    List<User> findAllByOffice(Office officeId);
 
 }

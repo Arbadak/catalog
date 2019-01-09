@@ -39,7 +39,7 @@ public class OrganizationServiceImp implements OrganizationService {
 
         for (Iterator<Organization> iterableOrg = all.iterator(); iterableOrg.hasNext(); ) { ///цикл для из списка с учетом фильторв имя и инн, в список который вернется пользователю с учетом поля isActive
             Organization currentOrg = iterableOrg.next();
-            Office bindedOffice = officeRepo.findByOrgIdAndIsMain(currentOrg, true);
+            Office bindedOffice = officeRepo.findByOrganizationAndIsMain(currentOrg, true);
             if (rawOrganization.getIsActive() != null) { // Если задан isActive
                 if (!bindedOffice.getIsActive().equals(rawOrganization.getIsActive())) {  ///Если статусы несопадают
                     iterableOrg.remove(); //выкидываем из списка и на следующую итерацию
@@ -65,7 +65,7 @@ public class OrganizationServiceImp implements OrganizationService {
     @Transactional
     public ResultResponce update(RawOrganization rawOrganization, Organization orgDest) {
         BeanUtils.copyProperties(rawOrganization, orgDest, "id");
-        Office storedOffice = officeRepo.findByOrgIdAndIsMain(orgDest, true);
+        Office storedOffice = officeRepo.findByOrganizationAndIsMain(orgDest, true);
         Office updatingOffice = new Office(storedOffice.getId(), orgDest,  /// Заменяем непередданые данные данными из базы в обновляемом офисе
                 (rawOrganization.getFullName() == (null)) ? rawOrganization.getFullName() : storedOffice.getName(),
                 (rawOrganization.getAddress() == (null)) ? storedOffice.getAddress() : rawOrganization.getAddress(),
@@ -82,7 +82,7 @@ public class OrganizationServiceImp implements OrganizationService {
         if (organization == null) {
             return new RawOrganization();
         } ///Возвращаем пустую организацию в случае если нет такой
-        Office mainOffice = officeRepo.findByOrgIdAndIsMain(organization, true);
+        Office mainOffice = officeRepo.findByOrganizationAndIsMain(organization, true);
         RawOrganization result = new RawOrganization();
         BeanUtils.copyProperties(organization, result);
         result.setAddress(mainOffice.getAddress());
