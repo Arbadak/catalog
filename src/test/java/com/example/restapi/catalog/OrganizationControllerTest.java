@@ -14,9 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
-import java.io.UnsupportedEncodingException;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -218,13 +216,4 @@ public class OrganizationControllerTest {
 
 
     }
-
-
-    public void printThat(MvcResult result) throws UnsupportedEncodingException {
-
-        System.out.println("*************************************************************************************************");
-        System.out.println(result.getResponse().getContentAsString());
-        System.out.println("*************************************************************************************************");
-    }
-
 }

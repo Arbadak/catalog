@@ -16,7 +16,7 @@ CREATE TABLE doc (
 
 
 CREATE TABLE organization (
-	id INT(11) PRIMARY KEY AUTO_INCREMENT,
+	id INT PRIMARY KEY AUTO_INCREMENT,
 	OPTLOCK INT default 0,
 	name VARCHAR(60) NOT NULL,
 	inn VARCHAR(12) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE organization (
 CREATE TABLE office (
 	id INT PRIMARY KEY AUTO_INCREMENT,
     OPTLOCK INT default 0,
-	organization_id INT(11) NOT NULL,
+	organization_id INT NOT NULL,
 	CONSTRAINT FK_link_organization FOREIGN KEY (organization_id) REFERENCES organization (id),
 	name VARCHAR(50) NOT NULL,
 	phone VARCHAR(11) NULL DEFAULT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE office (
 	OPTLOCK INT default 0,
 	date DATE NOT NULL,
 	number VARCHAR(10) NOT NULL,
-	doc_Type INT(11) NOT NULL,
+	doc_Type INT NOT NULL,
 	CONSTRAINT FK_link_doc FOREIGN KEY (doc_Type) REFERENCES `doc` (id));
 	COMMENT ON COLUMN doc_data.OPTLOCK IS 'Поле версии';
 	COMMENT ON COLUMN doc_data.id IS 'Идентификатор документа';

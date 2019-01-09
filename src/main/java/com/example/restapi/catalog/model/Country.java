@@ -15,7 +15,7 @@ import javax.persistence.GenerationType;
 public class Country {
 
     @Id
-    @Column(name = "id", columnDefinition = "INT"/*, nullable = false*/)
+    @Column(name = "id", columnDefinition = "INT")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer citizinshipId;
 
@@ -52,12 +52,4 @@ public class Country {
         this.citizenshipName = citizenshipName;
     }
 
-    @Override
-    public String toString() {
-        return "Country{" +
-                "citizinshipId=" + citizinshipId +
-                ", citizenshipCode='" + citizenshipCode + '\'' +
-                ", citizenshipName='" + citizenshipName + '\'' +
-                '}';
-    }
 }

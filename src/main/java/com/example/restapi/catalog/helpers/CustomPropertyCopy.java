@@ -1,4 +1,4 @@
-package com.example.restapi.catalog.utils;
+package com.example.restapi.catalog.helpers;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -9,7 +9,7 @@ import java.beans.FeatureDescriptor;
 import java.util.stream.Stream;
 
 @Component
-public class Utils {
+public class CustomPropertyCopy {
 
     /**
      * Функция копирования property без нулевых значений

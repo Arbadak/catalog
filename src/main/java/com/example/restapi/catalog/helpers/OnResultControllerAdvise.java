@@ -1,14 +1,11 @@
-package com.example.restapi.catalog.utils;
+package com.example.restapi.catalog.helpers;
 
 import com.example.restapi.catalog.rawmodel.ResponceWrapper;
-import com.example.restapi.catalog.rawmodel.ResultResponce;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
@@ -17,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  */
 
 @RestControllerAdvice
-public class MyResponseControllerAdvice implements ResponseBodyAdvice<ResponceWrapper> {
+public class OnResultControllerAdvise implements ResponseBodyAdvice<ResponceWrapper> {
 
 
    //TODO Test, удалю в окончательной версии
@@ -31,7 +28,7 @@ public class MyResponseControllerAdvice implements ResponseBodyAdvice<ResponceWr
     public boolean supports(MethodParameter methodParam, Class<? extends HttpMessageConverter<?>> converter) {
         return true;
     }
-
+/*
     @ExceptionHandler(com.example.restapi.catalog.exceptions.NotFoundException.class)
     public @ResponseBody
     ResponceWrapper handleNotFoundException(com.example.restapi.catalog.exceptions.NotFoundException e) {
@@ -58,5 +55,5 @@ public class MyResponseControllerAdvice implements ResponseBodyAdvice<ResponceWr
 
         return new ResponceWrapper(new ResultResponce(null, "неверный тип данных"));
     }
-
+*/
 }

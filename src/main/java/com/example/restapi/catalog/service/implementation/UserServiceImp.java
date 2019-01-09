@@ -6,7 +6,7 @@ import com.example.restapi.catalog.rawmodel.RawUser;
 import com.example.restapi.catalog.rawmodel.ResultResponce;
 import com.example.restapi.catalog.repos.*;
 import com.example.restapi.catalog.service.UserService;
-import com.example.restapi.catalog.utils.Utils;
+import com.example.restapi.catalog.helpers.CustomPropertyCopy;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,16 +23,16 @@ public class UserServiceImp implements UserService {
     private final CountryRepo countryRepo;
     private final OfficeRepo officeRepo;
     private final UserRepo userRepo;
-    private final Utils utils;
+    private final CustomPropertyCopy customPropertyCopy;
 
     @Autowired
-    public UserServiceImp(DocRepo docRepo, DocDataRepo docDataRepo, CountryRepo countryRepo, OfficeRepo officeRepo, UserRepo userRepo, Utils utils) {
+    public UserServiceImp(DocRepo docRepo, DocDataRepo docDataRepo, CountryRepo countryRepo, OfficeRepo officeRepo, UserRepo userRepo, CustomPropertyCopy customPropertyCopy) {
         this.docRepo = docRepo;
         this.docdDataRepo = docDataRepo;
         this.countryRepo = countryRepo;
         this.officeRepo = officeRepo;
         this.userRepo = userRepo;
-        this.utils = utils;
+        this.customPropertyCopy = customPropertyCopy;
 
     }
 
@@ -99,7 +99,7 @@ public class UserServiceImp implements UserService {
         if (updatingUser == null) {
             return new ResultResponce(null, "пользователь не найден");
         }
-        utils.copyNonNullProperties(rawUser, updatingUser);  ///перекидываем ненулевые свойства
+        customPropertyCopy.copyNonNullProperties(rawUser, updatingUser);  ///перекидываем ненулевые свойства
 
         Doc updatingDoc = new Doc();  ///Болванка типа документа
         if (rawUser.getDocName() != null) {  ///Если имя документа не пустое - меняем тип документа пользователя

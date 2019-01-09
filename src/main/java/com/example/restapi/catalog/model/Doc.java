@@ -17,7 +17,7 @@ import javax.persistence.GenerationType;
 public class Doc {
 
     @Id
-    @Column(name = "id", columnDefinition = "INT"/*, nullable = false*/)
+    @Column(name = "id", columnDefinition = "INT")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer docId;
 

@@ -21,7 +21,6 @@ public class Office {
     @Column(name="OPTLOCK")
     private Integer optlock;
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "INT")
@@ -34,11 +33,11 @@ public class Office {
     @Column(name = "name", columnDefinition = "VARCHAR(50)", nullable = false)
     private String name;
 
-    @Column(name = "address", columnDefinition = "VARCHAR(100)", nullable = false)
-    private String address;
-
     @Column(name = "phone", columnDefinition = "VARCHAR(11)", nullable = true)
     private String phone;
+
+    @Column(name = "address", columnDefinition = "VARCHAR(100)", nullable = false)
+    private String address;
 
     @Column(name = "is_active", columnDefinition = "BOOLEAN", nullable = true)
     private Boolean isActive;

@@ -1,6 +1,5 @@
 package com.example.restapi.catalog.model;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Version;
 import java.time.LocalDate;
-
 
 /**
  * Вспомогателная сущность для хранения данных о "документ пользователя"
@@ -25,9 +23,8 @@ public class DocData {
     @Column(name="OPTLOCK")
     private Integer optlock;
 
-
     @Id
-    @Column(name = "id", columnDefinition = "INT"/*, nullable = false*/)
+    @Column(name = "id", columnDefinition = "INT")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer docId;
 
@@ -82,4 +79,3 @@ public class DocData {
         this.docType = docType;
     }
 }
-

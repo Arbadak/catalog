@@ -21,7 +21,6 @@ public class User {
     @Column(name="OPTLOCK")
     private Integer optlock;
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "INT")
@@ -108,9 +107,7 @@ public class User {
         this.phone = phone;
     }
 
-    public DocData getDocument() {
-        return document;
-    }
+    public DocData getDocument() { return document; }
 
     public void setDocument(DocData document) {
         this.document = document;
@@ -148,6 +145,3 @@ public class User {
         this.optlock = optlock;
     }
 }
-
-
-
