@@ -3,19 +3,20 @@ package com.example.restapi.catalog.service.implementation;
 
 import com.example.restapi.catalog.model.Office;
 import com.example.restapi.catalog.model.Organization;
+import com.example.restapi.catalog.rawmodel.RawOffice;
 import com.example.restapi.catalog.rawmodel.RawOrganization;
 import com.example.restapi.catalog.rawmodel.ResultResponce;
 import com.example.restapi.catalog.repos.OfficeRepo;
 import com.example.restapi.catalog.repos.OrganizationRepo;
+import com.example.restapi.catalog.service.OfficeService;
 import com.example.restapi.catalog.service.OrganizationService;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 
 @Service
@@ -23,11 +24,13 @@ public class OrganizationServiceImp implements OrganizationService {
 
     private final OrganizationRepo organizationRepo;
     private final OfficeRepo officeRepo;
+    private final OfficeService officeService;
 
     @Autowired
-    public OrganizationServiceImp(OrganizationRepo organizationRepo, OfficeRepo officeRepo) {
+    public OrganizationServiceImp(OrganizationRepo organizationRepo, OfficeRepo officeRepo, OfficeService officeService) {
         this.organizationRepo = organizationRepo;
         this.officeRepo = officeRepo;
+        this.officeService=officeService;
     }
 
     public List<RawOrganization> getOrgList(RawOrganization rawOrganization) {
@@ -65,14 +68,9 @@ public class OrganizationServiceImp implements OrganizationService {
     @Transactional
     public ResultResponce update(RawOrganization rawOrganization, Organization orgDest) {
         BeanUtils.copyProperties(rawOrganization, orgDest, "id");
-        Office storedOffice = officeRepo.findByOrganizationAndIsMain(orgDest, true);
-        Office updatingOffice = new Office(storedOffice.getId(), orgDest,  /// Заменяем непередданые данные данными из базы в обновляемом офисе
-                (rawOrganization.getFullName() == (null)) ? rawOrganization.getFullName() : storedOffice.getName(),
-                (rawOrganization.getAddress() == (null)) ? storedOffice.getAddress() : rawOrganization.getAddress(),
-                (rawOrganization.getPhone() == (null)) ? storedOffice.getPhone() : rawOrganization.getPhone(),
-                (rawOrganization.getIsActive() == (null)) ? storedOffice.getIsActive() : rawOrganization.getIsActive(),
-                true);
-        officeRepo.save(updatingOffice);
+        RawOffice updatedOffice = new RawOffice();
+        BeanUtils.copyProperties(rawOrganization, updatedOffice);
+        officeService.update(updatedOffice);
         organizationRepo.save(orgDest);
         return new ResultResponce("success");
     }

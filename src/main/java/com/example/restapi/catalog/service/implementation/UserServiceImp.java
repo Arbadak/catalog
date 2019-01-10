@@ -97,7 +97,7 @@ public class UserServiceImp implements UserService {
     public ResultResponce update(RawUser rawUser) {
         User updatingUser = userRepo.findById(rawUser.getId()).orElse(null);
         if (updatingUser == null) {
-            return new ResultResponce(null, "пользователь не найден");
+            throw new NotFoundException("пользователь не найден");
         }
         customPropertyCopy.copyNonNullProperties(rawUser, updatingUser);  ///перекидываем ненулевые свойства
 

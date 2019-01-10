@@ -32,10 +32,6 @@ public class Country {
         return citizinshipId;
     }
 
-    private void setCitizinshipId(Integer citizinshipId) {
-        this.citizinshipId = citizinshipId;
-    }
-
     public String getCitizenshipCode() {
         return citizenshipCode;
     }
@@ -51,5 +47,4 @@ public class Country {
     public void setCitizenshipName(String citizenshipName) {
         this.citizenshipName = citizenshipName;
     }
-
 }

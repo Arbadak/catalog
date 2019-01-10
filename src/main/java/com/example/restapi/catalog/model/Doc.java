@@ -40,10 +40,6 @@ public class Doc {
         return docId;
     }
 
-    public void setDocId(Integer docId) {
-        this.docId = docId;
-    }
-
     public String getDocName() {
         return docName;
     }

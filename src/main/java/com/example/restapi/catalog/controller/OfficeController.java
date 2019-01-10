@@ -4,8 +4,9 @@ import com.example.restapi.catalog.groups.GroupAdd;
 import com.example.restapi.catalog.groups.GroupList;
 import com.example.restapi.catalog.groups.GroupUpdate;
 import com.example.restapi.catalog.rawmodel.RawOffice;
-import com.example.restapi.catalog.rawmodel.ResponceWrapper;
+import com.example.restapi.catalog.rawmodel.ResultResponce;
 import com.example.restapi.catalog.service.OfficeService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,8 +44,8 @@ public class OfficeController {
      * @return
      */
     @PostMapping("/list")
-    public ResponceWrapper officeList(@RequestBody @Validated({GroupList.class}) RawOffice office) {
-        return new ResponceWrapper(officeService.getOfficeList(office));
+    public List<RawOffice> officeList(@RequestBody @Validated({GroupList.class}) RawOffice office) {
+        return officeService.getOfficeList(office);
     }
 
 
@@ -55,8 +56,8 @@ public class OfficeController {
      * @return
      */
     @GetMapping("{id}")
-    public ResponceWrapper getOne(@PathVariable("id") Integer officeId) {
-        return new ResponceWrapper(officeService.getOne(officeId));
+    public RawOffice getOne(@PathVariable("id") Integer officeId) {
+        return officeService.getOne(officeId);
     }
 
     /**
@@ -69,8 +70,8 @@ public class OfficeController {
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
     @PostMapping("save")
-    public ResponceWrapper save(@RequestBody @Validated({GroupAdd.class}) RawOffice office) {
-        return new ResponceWrapper(officeService.add(office));
+    public ResultResponce save(@RequestBody @Validated({GroupAdd.class}) RawOffice office) {
+        return officeService.add(office);
     }
 
     /**
@@ -84,7 +85,7 @@ public class OfficeController {
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
     @PostMapping("update")
-    public ResponceWrapper update(@RequestBody @Validated({GroupUpdate.class}) RawOffice office) {
-        return new ResponceWrapper(officeService.update(office));
+    public ResultResponce update(@RequestBody @Validated({GroupUpdate.class}) RawOffice office) {
+        return officeService.update(office);
     }
 }

@@ -51,10 +51,6 @@ public class DocData {
         return docId;
     }
 
-    private void setDocId(Integer docId) {
-        this.docId = docId;
-    }
-
     public LocalDate getDocDate() {
         return docDate;
     }

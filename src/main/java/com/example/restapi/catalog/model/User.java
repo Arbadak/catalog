@@ -63,10 +63,6 @@ public class User {
         return id;
     }
 
-    private void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getFirstName() {
         return firstName;
     }

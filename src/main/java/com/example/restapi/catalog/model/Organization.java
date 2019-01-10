@@ -43,10 +43,6 @@ public class Organization {
         return orgId;
     }
 
-    private void setOrgId(Integer orgId) {
-        this.orgId = orgId;
-    }
-
     public String getInn() {
         return inn;
     }

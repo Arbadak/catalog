@@ -5,9 +5,9 @@ import com.example.restapi.catalog.groups.GroupList;
 import com.example.restapi.catalog.groups.GroupUpdate;
 import com.example.restapi.catalog.model.Organization;
 import com.example.restapi.catalog.rawmodel.RawOrganization;
-import com.example.restapi.catalog.rawmodel.ResponceWrapper;
 import com.example.restapi.catalog.rawmodel.ResultResponce;
 import com.example.restapi.catalog.service.OrganizationService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,8 +42,8 @@ public class OrganizationController {
      * @return List организаций с укааным OrgId, либо пустой лист если организаций с такмим реквизитами не найдено
      */
     @PostMapping("/list")
-    public ResponceWrapper orgList(@RequestBody @Validated({GroupList.class}) RawOrganization rawOrganization) {
-        return new ResponceWrapper(organizationService.getOrgList(rawOrganization));
+    public List<RawOrganization> orgList(@RequestBody @Validated({GroupList.class}) RawOrganization rawOrganization) {
+        return organizationService.getOrgList(rawOrganization);
     }
 
     /**
@@ -55,8 +55,8 @@ public class OrganizationController {
 
     @GetMapping("{id}")
     @ResponseBody
-    public ResponceWrapper org(@PathVariable("id") Integer id) {
-        return new ResponceWrapper(organizationService.getOne(id));
+    public RawOrganization org(@PathVariable("id") Integer id) {
+        return organizationService.getOne(id);
     }
 
     /**
@@ -72,8 +72,8 @@ public class OrganizationController {
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
     @PostMapping("/save")
-    public ResponceWrapper save(@RequestBody @Validated({GroupAdd.class}) RawOrganization rawOrganization) {
-        return new ResponceWrapper(organizationService.add(rawOrganization));
+    public ResultResponce save(@RequestBody @Validated({GroupAdd.class}) RawOrganization rawOrganization) {
+        return organizationService.add(rawOrganization);
     }
 
     /**

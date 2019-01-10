@@ -57,23 +57,8 @@ public class Office {
         this.isMain = isMain;
     }
 
-    public Office(Integer Id, Organization organization, String name, String address, String phone, Boolean isActive, Boolean isMain) {
-        this.Id = Id;
-        this.organization = organization;
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.isActive = isActive;
-        this.isMain = isMain;
-    }
-
-
     public Integer getId() {
         return Id;
-    }
-
-    private void setId(Integer id) {
-        this.Id = id;
     }
 
     public Organization getOrganization() {

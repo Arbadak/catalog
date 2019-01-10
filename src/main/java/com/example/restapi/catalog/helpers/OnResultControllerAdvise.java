@@ -14,46 +14,36 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  */
 
 @RestControllerAdvice
-public class OnResultControllerAdvise implements ResponseBodyAdvice<ResponceWrapper> {
+public class OnResultControllerAdvise implements ResponseBodyAdvice<Object> {
 
 
    //TODO Test, удалю в окончательной версии
     @Override
-    public ResponceWrapper beforeBodyWrite(ResponceWrapper document, MethodParameter methodParam, MediaType mediaType,
+    public ResponceWrapper beforeBodyWrite(Object document, MethodParameter methodParam, MediaType mediaType,
                                            Class<? extends HttpMessageConverter<?>> converter, ServerHttpRequest request, ServerHttpResponse response) {
-        //return new ResponceWrapper(new ResultResponce(null, "Hello from AAADVICE!!!"));
-        return document;
+                return new ResponceWrapper (document);
     }
+    /*
+    public ResponceWrapper beforeBodyWrite(List document, MethodParameter methodParam, MediaType mediaType,
+                                           Class<? extends HttpMessageConverter<?>> converter, ServerHttpRequest request, ServerHttpResponse response) {
+     return new ResponceWrapper(document);
+    }
+
+     public ResponceWrapper beforeBodyWrite(RawOffice document, MethodParameter methodParam, MediaType mediaType,
+                                            Class<? extends HttpMessageConverter<?>> converter, ServerHttpRequest request, ServerHttpResponse response) {
+         return new ResponceWrapper(document);
+     }
+    public ResponceWrapper beforeBodyWrite(RawUser document, MethodParameter methodParam, MediaType mediaType,
+                                           Class<? extends HttpMessageConverter<?>> converter, ServerHttpRequest request, ServerHttpResponse response) {
+        return new ResponceWrapper(document);
+    }
+        public ResponceWrapper beforeBodyWrite(RawOrganization document, MethodParameter methodParam, MediaType mediaType,
+                Class<? extends HttpMessageConverter<?>> converter, ServerHttpRequest request, ServerHttpResponse response) {
+            return new ResponceWrapper(document);
+    }
+    */
     @Override
     public boolean supports(MethodParameter methodParam, Class<? extends HttpMessageConverter<?>> converter) {
         return true;
     }
-/*
-    @ExceptionHandler(com.example.restapi.catalog.exceptions.NotFoundException.class)
-    public @ResponseBody
-    ResponceWrapper handleNotFoundException(com.example.restapi.catalog.exceptions.NotFoundException e) {
-
-        return new ResponceWrapper(new ResultResponce(null, (e.getMessage())));
-    }
-
-    @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
-    public @ResponseBody
-    ResponceWrapper handleValidationException(org.springframework.web.bind.MethodArgumentNotValidException e) {
-
-        return new ResponceWrapper(new ResultResponce(null, (e.getBindingResult()
-                .getAllErrors()
-                .listIterator()
-                .next()
-                .getDefaultMessage())));
-    }
-
-    ///TODO Надо проверить кажется это больше ненужно
-    /// При неверноем типе поля будет выдаваться ошибка
-    @ExceptionHandler(com.fasterxml.jackson.databind.exc.InvalidFormatException.class)
-    public @ResponseBody
-    ResponceWrapper handleDeserializeException(com.fasterxml.jackson.databind.exc.InvalidFormatException e) {
-
-        return new ResponceWrapper(new ResultResponce(null, "неверный тип данных"));
-    }
-*/
 }
