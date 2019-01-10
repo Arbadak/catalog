@@ -1,7 +1,7 @@
 package com.example.restapi.catalog.service;
 
 import com.example.restapi.catalog.rawmodel.RawOffice;
-import com.example.restapi.catalog.rawmodel.ResultResponce;
+import com.example.restapi.catalog.rawmodel.ResultResponse;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface OfficeService {
 
     RawOffice getOne(Integer officeId);
 
-    ResultResponce add(RawOffice office);
+    ResultResponse add(RawOffice office);
 
-    ResultResponce update(RawOffice office);
+    ResultResponse update(RawOffice office);
 }

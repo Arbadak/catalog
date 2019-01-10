@@ -2,7 +2,7 @@ package com.example.restapi.catalog.service;
 
 import com.example.restapi.catalog.model.Organization;
 import com.example.restapi.catalog.rawmodel.RawOrganization;
-import com.example.restapi.catalog.rawmodel.ResultResponce;
+import com.example.restapi.catalog.rawmodel.ResultResponse;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ public interface OrganizationService {
 
     List<RawOrganization> getOrgList(RawOrganization rawOrganization);
 
-    ResultResponce add(RawOrganization rawOrganization);
+    ResultResponse add(RawOrganization rawOrganization);
 
-    ResultResponce update(RawOrganization rawOrganization, Organization orgDest);
+    ResultResponse update(RawOrganization rawOrganization, Organization orgDest);
 
     RawOrganization getOne(Integer id);
 }

@@ -8,14 +8,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResultResponce {
+public class ResultResponse {
 
     private String result;
 
-    public ResultResponce() {
+    public ResultResponse() {
     }
 
-    public ResultResponce(String result) {
+    public ResultResponse(String result) {
         this.result = result;
     }
 

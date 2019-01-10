@@ -5,7 +5,7 @@ import com.example.restapi.catalog.model.Office;
 import com.example.restapi.catalog.model.Organization;
 import com.example.restapi.catalog.rawmodel.RawOffice;
 import com.example.restapi.catalog.rawmodel.RawOrganization;
-import com.example.restapi.catalog.rawmodel.ResultResponce;
+import com.example.restapi.catalog.rawmodel.ResultResponse;
 import com.example.restapi.catalog.repos.OfficeRepo;
 import com.example.restapi.catalog.repos.OrganizationRepo;
 import com.example.restapi.catalog.service.OfficeService;
@@ -55,24 +55,24 @@ public class OrganizationServiceImp implements OrganizationService {
     }
 
     @Transactional
-    public ResultResponce add(RawOrganization rawOrganization) {
+    public ResultResponse add(RawOrganization rawOrganization) {
 
         Organization organization = new Organization();
         BeanUtils.copyProperties(rawOrganization, organization);
         Organization result = organizationRepo.save(organization);
         Office mainOffice = new Office(result, rawOrganization.getFullName(), rawOrganization.getAddress(), rawOrganization.getPhone(), rawOrganization.getIsActive(), true);
         officeRepo.save(mainOffice);
-        return new ResultResponce("success");
+        return new ResultResponse("success");
     }
 
     @Transactional
-    public ResultResponce update(RawOrganization rawOrganization, Organization orgDest) {
+    public ResultResponse update(RawOrganization rawOrganization, Organization orgDest) {
         BeanUtils.copyProperties(rawOrganization, orgDest, "id");
         RawOffice updatedOffice = new RawOffice();
         BeanUtils.copyProperties(rawOrganization, updatedOffice);
         officeService.update(updatedOffice);
         organizationRepo.save(orgDest);
-        return new ResultResponce("success");
+        return new ResultResponse("success");
     }
 
     public RawOrganization getOne(Integer id) {

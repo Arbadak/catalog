@@ -8,13 +8,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ErrorResponce {
+public class ErrorResponse {
 
         private String error;
 
-    public ErrorResponce() {
+    public ErrorResponse() {
             }
-    public ErrorResponce(String error) {
+    public ErrorResponse(String error) {
         this.error = error;
     }
 

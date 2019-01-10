@@ -1,7 +1,7 @@
 package com.example.restapi.catalog.service;
 
 import com.example.restapi.catalog.rawmodel.RawUser;
-import com.example.restapi.catalog.rawmodel.ResultResponce;
+import com.example.restapi.catalog.rawmodel.ResultResponse;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface UserService {
 
     RawUser getOne(Integer id);
 
-    ResultResponce add(RawUser rawUser);
+    ResultResponse add(RawUser rawUser);
 
-    ResultResponce update(RawUser rawUser);
+    ResultResponse update(RawUser rawUser);
 }

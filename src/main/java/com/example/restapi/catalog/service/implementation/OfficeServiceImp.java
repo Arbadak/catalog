@@ -3,7 +3,7 @@ package com.example.restapi.catalog.service.implementation;
 import com.example.restapi.catalog.exceptions.NotFoundException;
 import com.example.restapi.catalog.model.Office;
 import com.example.restapi.catalog.rawmodel.RawOffice;
-import com.example.restapi.catalog.rawmodel.ResultResponce;
+import com.example.restapi.catalog.rawmodel.ResultResponse;
 import com.example.restapi.catalog.repos.OfficeRepo;
 import com.example.restapi.catalog.repos.OrganizationRepo;
 import com.example.restapi.catalog.service.OfficeService;
@@ -62,19 +62,19 @@ public class OfficeServiceImp implements OfficeService {
     }
 
     @Transactional
-    public ResultResponce add(RawOffice office) {
+    public ResultResponse add(RawOffice office) {
 
-        //if (office.getOrgId()==null){return new ResultResponce(null,"не указана организация");}  /// не будем создавать "висячие" офисы
+        //if (office.getOrgId()==null){return new ResultResponse(null,"не указана организация");}  /// не будем создавать "висячие" офисы
 
         Office newoffice = new Office();
         BeanUtils.copyProperties(office, newoffice, "orgId", "Id");
         newoffice.setOrganization(organizationRepo.findOrgByOrgId(office.getOrgId())); ///Выдергиваем организацию из номера в сырой модели, и суем уже обьект
         officeRepo.save(newoffice);
-        return new ResultResponce("success");
+        return new ResultResponse("success");
     }
 
     @Transactional
-    public ResultResponce update(RawOffice office) {
+    public ResultResponse update(RawOffice office) {
 
         /// TODO решить вариант если указали больше параметров чем нужно orgID например
 
@@ -89,7 +89,7 @@ public class OfficeServiceImp implements OfficeService {
         //newoffice.setOrganizationId(organizationRepo.findOrgByOrgId(office.getOrgId())); ///Выдергиваем организацию из номера в сырой модели, и суем уже обьект
         newoffice.setPhone((office.getPhone() == (null)) ? getOne(office.getId()).getPhone() : office.getPhone()); /// если не null то заменяем хранящийся телефон
         officeRepo.save(newoffice);
-        return new ResultResponce("success");
+        return new ResultResponse("success");
     }
 
 }

@@ -5,7 +5,7 @@ import com.example.restapi.catalog.groups.GroupList;
 import com.example.restapi.catalog.groups.GroupUpdate;
 import com.example.restapi.catalog.model.Organization;
 import com.example.restapi.catalog.rawmodel.RawOrganization;
-import com.example.restapi.catalog.rawmodel.ResultResponce;
+import com.example.restapi.catalog.rawmodel.ResultResponse;
 import com.example.restapi.catalog.service.OrganizationService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +72,7 @@ public class OrganizationController {
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
     @PostMapping("/save")
-    public ResultResponce save(@RequestBody @Validated({GroupAdd.class}) RawOrganization rawOrganization) {
+    public ResultResponse save(@RequestBody @Validated({GroupAdd.class}) RawOrganization rawOrganization) {
         return organizationService.add(rawOrganization);
     }
 
@@ -91,7 +91,7 @@ public class OrganizationController {
      * @return s"result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
     @PostMapping("update/{id}")
-    public ResultResponce update(@PathVariable("id") Organization organizationFromDB, @RequestBody @Validated({GroupUpdate.class}) RawOrganization organizationFromWeb) {
+    public ResultResponse update(@PathVariable("id") Organization organizationFromDB, @RequestBody @Validated({GroupUpdate.class}) RawOrganization organizationFromWeb) {
         return organizationService.update(organizationFromWeb, organizationFromDB);
     }
 }

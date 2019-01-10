@@ -3,7 +3,7 @@ package com.example.restapi.catalog.service.implementation;
 import com.example.restapi.catalog.exceptions.NotFoundException;
 import com.example.restapi.catalog.model.*;
 import com.example.restapi.catalog.rawmodel.RawUser;
-import com.example.restapi.catalog.rawmodel.ResultResponce;
+import com.example.restapi.catalog.rawmodel.ResultResponse;
 import com.example.restapi.catalog.repos.*;
 import com.example.restapi.catalog.service.UserService;
 import com.example.restapi.catalog.helpers.CustomPropertyCopy;
@@ -69,7 +69,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Transactional
-    public ResultResponce add(RawUser rawUser) {
+    public ResultResponse add(RawUser rawUser) {
         User result = new User();
         BeanUtils.copyProperties(rawUser, result);
         ///Вроде справочники не должны быть доступны для записи но тем не менее
@@ -90,11 +90,11 @@ public class UserServiceImp implements UserService {
         result.setDocument(newDocData);
         result.setOffice(newOffice);
         userRepo.save(result);
-        return new ResultResponce("success");
+        return new ResultResponse("success");
     }
 
     @Transactional
-    public ResultResponce update(RawUser rawUser) {
+    public ResultResponse update(RawUser rawUser) {
         User updatingUser = userRepo.findById(rawUser.getId()).orElse(null);
         if (updatingUser == null) {
             throw new NotFoundException("пользователь не найден");
@@ -129,7 +129,7 @@ public class UserServiceImp implements UserService {
             updatingUser.setOffice(updatingOffice);
         }
         userRepo.save(updatingUser);
-        return new ResultResponce("success");
+        return new ResultResponse("success");
     }
 }
 

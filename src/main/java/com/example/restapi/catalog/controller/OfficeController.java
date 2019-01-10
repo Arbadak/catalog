@@ -4,7 +4,7 @@ import com.example.restapi.catalog.groups.GroupAdd;
 import com.example.restapi.catalog.groups.GroupList;
 import com.example.restapi.catalog.groups.GroupUpdate;
 import com.example.restapi.catalog.rawmodel.RawOffice;
-import com.example.restapi.catalog.rawmodel.ResultResponce;
+import com.example.restapi.catalog.rawmodel.ResultResponse;
 import com.example.restapi.catalog.service.OfficeService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class OfficeController {
      *               “name”:””,
      *               “phone”:””,
      *               “isActive”
-     * @return
+     * @return RawOffice
      */
     @PostMapping("/list")
     public List<RawOffice> officeList(@RequestBody @Validated({GroupList.class}) RawOffice office) {
@@ -52,8 +52,8 @@ public class OfficeController {
     /**
      * Метод отображения данных офиса по указанному идентификатору офиса
      *
-     * @param officeId
-     * @return
+     * @param officeId - идентифиактор офиса
+     * @return Список RawOffice
      */
     @GetMapping("{id}")
     public RawOffice getOne(@PathVariable("id") Integer officeId) {
@@ -70,7 +70,7 @@ public class OfficeController {
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
     @PostMapping("save")
-    public ResultResponce save(@RequestBody @Validated({GroupAdd.class}) RawOffice office) {
+    public ResultResponse save(@RequestBody @Validated({GroupAdd.class}) RawOffice office) {
         return officeService.add(office);
     }
 
@@ -85,7 +85,7 @@ public class OfficeController {
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
     @PostMapping("update")
-    public ResultResponce update(@RequestBody @Validated({GroupUpdate.class}) RawOffice office) {
+    public ResultResponse update(@RequestBody @Validated({GroupUpdate.class}) RawOffice office) {
         return officeService.update(office);
     }
 }

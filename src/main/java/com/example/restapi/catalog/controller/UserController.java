@@ -4,7 +4,7 @@ import com.example.restapi.catalog.groups.GroupAdd;
 import com.example.restapi.catalog.groups.GroupList;
 import com.example.restapi.catalog.groups.GroupUpdate;
 import com.example.restapi.catalog.rawmodel.RawUser;
-import com.example.restapi.catalog.rawmodel.ResultResponce;
+import com.example.restapi.catalog.rawmodel.ResultResponse;
 import com.example.restapi.catalog.service.UserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +46,8 @@ public class UserController {
     /**
      * Метод отображения данных польщователя по указанному идентификатору пользователя
      *
-     * @param userId
-     * @return данные пользоватял либо пустой обьект если пользщователь не найден
+     * @param userId - идентификатор пользователя
+     * @return данные пользователя либо пустой обьект если пользщователь не найден
      */
     @GetMapping("{id}")
     public RawUser getOne(@PathVariable("id") Integer userId) {
@@ -71,7 +71,7 @@ public class UserController {
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
     @PostMapping("save")
-    public ResultResponce save(@RequestBody @Validated({GroupAdd.class}) RawUser user) {
+    public ResultResponse save(@RequestBody @Validated({GroupAdd.class}) RawUser user) {
         return userService.add(user);
     }
 
@@ -90,7 +90,7 @@ public class UserController {
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
     @PostMapping("update")
-    public ResultResponce update(@RequestBody @Validated({GroupUpdate.class}) RawUser user, BindingResult result) {
+    public ResultResponse update(@RequestBody @Validated({GroupUpdate.class}) RawUser user, BindingResult result) {
 
         return userService.update(user);
     }

@@ -1,7 +1,7 @@
 package com.example.restapi.catalog.helpers;
 
 import com.example.restapi.catalog.exceptions.NotFoundException;
-import com.example.restapi.catalog.rawmodel.ErrorResponce;
+import com.example.restapi.catalog.rawmodel.ErrorResponse;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,16 +17,16 @@ public class OnErrorControllerAdvise {
 
     @ExceptionHandler(com.example.restapi.catalog.exceptions.NotFoundException.class)
     public @ResponseBody
-    ErrorResponce handleNotFoundException(NotFoundException e) {
+    ErrorResponse handleNotFoundException(NotFoundException e) {
 
-        return new ErrorResponce (e.getMessage());
+        return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
     public @ResponseBody
-    ErrorResponce handleValidationException(MethodArgumentNotValidException e) {
+    ErrorResponse handleValidationException(MethodArgumentNotValidException e) {
 
-        return new ErrorResponce(e.getBindingResult()
+        return new ErrorResponse(e.getBindingResult()
                 .getAllErrors()
                 .listIterator()
                 .next()
@@ -37,9 +37,9 @@ public class OnErrorControllerAdvise {
     /// При неверноем типе поля будет выдаваться ошибка
     @ExceptionHandler(com.fasterxml.jackson.databind.exc.InvalidFormatException.class)
     public @ResponseBody
-    ErrorResponce handleDeserializeException(InvalidFormatException e) {
+    ErrorResponse handleDeserializeException(InvalidFormatException e) {
 
-        return new ErrorResponce("неверный тип данных");
+        return new ErrorResponse("неверный тип данных");
     }
 
 }
