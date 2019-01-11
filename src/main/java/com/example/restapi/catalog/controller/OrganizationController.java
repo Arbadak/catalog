@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 /***
  *  Рест контроллер запросов обьекта organization
  *
@@ -41,7 +44,7 @@ public class OrganizationController {
      *                          “isActive”:””
      * @return List организаций с укааным OrgId, либо пустой лист если организаций с такмим реквизитами не найдено
      */
-    @PostMapping("/list")
+    @PostMapping(value = "/list", consumes =  APPLICATION_JSON_VALUE)
     public List<RawOrganization> orgList(@RequestBody @Validated({GroupList.class}) RawOrganization rawOrganization) {
         return organizationService.getOrgList(rawOrganization);
     }
@@ -71,7 +74,7 @@ public class OrganizationController {
      *                        “isActive”:
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
-    @PostMapping("/save")
+    @PostMapping(value = "/save", consumes =  APPLICATION_JSON_VALUE)
     public ResultResponse save(@RequestBody @Validated({GroupAdd.class}) RawOrganization rawOrganization) {
         return organizationService.add(rawOrganization);
     }
@@ -79,7 +82,7 @@ public class OrganizationController {
     /**
      * Метод обновления данных сущевствующей организации
      *
-     * @param organizationFromDB
+     * @param organizationFromDB id
      * @param organizationFromWeb “id”:””, //обязательный параметр
      *                            “name”:””, //обязательный параметр
      *                            “fullName”:””, //обязательный параметр
@@ -90,7 +93,7 @@ public class OrganizationController {
      *                            “isActive”:
      * @return s"result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
-    @PostMapping("update/{id}")
+    @PostMapping(value="update/{id}", consumes =  APPLICATION_JSON_VALUE)
     public ResultResponse update(@PathVariable("id") Organization organizationFromDB, @RequestBody @Validated({GroupUpdate.class}) RawOrganization organizationFromWeb) {
         return organizationService.update(organizationFromWeb, organizationFromDB);
     }

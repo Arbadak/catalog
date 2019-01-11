@@ -12,6 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 /**
  * Рест контроллер запросов обьекта user
  */
@@ -38,7 +41,7 @@ public class UserController {
      *             “citizenshipCode”:””
      * @return Список пользователя, либо пустой список если пользователи не найдены
      */
-    @PostMapping("/list")
+    @PostMapping(value = "/list", consumes =  APPLICATION_JSON_VALUE)
     public List<RawUser> userList(@RequestBody @Validated({GroupList.class}) RawUser user) {
         return userService.getUserList(user);
     }
@@ -70,7 +73,7 @@ public class UserController {
      *             “isIdentified”:
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
-    @PostMapping("save")
+    @PostMapping(value = "save", consumes =  APPLICATION_JSON_VALUE)
     public ResultResponse save(@RequestBody @Validated({GroupAdd.class}) RawUser user) {
         return userService.add(user);
     }
@@ -89,7 +92,7 @@ public class UserController {
      *             “isIdentified”:
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
-    @PostMapping("update")
+    @PostMapping(value = "update", consumes =  APPLICATION_JSON_VALUE)
     public ResultResponse update(@RequestBody @Validated({GroupUpdate.class}) RawUser user, BindingResult result) {
 
         return userService.update(user);
