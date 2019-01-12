@@ -53,7 +53,7 @@ public class User {
     private Boolean isIdentified;
 
     @OneToOne
-    @JoinColumn(name = "office")
+    @JoinColumn(name = "office_emp")
     private Office office;
 
     public User() {
@@ -140,4 +140,6 @@ public class User {
     public void setOptlock(Integer optlock) {
         this.optlock = optlock;
     }
+
+
 }

@@ -168,4 +168,24 @@ public class RawUser {
     public void setOfficeId(Integer officeId) {
         this.officeId = officeId;
     }
+
+    @Override
+    public String toString() {
+        return "RawUser{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", position='" + position + '\'' +
+                ", phone='" + phone + '\'' +
+                ", docName='" + docName + '\'' +
+                ", docNumber='" + docNumber + '\'' +
+                ", docDate=" + docDate +
+                ", docCode='" + docCode + '\'' +
+                ", citizenshipName='" + citizenshipName + '\'' +
+                ", citizenshipCode='" + citizenshipCode + '\'' +
+                ", isIdentified=" + isIdentified +
+                ", officeId=" + officeId +
+                '}';
+    }
 }

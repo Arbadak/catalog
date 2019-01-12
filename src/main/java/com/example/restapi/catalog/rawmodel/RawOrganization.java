@@ -135,4 +135,18 @@ public class RawOrganization {
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
+
+    @Override
+    public String toString() {
+        return "RawOrganization{" +
+                "orgId=" + orgId +
+                ", FullName='" + FullName + '\'' +
+                ", Name='" + Name + '\'' +
+                ", inn='" + inn + '\'' +
+                ", kpp='" + kpp + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", isActive=" + isActive +
+                '}';
+    }
 }

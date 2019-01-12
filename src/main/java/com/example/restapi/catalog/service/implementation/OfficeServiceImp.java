@@ -63,9 +63,6 @@ public class OfficeServiceImp implements OfficeService {
 
     @Transactional
     public ResultResponse add(RawOffice office) {
-
-        //if (office.getOrgId()==null){return new ResultResponse(null,"не указана организация");}  /// не будем создавать "висячие" офисы
-
         Office newoffice = new Office();
         BeanUtils.copyProperties(office, newoffice, "orgId", "Id");
         newoffice.setOrganization(organizationRepo.findOrgByOrgId(office.getOrgId())); ///Выдергиваем организацию из номера в сырой модели, и суем уже обьект
@@ -86,7 +83,6 @@ public class OfficeServiceImp implements OfficeService {
 
         Office newoffice = officeRepo.findById(office.getId()).orElse(null); //вытскиваем из базы хранимый офис для редактирования
         BeanUtils.copyProperties(office, newoffice, "orgId", "phone");  //orgid не указывается а phone необязательнй потому их не копируем
-        //newoffice.setOrganizationId(organizationRepo.findOrgByOrgId(office.getOrgId())); ///Выдергиваем организацию из номера в сырой модели, и суем уже обьект
         newoffice.setPhone((office.getPhone() == (null)) ? getOne(office.getId()).getPhone() : office.getPhone()); /// если не null то заменяем хранящийся телефон
         officeRepo.save(newoffice);
         return new ResultResponse("success");

@@ -86,8 +86,19 @@ public class RawOffice {
         return isActive;
     }
 
-    //public void setActive(Boolean active) { isActive = active; }
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
+    }
+
+    @Override
+    public String toString() {
+        return "RawOffice{" +
+                "Id=" + Id +
+                ", orgId=" + orgId +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", isActive=" + isActive +
+                '}';
     }
 }

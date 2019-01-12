@@ -34,8 +34,7 @@ public class OnErrorControllerAdvise {
                 .getDefaultMessage());
     }
 
-    ///TODO Надо проверить кажется это больше ненужно
-    /// При неверноем типе поля будет выдаваться ошибка
+
     @ExceptionHandler(com.fasterxml.jackson.databind.exc.InvalidFormatException.class)
     public @ResponseBody
     ErrorResponse handleDeserializeException(InvalidFormatException e) {

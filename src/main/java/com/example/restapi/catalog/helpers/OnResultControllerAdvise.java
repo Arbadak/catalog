@@ -17,31 +17,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 public class OnResultControllerAdvise implements ResponseBodyAdvice<Object> {
 
 
-   //TODO Test, удалю в окончательной версии
     @Override
     public ResponceWrapper beforeBodyWrite(Object document, MethodParameter methodParam, MediaType mediaType,
                                            Class<? extends HttpMessageConverter<?>> converter, ServerHttpRequest request, ServerHttpResponse response) {
                 return new ResponceWrapper (document);
     }
-    /*
-    public ResponceWrapper beforeBodyWrite(List document, MethodParameter methodParam, MediaType mediaType,
-                                           Class<? extends HttpMessageConverter<?>> converter, ServerHttpRequest request, ServerHttpResponse response) {
-     return new ResponceWrapper(document);
-    }
 
-     public ResponceWrapper beforeBodyWrite(RawOffice document, MethodParameter methodParam, MediaType mediaType,
-                                            Class<? extends HttpMessageConverter<?>> converter, ServerHttpRequest request, ServerHttpResponse response) {
-         return new ResponceWrapper(document);
-     }
-    public ResponceWrapper beforeBodyWrite(RawUser document, MethodParameter methodParam, MediaType mediaType,
-                                           Class<? extends HttpMessageConverter<?>> converter, ServerHttpRequest request, ServerHttpResponse response) {
-        return new ResponceWrapper(document);
-    }
-        public ResponceWrapper beforeBodyWrite(RawOrganization document, MethodParameter methodParam, MediaType mediaType,
-                Class<? extends HttpMessageConverter<?>> converter, ServerHttpRequest request, ServerHttpResponse response) {
-            return new ResponceWrapper(document);
-    }
-    */
     @Override
     public boolean supports(MethodParameter methodParam, Class<? extends HttpMessageConverter<?>> converter) {
         return true;
