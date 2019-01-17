@@ -51,7 +51,7 @@ public class OfficeServiceImp implements OfficeService {
     }
 
     public RawOffice getOne(Integer officeId) {
-        Office requestedOffice = officeRepo.findById(officeId).orElse(null); ///дурацкий  optional
+        Office requestedOffice = officeRepo.findById(officeId).orElse(null);
         if (requestedOffice == null) { // Если невернвый ид - получи пустой результат
             return new RawOffice();
         }

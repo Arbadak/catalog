@@ -51,7 +51,7 @@ public class OrganizationServiceImp implements OrganizationService {
             }
             result.add(new RawOrganization(currentOrg.getOrgId(), currentOrg.getName(), bindedOffice.getIsActive()));
         }
-        return result; ///Возвращаем крокодила пользователю
+        return result; ///Возвращаем результат пользователю
     }
 
     @Transactional
