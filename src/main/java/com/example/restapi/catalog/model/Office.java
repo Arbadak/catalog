@@ -10,39 +10,39 @@ import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.Version;
 
-/** Сущность для хранения данных "офис"
- *
+/**
+ * Сущность для хранения данных "офис"
  */
 @Entity
 @Table(name = "office")
 public class Office {
-
-    @Version
-    @Column(name="OPTLOCK")
-    private Integer optlock;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "INT")
     private Integer Id;
 
+    @Version
+    @Column(name = "OPTLOCK")
+    private Integer optlock;
+
     @ManyToOne
     @JoinColumn(name = "organization_id", nullable = false)
     private Organization organization;
 
-    @Column(name = "name", columnDefinition = "VARCHAR(50)", nullable = false)
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @Column(name = "phone", columnDefinition = "VARCHAR(11)", nullable = true)
+    @Column(name = "phone", length = 11, nullable = true)
     private String phone;
 
-    @Column(name = "address", columnDefinition = "VARCHAR(100)", nullable = false)
+    @Column(name = "address", length = 100, nullable = false)
     private String address;
 
-    @Column(name = "is_active", columnDefinition = "BOOLEAN", nullable = true)
+    @Column(name = "is_active", nullable = true)
     private Boolean isActive;
 
-    @Column(name = "is_main", columnDefinition = "BOOLEAN", nullable = true)
+    @Column(name = "is_main", nullable = true)
     private Boolean isMain;
 
     public Office() {

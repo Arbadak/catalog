@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class LoggerAspect {
 
-    LoggingController loggingController=new LoggingController();
+    LoggingController loggingController = new LoggingController();
 
     protected Logger logger = LoggerFactory.getLogger(LoggerAspect.class);
 
@@ -30,49 +30,59 @@ public class LoggerAspect {
     private static final String ANSI_CYAN = "\u001B[36m";
     private static final String ANSI_WHITE = "\u001B[37m";
 
-    public LoggerAspect() throws Exception{
+    public LoggerAspect() throws Exception {
         MBeanServer platformMbeanServer = ManagementFactory.getPlatformMBeanServer();
-        platformMbeanServer.registerMBean(loggingController, new ObjectName("CustomLogging","name","LogMethods"));
+        platformMbeanServer.registerMBean(loggingController, new ObjectName("CustomLogging", "name", "LogMethods"));
     }
 
     @Pointcut("execution(* com.example.restapi.catalog.service.implementation..*(..))")
-   private void returnResult(){}
-
-   @Pointcut("execution(* com.example.restapi.catalog..*(..))")
-   private void probeMethod(){}
-
-
-   @Around("probeMethod()")
-   public Object watchTime (ProceedingJoinPoint joinPoint) {
-
-
-       Object output = null;
-       if (loggingController.isEnableLogging()) {
-           long start =System.currentTimeMillis();
-           logger.warn(ANSI_RED+"Исполнение метода:"+ANSI_BLUE+joinPoint.getSignature().toString() +ANSI_RED+" >>>**********************");
-           output = null;
-           for (Object object: joinPoint.getArgs()){logger.info(ANSI_CYAN+"Пареметры: "+ANSI_GREEN+object);}
-
-           try {output= joinPoint.proceed();}
-           catch (Throwable e){e.printStackTrace();}
-
-           long time=System.currentTimeMillis()-start;
-           logger.warn(ANSI_RED+"Окончание метода :"+ANSI_BLUE+joinPoint.getSignature().toString()+ANSI_RESET+", время: "+ANSI_YELLOW+time+" ms <<<"+ANSI_RESET);
-           System.out.println();
-       }
-        else {  try {output= joinPoint.proceed();}
-                catch (Throwable e){e.printStackTrace();}
-                }
-       return output;
-   }
-
-@AfterReturning(pointcut = "returnResult()", returning = "obj")
-   public void printObject (Object obj){
-
-    if (loggingController.isShowReturnObjects()) {
-        logger.warn(ANSI_CYAN+"**************** Начало обьекта ******************");
-        logger.info(ANSI_PURPLE+obj.toString());
-        logger.warn(ANSI_CYAN+"**************** Окончание обьекта ********************");
+    private void returnResult() {
     }
-}
+
+    @Pointcut("execution(* com.example.restapi.catalog..*(..))")
+    private void probeMethod() {
+    }
+
+
+    @Around("probeMethod()")
+    public Object watchTime(ProceedingJoinPoint joinPoint) {
+
+
+        Object output = null;
+        if (loggingController.isEnableLogging()) {
+            long start = System.currentTimeMillis();
+            logger.warn(ANSI_RED + "Исполнение метода:" + ANSI_BLUE + joinPoint.getSignature().toString() + ANSI_RED + " >>>**********************");
+            output = null;
+            for (Object object : joinPoint.getArgs()) {
+                logger.info(ANSI_CYAN + "Пареметры: " + ANSI_GREEN + object);
+            }
+
+            try {
+                output = joinPoint.proceed();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+
+            long time = System.currentTimeMillis() - start;
+            logger.warn(ANSI_RED + "Окончание метода :" + ANSI_BLUE + joinPoint.getSignature().toString() + ANSI_RESET + ", время: " + ANSI_YELLOW + time + " ms <<<" + ANSI_RESET);
+            System.out.println();
+        } else {
+            try {
+                output = joinPoint.proceed();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+        return output;
+    }
+
+    @AfterReturning(pointcut = "returnResult()", returning = "obj")
+    public void printObject(Object obj) {
+
+        if (loggingController.isShowReturnObjects()) {
+            logger.warn(ANSI_CYAN + "**************** Начало обьекта ******************");
+            logger.info(ANSI_PURPLE + obj.toString());
+            logger.warn(ANSI_CYAN + "**************** Окончание обьекта ********************");
+        }
+    }
 }

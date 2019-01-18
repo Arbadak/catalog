@@ -15,6 +15,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -36,7 +37,6 @@ public class OfficeControllerTest {
     /**
      * Добавление офиса
      *
-     * @throws Exception
      */
     @Test
     public void addOfficeNormal() throws Exception {
@@ -60,6 +60,9 @@ public class OfficeControllerTest {
                 .andReturn();
     }
 
+    /**
+     * Добавление офиса с ошибкой в запросе
+     */
     @Test
     public void addOfficeEmptyRequiredField() throws Exception {
 
@@ -78,14 +81,16 @@ public class OfficeControllerTest {
 
         String requestJson = ow.writeValueAsString(request);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
-                .andExpect(content().json(" {data:{'error':'Не указан идентификатор организации'}}"));
+                .andExpect(content().json(" {'error':'Не указан идентификатор организации'}"));
     }
 
-
+    /**
+     * Поиск офиса по организации
+     */
     @Test
     public void getOfficeByOrgIdNormal() throws Exception {
         final String url = "/office/list";
-        // Поиск организации
+
 
         RawOffice request = new RawOffice();
         request.setOrgId(5);
@@ -100,15 +105,16 @@ public class OfficeControllerTest {
                 .andExpect(content().json("{'data':[{'name':'Особо зеленый оффис'},{}]}"));
     }
 
-
+    /**
+     *  Поиск нескольких офисов по организации
+     */
     @Test
     public void getSeveralByOrgIdNormal() throws Exception {
         final String url = "/office/list";
-        // Поиск организации
+
 
         RawOffice request = new RawOffice();
         request.setOrgId(2);
-        //request.setIsActive(true);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
@@ -119,6 +125,9 @@ public class OfficeControllerTest {
                 .andExpect(content().json("{'data':[{'name':'ГО РОГА и КО','isActive':true,'id':1},{'name':'Филиалс Северный РОГ и ко','isActive':true,'id':2}]}"));
     }
 
+    /**
+     * Изменение информации об офисе
+     */
     @Test
     public void updateOfficeNormal() throws Exception {
 
@@ -141,6 +150,9 @@ public class OfficeControllerTest {
                 .andExpect(content().json("{'data':{'result':'success'}}"));
     }
 
+    /**
+     * происк офиса по номеру офиса
+     */
     @Test
     public void getOfficebyOfficeId() throws Exception {
 

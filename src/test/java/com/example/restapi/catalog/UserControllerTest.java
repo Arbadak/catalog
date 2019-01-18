@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -29,13 +30,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-/** Тест контроллера USER, в сявзи с тем что junit по умолчанию запускает тесты в абы каком порядке, в классе форсирован порядок запуска тестов по алфавитному порядку
- *
+/**
+ * Тест контроллера USER, в сявзи с тем что junit по умолчанию запускает тесты в абы каком порядке, в классе форсирован порядок запуска тестов по алфавитному порядку
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-//@Sql(value = {"classpath:filldatabase.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserControllerTest {
 
@@ -52,13 +52,13 @@ public class UserControllerTest {
 
     /**
      * Полная цепочка создания пользователя
-     *
-     * @throws Exception
+     * <p>
+     * создается организация, создается офис в организации, в офисе создается пользователь
      */
     @Test
     @Sql(value = {"classpath:fillsprav.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void a_addUserNormal() throws Exception {
-        /// Содаем организацию
+
         String url = "/organization/save/";
         RawOrganization addOrganization = new RawOrganization();
         addOrganization.setName("Светлое будущее");
@@ -69,32 +69,21 @@ public class UserControllerTest {
         addOrganization.setIsActive(true);
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(makeMeJson(addOrganization))).andDo(print())
                 .andExpect(content().json("{'data':{'result':'success'}}"));
-
-        /// Чтобы создать дополнительный офис в созданой организации, достаем ее ID.
-        url = "/organization/list/";
-        MvcResult getOrgId = mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content("{\"name\":\"Светлое будущее\"}")).andReturn();
-        //Вытаскиваем id из JSON ответа
+        MvcResult getOrgId = mockMvc.perform(post("/organization/list/").contentType(MediaType.APPLICATION_JSON).content("{\"name\":\"Светлое будущее\"}")).andReturn();
         JSONObject jsonOrgId = new JSONObject(getOrgId.getResponse().getContentAsString());
-        /// Не буду убирать, еще может понадобиться
         createdOrgId = jsonOrgId.getJSONArray("data")
                 .getJSONObject(0)
                 .getInt("id");
-        /// Создаем дополнительный офис в организации
-        url = "/office/save/";
         RawOffice addOffice = new RawOffice();
         addOffice.setIsActive(true);
         addOffice.setAddress("Площадь революции 19");
-        addOffice.setOrgId(createdOrgId);   ///Получил номер организации для офиса
+        addOffice.setOrgId(createdOrgId);
         addOffice.setName("Революционный");
         addOffice.setPhone("19172019");
-        MvcResult resulRequest = mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(makeMeJson(addOffice))).andDo(print())
+        MvcResult resulRequest = mockMvc.perform(post("/office/save/").contentType(MediaType.APPLICATION_JSON).content(makeMeJson(addOffice))).andDo(print())
                 .andExpect(content().json("{'data':{'result':'success'}}")).andReturn();
-        ///Чтобы создать пользователя в конкретном офисе конкртеной организации получаем ID офиса
-        url = "/office/list/";
-        MvcResult getOfficeId = mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content("{\"name\":\"Революционный\", \"orgId\":" + createdOrgId + "}")).andReturn();
+        MvcResult getOfficeId = mockMvc.perform(post("/office/list/").contentType(MediaType.APPLICATION_JSON).content("{\"name\":\"Революционный\", \"orgId\":" + createdOrgId + "}")).andReturn();
         createdOfficeId = new JSONObject(getOfficeId.getResponse().getContentAsString()).getJSONArray("data").getJSONObject(0).getInt("id");
-        /// Создаем пользователя, все поля заполнены, новый документ и тип документа.
-        url = "/user/save/";
         RawUser addUserRequest = new RawUser();
         addUserRequest.setOfficeId(createdOfficeId);
         addUserRequest.setFirstName("Владимир");
@@ -108,20 +97,18 @@ public class UserControllerTest {
         addUserRequest.setCitizenshipCode("901");
         addUserRequest.setIsIdentified(true);
         String requestJson = makeMeJson(addUserRequest);
-        requestJson = requestJson.replaceAll("\"docDate\" : null", "\"docDate\" : \"1890-04-10\""); ///Потому что вьюмодель у насл с Localdate а UserController ждет просто String
-        this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
+        requestJson = requestJson.replaceAll("\"docDate\" : null", "\"docDate\" : \"1890-04-10\"");
+        this.mockMvc.perform(post("/user/save/").contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
                 .andExpect(content().json("{'data':{'result':'success'}}"));
     }
 
     /**
      * Добавляем пользователя в сущевствующую организацию
-     * @throws Exception
      */
     @Test
     public void b_addAnotherUserInSameOffice() throws Exception {
-        /// Создаем пользователя, все поля заполнены, новый документ и тип документа.
-        String  url = "/user/save/";
-       RawUser addUserRequest = new RawUser();
+        String url = "/user/save/";
+        RawUser addUserRequest = new RawUser();
         addUserRequest.setOfficeId(createdOfficeId);
         addUserRequest.setFirstName("Лейба");
         addUserRequest.setSecondName("Давидович");
@@ -137,12 +124,10 @@ public class UserControllerTest {
         requestJson = requestJson.replaceAll("\"docDate\" : null", "\"docDate\" : \"1899-08-26\""); ///Потому что модель у нас с Localdate а UserController ждет просто String
         this.mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(requestJson)).andDo(print())
                 .andExpect(content().json("{'data':{'result':'success'}}"));
-       // .andExpect(content().string("{'data':{'result':'success'}}"));
     }
 
-    /** Выводим список пользователей в конкретной организации
-     *
-     * @throws Exception
+    /**
+     * Выводим список пользователей в конкретной организации
      */
     @Test
     public void c_listByOfficeId() throws Exception {
@@ -154,6 +139,7 @@ public class UserControllerTest {
 
     /**
      * Находим пользоватля по идентификатору
+     *
      * @throws Exception
      */
     @Test
@@ -162,14 +148,8 @@ public class UserControllerTest {
 
         this.mockMvc.perform(get(requeststring))
                 .andDo(print()).andExpect(status().isOk()).andDo(print())
-                //.andExpect(content().json("{'data':{'id':10,'isActive':true,'name':'НеОсобо зеленый оффис','address':'Полки 22','phone':'300301'}}"));
                 .andExpect(content().json("{'data':{'firstName':'Владимир'}}"));
-
-
     }
-
-
-///////Utill
 
     protected String makeMeJson(Object source) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -178,6 +158,4 @@ public class UserControllerTest {
         String requestJson = ow.writeValueAsString(source);
         return requestJson;
     }
-
-
 }

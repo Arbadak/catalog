@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-/** Модель для получения данных от запросов типа Organization
- *
+/**
+ * Модель для получения данных от запросов типа Organization
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RawOrganization {
@@ -61,15 +61,17 @@ public class RawOrganization {
      *
      * @return
      */
-    public RawOrganization(String fullName, String name, String inn, String kpp, String address, String phone, Boolean isActive) {
-        FullName = fullName;
-        Name = name;
-        this.inn = inn;
-        this.kpp = kpp;
-        this.address = address;
-        this.phone = phone;
-        this.isActive = isActive;
-    }
+    /**
+     * public RawOrganization(String fullName, String name, String inn, String kpp, String address, String phone, Boolean isActive) {
+     * FullName = fullName;
+     * Name = name;
+     * this.inn = inn;
+     * this.kpp = kpp;
+     * this.address = address;
+     * this.phone = phone;
+     * this.isActive = isActive;
+     * }
+     */
 
 
     public Integer getId() {

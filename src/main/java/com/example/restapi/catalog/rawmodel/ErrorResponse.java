@@ -4,16 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * Обьект результата работы для методов в которых произошла ошибка
- *
  */
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
 
-        private String error;
+    private String error;
 
-    public ErrorResponse() {
-            }
     public ErrorResponse(String error) {
         this.error = error;
     }

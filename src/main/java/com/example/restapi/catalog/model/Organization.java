@@ -15,25 +15,25 @@ import javax.persistence.Version;
 @Table(name = "organization")
 public class Organization {
 
-    @Version
-    @Column(name="OPTLOCK")
-    private Integer optlock;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "INT")
     private Integer orgId;
 
-    @Column(name = "inn", columnDefinition = "VARCHAR(12)", nullable = false)
+    @Version
+    @Column(name = "OPTLOCK")
+    private Integer optlock;
+
+    @Column(name = "inn", length = 12, nullable = false)
     private String inn;
 
-    @Column(name = "name", columnDefinition = "VARCHAR(60)", nullable = false)
+    @Column(name = "name", length = 60, nullable = false)
     private String fullName;
 
-    @Column(name = "short_name", columnDefinition = "VARCHAR(30)", nullable = true)
+    @Column(name = "short_name", length = 30, nullable = true)
     private String name;
 
-    @Column(name = "kpp", columnDefinition = "VARCHAR(9)")
+    @Column(name = "kpp", length = 9, nullable = false)
     private String kpp;
 
     public Organization() {

@@ -1,19 +1,26 @@
 package com.example.restapi.catalog.service.implementation;
 
 import com.example.restapi.catalog.exceptions.NotFoundException;
-import com.example.restapi.catalog.model.*;
+import com.example.restapi.catalog.helpers.CustomPropertyCopy;
+import com.example.restapi.catalog.model.Country;
+import com.example.restapi.catalog.model.Doc;
+import com.example.restapi.catalog.model.DocData;
+import com.example.restapi.catalog.model.Office;
+import com.example.restapi.catalog.model.User;
 import com.example.restapi.catalog.rawmodel.RawUser;
 import com.example.restapi.catalog.rawmodel.ResultResponse;
-import com.example.restapi.catalog.repos.*;
+import com.example.restapi.catalog.repos.CountryRepo;
+import com.example.restapi.catalog.repos.DocDataRepo;
+import com.example.restapi.catalog.repos.DocRepo;
+import com.example.restapi.catalog.repos.OfficeRepo;
+import com.example.restapi.catalog.repos.UserRepo;
 import com.example.restapi.catalog.service.UserService;
-import com.example.restapi.catalog.helpers.CustomPropertyCopy;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -36,7 +43,15 @@ public class UserServiceImp implements UserService {
 
     }
 
+    /**
+     * Метод получения списка пользоватлей в указанном офисе
+     * @param rawUser
+     * @return
+     */
     public List<RawUser> getUserList(RawUser rawUser) {
+        if (rawUser == null) {
+            throw new NotFoundException("Ошибка в аргументе запроса");
+        }
         List<User> all = userRepo.findAllByOffice(officeRepo.findById(rawUser.getOfficeId()).orElse(null));
         List<RawUser> result = new ArrayList<>();
         for (User iterableUser : all) {
@@ -47,19 +62,24 @@ public class UserServiceImp implements UserService {
         return result;
     }
 
+    /**
+     * Метод получения пользователя по идентификтору
+     * @param id
+     * @return
+     */
     public RawUser getOne(Integer id) {
+        if (id == null) {
+            throw new NotFoundException("Ошибка в аргументе запроса");
+        }
         User requestedUser = userRepo.findById(id).orElse(null);
-        if (requestedUser == null) { // Если невернвый ид - получи пустой результат
+        if (requestedUser == null) {
             return new RawUser();
         }
-
         RawUser result = new RawUser();
         BeanUtils.copyProperties(requestedUser, result, "document", "citizenship", "officeEmp");
-
-        DocData bindedDocData = requestedUser.getDocument(); /// Содержит docId dateDoc docNumber docType
-        Doc bindedDoc = bindedDocData.getDocType();  ///Содержит docId docName docCode
-        Country citizinship = requestedUser.getCitizenship(); /// Содержит citizinshipId citizenshipCode citizenshipName
-
+        DocData bindedDocData = requestedUser.getDocument();
+        Doc bindedDoc = bindedDocData.getDocType();
+        Country citizinship = requestedUser.getCitizenship();
         BeanUtils.copyProperties(bindedDocData, result, "docId", "docType");
         BeanUtils.copyProperties(bindedDoc, result, "docId");
         BeanUtils.copyProperties(citizinship, result, "citizinshipId");
@@ -68,47 +88,61 @@ public class UserServiceImp implements UserService {
         return result;
     }
 
+    /**
+     * Метод добавленя пользователя, при добавлении пользователя ему создается документ, если тип данного документ отсутствует то он создается в справочнике документов
+     * укзанное в поле гражданство вроверятеся на сущевстввование
+     * @param rawUser
+     * @return
+     */
     @Transactional
     public ResultResponse add(RawUser rawUser) {
+        if (rawUser == null) {
+            throw new NotFoundException("Ошибка в аргументе запроса");
+        }
         User result = new User();
         BeanUtils.copyProperties(rawUser, result);
-        ///Вроде справочники не должны быть доступны для записи но тем не менее
-        Doc newDoc = docRepo.findByDocNameAndDocCode(rawUser.getDocName(), rawUser.getDocCode());  ///Ищем в справочнике документ с именем и кодом
-        if (newDoc == null) {  /// если не нашли то создаем новый
+        Doc newDoc = docRepo.findByDocNameAndDocCode(rawUser.getDocName(), rawUser.getDocCode());
+        if (newDoc == null) {
             newDoc = new Doc(rawUser.getDocName(), rawUser.getDocCode());
             docRepo.save(newDoc);
         }
-
         Country newCountry = countryRepo.findByCitizenshipCode(rawUser.getCitizenshipCode());
         if (newCountry == null) {
             throw new NotFoundException("Указанная страна не числится в справочнике стран id");
         }
-        DocData newDocData = new DocData(rawUser.getDocDate(), rawUser.getDocNumber(), newDoc); /// Создаем юзеру документ
-        docdDataRepo.save(newDocData); ///сохраняем документ
-        Office newOffice = officeRepo.findById(rawUser.getOfficeId()).orElse(null);  ///Либо офис либо ноль, ноль если ничего не указали или фигню указали, может быть здесь нужен фильр
-                result.setCitizenship(newCountry);
+        DocData newDocData = new DocData(rawUser.getDocDate(), rawUser.getDocNumber(), newDoc);
+        docdDataRepo.save(newDocData);
+        Office newOffice = officeRepo.findById(rawUser.getOfficeId()).orElse(null);
+        result.setCitizenship(newCountry);
         result.setDocument(newDocData);
         result.setOffice(newOffice);
         userRepo.save(result);
         return new ResultResponse("success");
     }
 
+    /**
+     * Метод изменения информации имеющегося пользователя
+     * @param rawUser
+     * @return
+     */
     @Transactional
     public ResultResponse update(RawUser rawUser) {
+        if (rawUser == null) {
+            throw new NotFoundException("Ошибка в аргументе запроса");
+        }
         User updatingUser = userRepo.findById(rawUser.getId()).orElse(null);
         if (updatingUser == null) {
             throw new NotFoundException("пользователь не найден");
         }
-        customPropertyCopy.copyNonNullProperties(rawUser, updatingUser);  ///перекидываем ненулевые свойства
-
-        Doc updatingDoc = new Doc();  ///Болванка типа документа
-        if (rawUser.getDocName() != null) {  ///Если имя документа не пустое - меняем тип документа пользователя
-            updatingDoc = docRepo.findByDocName(rawUser.getDocName());  ///Ищем в справочнике документ с именем и кодом
+        customPropertyCopy.copyNonNullProperties(rawUser, updatingUser);
+        Doc updatingDoc = new Doc();
+        if (rawUser.getDocName() != null) {
+            updatingDoc = docRepo.findByDocName(rawUser.getDocName());
             if (updatingDoc == null) {
                 throw new NotFoundException("Указанная документ не числится в справочнике документов");
             }
-            updatingUser.getDocument().setDocType(updatingDoc); /// меняем тип документа
-            docdDataRepo.save(updatingUser.getDocument()); //засейвим
+            updatingUser.getDocument().setDocType(updatingDoc);
+            docdDataRepo.save(updatingUser.getDocument());
         }
         if (rawUser.getCitizenshipCode() != null) {
             Country updatingCountry = countryRepo.findByCitizenshipCode(rawUser.getCitizenshipCode());
@@ -118,11 +152,11 @@ public class UserServiceImp implements UserService {
             updatingUser.setCitizenship(updatingCountry);
         }
         if ((rawUser.getDocDate() != null) && rawUser.getDocNumber() != null) {
-            DocData updatingDocData = new DocData(rawUser.getDocDate(), rawUser.getDocNumber(), ((updatingDoc.getDocId() == null) ? updatingUser.getDocument().getDocType() : updatingDoc)); /// Если ИД документа нулл значит это блованка, он не менялся, берем то что в базе было
-            docdDataRepo.save(updatingDocData); ///сохраняем документ
+            DocData updatingDocData = new DocData(rawUser.getDocDate(), rawUser.getDocNumber(), ((updatingDoc.getDocId() == null) ? updatingUser.getDocument().getDocType() : updatingDoc));
+            docdDataRepo.save(updatingDocData);
         }
         if (rawUser.getOfficeId() != null) {
-            Office updatingOffice = officeRepo.findById(rawUser.getOfficeId()).orElse(null);  ///Либо офис либо ноль, ноль если ничего не указали или фигню указали, может быть здесь нужен фильр
+            Office updatingOffice = officeRepo.findById(rawUser.getOfficeId()).orElse(null);
             if (updatingOffice == null) {
                 throw new NotFoundException("Указанный офис не найден");
             }

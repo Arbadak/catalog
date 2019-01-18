@@ -13,25 +13,24 @@ import java.time.LocalDate;
 
 /**
  * Вспомогателная сущность для хранения данных о "документ пользователя"
- *
  */
 @Entity
 @Table(name = "doc_data")
 public class DocData {
-
-    @Version
-    @Column(name="OPTLOCK")
-    private Integer optlock;
 
     @Id
     @Column(name = "id", columnDefinition = "INT")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer docId;
 
-    @Column(name = "date", columnDefinition = "DATE", nullable = false)
+    @Version
+    @Column(name = "OPTLOCK")
+    private Integer optlock;
+
+    @Column(name = "date", nullable = false)
     private LocalDate docDate;
 
-    @Column(name = "number", columnDefinition = "VARCHAR(10)", nullable = false)
+    @Column(name = "number", length = 10, nullable = false)
     private String docNumber;
 
     @ManyToOne

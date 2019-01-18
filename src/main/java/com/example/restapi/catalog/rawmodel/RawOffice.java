@@ -9,19 +9,17 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-/** Модель для получения данных от запросов типа Office
- *
+/**
+ * Модель для получения данных от запросов типа Office
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RawOffice {
 
 
     @NotNull(message = "Не указан идентификатор организации", groups = {GroupUpdate.class})
-    //@Pattern(regexp = "\\d+", message = "Идентификатор организации указан не правильно",  groups = {GroupAdd.class, GroupUpdate.class})
     private Integer Id;
 
     @NotNull(message = "Не указан идентификатор организации", groups = {GroupAdd.class, GroupList.class})
-    //@Pattern(regexp = "\\d+", message = "Идентификатор организации указан не правильно",  groups = {GroupAdd.class, GroupUpdate.class, GroupList.class})
     private Integer orgId;
 
     @NotNull(message = "Не указано имя организации", groups = {GroupUpdate.class})

@@ -27,9 +27,17 @@ public class OfficeServiceImp implements OfficeService {
         this.officeRepo = officeRepo;
     }
 
+    /**
+     * Метод получения списка офисов по идентификтору организации
+     * @param rawOffice
+     * @return
+     */
     public List<RawOffice> getOfficeList(RawOffice rawOffice) {
-        // TODO Фильтрация некорректного orgid
-        List<Office> all = officeRepo.findAllByOrganization(organizationRepo.findOrgByOrgId(rawOffice.getOrgId())); /// создаем список всех оффисов в организации
+
+        if (rawOffice == null) {
+            throw new NotFoundException("Ошибка в аргументе запроса");
+        }
+        List<Office> all = officeRepo.findAllByOrganization(organizationRepo.findOrgByOrgId(rawOffice.getOrgId()));
         List<RawOffice> result = new ArrayList<>();
 
         if (rawOffice.getName() != null) {
@@ -42,7 +50,7 @@ public class OfficeServiceImp implements OfficeService {
             all.removeIf(x -> !rawOffice.getIsActive().equals(x.getIsActive()));
         }
 
-        for (Office iterableOffice : all) {        /// перекидываем отфильтованный список в спосок с моделями исключая ненужные поля
+        for (Office iterableOffice : all) {
             RawOffice currentRawOffice = new RawOffice();
             BeanUtils.copyProperties(iterableOffice, currentRawOffice, "orgId", "address", "phone", "isMain");
             result.add(currentRawOffice);
@@ -50,9 +58,17 @@ public class OfficeServiceImp implements OfficeService {
         return result;
     }
 
+    /**
+     * Метод получения офиса по идентификатору
+     * @param officeId
+     * @return
+     */
     public RawOffice getOne(Integer officeId) {
+        if (officeId == null) {
+            throw new NotFoundException("Ошибка в аргументе запроса");
+        }
         Office requestedOffice = officeRepo.findById(officeId).orElse(null);
-        if (requestedOffice == null) { // Если невернвый ид - получи пустой результат
+        if (requestedOffice == null) {
             return new RawOffice();
         }
         RawOffice result = new RawOffice();
@@ -61,31 +77,44 @@ public class OfficeServiceImp implements OfficeService {
         return result;
     }
 
+    /**
+     * Метод добавления нового офиса
+     * @param office
+     * @return
+     */
     @Transactional
     public ResultResponse add(RawOffice office) {
+        if (office == null) {
+            throw new NotFoundException("Ошибка в аргументе запроса");
+        }
         Office newoffice = new Office();
         BeanUtils.copyProperties(office, newoffice, "orgId", "Id");
-        newoffice.setOrganization(organizationRepo.findOrgByOrgId(office.getOrgId())); ///Выдергиваем организацию из номера в сырой модели, и суем уже обьект
+        newoffice.setOrganization(organizationRepo.findOrgByOrgId(office.getOrgId()));
         officeRepo.save(newoffice);
         return new ResultResponse("success");
     }
 
+    /**
+     * Метод обновления информации о сущевствующем офисе
+     * @param office
+     * @return
+     */
     @Transactional
     public ResultResponse update(RawOffice office) {
-
-        /// TODO решить вариант если указали больше параметров чем нужно orgID например
-
+        if (office == null) {
+            throw new NotFoundException("Ошибка в аргументе запроса");
+        }
         RawOffice checkoffice = getOne(office.getId());
         if (checkoffice.getId() == null) {
             throw new NotFoundException("Офис с указаным id не найден, выйдите в окно");
         }
-        if (getOne(office.getId())==null) { throw new NotFoundException("Не сущевствует оффиса с указанным id");}
-
-        Office newoffice = officeRepo.findById(office.getId()).orElse(null); //вытскиваем из базы хранимый офис для редактирования
-        BeanUtils.copyProperties(office, newoffice, "orgId", "phone");  //orgid не указывается а phone необязательнй потому их не копируем
-        newoffice.setPhone((office.getPhone() == (null)) ? getOne(office.getId()).getPhone() : office.getPhone()); /// если не null то заменяем хранящийся телефон
+        if (getOne(office.getId()) == null) {
+            throw new NotFoundException("Не сущевствует оффиса с указанным id");
+        }
+        Office newoffice = officeRepo.findById(office.getId()).orElse(null);
+        BeanUtils.copyProperties(office, newoffice, "orgId", "phone");
+        newoffice.setPhone((office.getPhone() == (null)) ? getOne(office.getId()).getPhone() : office.getPhone());
         officeRepo.save(newoffice);
         return new ResultResponse("success");
     }
-
 }

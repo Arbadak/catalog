@@ -15,5 +15,4 @@ public interface OfficeRepo extends JpaRepository<Office, Integer> {
     List<Office> findAllByOrganization(Organization organization);
 
 
-
 }

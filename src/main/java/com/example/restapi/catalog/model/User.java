@@ -2,13 +2,15 @@ package com.example.restapi.catalog.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.OneToOne;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Version;
+
 
 /**
  * Сущность для хранения данных "пользователь"
@@ -17,28 +19,28 @@ import javax.persistence.Version;
 @Table(name = "user")
 public class User {
 
-    @Version
-    @Column(name="OPTLOCK")
-    private Integer optlock;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", columnDefinition = "INT")
     private Integer id;
 
-    @Column(name = "first_name", columnDefinition = "VARCHAR(15)", nullable = false)
+    @Version
+    @Column(name = "OPTLOCK")
+    private Integer optlock;
+
+    @Column(name = "first_name", length = 15, nullable = false)
     private String firstName;
 
-    @Column(name = "second_name", columnDefinition = "VARCHAR(15)", nullable = true)
+    @Column(name = "second_name", length = 15, nullable = true)
     private String secondName;
 
-    @Column(name = "last_name", columnDefinition = "VARCHAR(15)", nullable = true)
+    @Column(name = "last_name", length = 15, nullable = true)
     private String lastName;
 
-    @Column(name = "position", columnDefinition = "VARCHAR(30)", nullable = false)
+    @Column(name = "position", length = 30, nullable = false)
     private String position;
 
-    @Column(name = "phone", columnDefinition = "VARCHAR(11)", nullable = true)
+    @Column(name = "phone", length = 11, nullable = true)
     private String phone;
 
     @OneToOne
@@ -52,7 +54,7 @@ public class User {
     @Column(name = "is_identified", columnDefinition = "BOOLEAN", nullable = true)
     private Boolean isIdentified;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "office_emp")
     private Office office;
 
@@ -103,7 +105,9 @@ public class User {
         this.phone = phone;
     }
 
-    public DocData getDocument() { return document; }
+    public DocData getDocument() {
+        return document;
+    }
 
     public void setDocument(DocData document) {
         this.document = document;

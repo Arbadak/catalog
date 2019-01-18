@@ -7,8 +7,8 @@ import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-/** Вспомогательная сущность справочник для данных "тип документа пользователя"
- *
+/**
+ * Вспомогательная сущность справочник для данных "тип документа пользователя"
  */
 
 
@@ -22,10 +22,10 @@ public class Doc {
     private Integer docId;
 
 
-    @Column(name = "name", columnDefinition = "VARCHAR(115)", nullable = false)
+    @Column(name = "name", length = 1150, nullable = false)
     private String docName;
 
-    @Column(name = "code", columnDefinition = "VARCHAR(3)", nullable = false)
+    @Column(name = "code", length = 3, nullable = false)
     private String docCode;
 
     public Doc() {

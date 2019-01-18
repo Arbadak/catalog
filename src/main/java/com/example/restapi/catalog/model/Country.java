@@ -7,8 +7,8 @@ import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-/** Вспомогательная сущность-справочник для данных"гражданство"
- *
+/**
+ * Вспомогательная сущность-справочник для данных"гражданство"
  */
 @Entity
 @Table(name = "country")
@@ -19,10 +19,10 @@ public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer citizinshipId;
 
-    @Column(name = "code", columnDefinition = "VARCHAR(3)", nullable = false)
+    @Column(name = "code", length = 3, nullable = false)
     private String citizenshipCode;
 
-    @Column(name = "name", columnDefinition = "VARCHAR(60)", nullable = false)
+    @Column(name = "name", length = 60, nullable = false)
     private String citizenshipName;
 
     public Country() {

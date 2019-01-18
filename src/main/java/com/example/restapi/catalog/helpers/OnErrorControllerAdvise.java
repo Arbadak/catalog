@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- *  Rest Controller Advice для обработки ошибок возникающих при валидации данных
+ * Rest Controller Advice для обработки ошибок возникающих при валидации данных
  */
-
 @RestControllerAdvice
 public class OnErrorControllerAdvise {
 
@@ -39,13 +38,13 @@ public class OnErrorControllerAdvise {
     public @ResponseBody
     ErrorResponse handleDeserializeException(InvalidFormatException e) {
 
-        return new ErrorResponse("неверный тип данных");
+        return new ErrorResponse("неверный тип данных " + e);
     }
 
     @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
     public @ResponseBody
     ErrorResponse handleHtpMessageNotReadableException(HttpMessageNotReadableException e) {
 
-        return new ErrorResponse("ошибка в формате запроса");
+        return new ErrorResponse("ошибка в формате запроса" + e);
     }
 }

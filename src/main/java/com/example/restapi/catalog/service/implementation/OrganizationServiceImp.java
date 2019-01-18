@@ -1,6 +1,7 @@
 package com.example.restapi.catalog.service.implementation;
 
 
+import com.example.restapi.catalog.exceptions.NotFoundException;
 import com.example.restapi.catalog.model.Office;
 import com.example.restapi.catalog.model.Organization;
 import com.example.restapi.catalog.rawmodel.RawOffice;
@@ -30,33 +31,49 @@ public class OrganizationServiceImp implements OrganizationService {
     public OrganizationServiceImp(OrganizationRepo organizationRepo, OfficeRepo officeRepo, OfficeService officeService) {
         this.organizationRepo = organizationRepo;
         this.officeRepo = officeRepo;
-        this.officeService=officeService;
+        this.officeService = officeService;
     }
 
+    /**
+     * Метод получения списка организации по запросу
+     * @param rawOrganization
+     * @return
+     */
     public List<RawOrganization> getOrgList(RawOrganization rawOrganization) {
-        List<Organization> all = organizationRepo.findOrgByName(rawOrganization.getName()); //находим все по обязательному полю
-        List<RawOrganization> result = new ArrayList<>();  //лист который вернется пользователю
-        if (rawOrganization.getInn() != null) {  ///Если указан ИНН
-            all.removeIf(x -> !rawOrganization.getInn().equals(x.getInn())); ///Выкидываем всех у кого не такой ИНН как указан
+        if (rawOrganization == null) {
+            throw new NotFoundException("Ошибка в аргументе запроса");
+        }
+        List<Organization> all = organizationRepo.findOrgByName(rawOrganization.getName());
+        List<RawOrganization> result = new ArrayList<>();
+        if (rawOrganization.getInn() != null) {
+            all.removeIf(x -> !rawOrganization.getInn().equals(x.getInn()));
         }
 
-        for (Iterator<Organization> iterableOrg = all.iterator(); iterableOrg.hasNext(); ) { ///цикл для из списка с учетом фильторв имя и инн, в список который вернется пользователю с учетом поля isActive
+        for (Iterator<Organization> iterableOrg = all.iterator(); iterableOrg.hasNext(); ) {
             Organization currentOrg = iterableOrg.next();
             Office bindedOffice = officeRepo.findByOrganizationAndIsMain(currentOrg, true);
-            if (rawOrganization.getIsActive() != null) { // Если задан isActive
-                if (!bindedOffice.getIsActive().equals(rawOrganization.getIsActive())) {  ///Если статусы несопадают
-                    iterableOrg.remove(); //выкидываем из списка и на следующую итерацию
+            if (rawOrganization.getIsActive() != null) {
+                if (!bindedOffice.getIsActive().equals(rawOrganization.getIsActive())) {
+                    iterableOrg.remove();
                     continue;
                 }
             }
             result.add(new RawOrganization(currentOrg.getOrgId(), currentOrg.getName(), bindedOffice.getIsActive()));
         }
-        return result; ///Возвращаем результат пользователю
+        return result;
     }
 
+    /**
+     * Метод добавления новой организации, при создании организации поля не приналежащие к организации такие как адрес и телефон сохранаются в создаваемом внтури этой организации офисе
+     * который является головным офисом и имеет признак isMain=true, офису присваетвася сокращенное имя организации
+     * @param rawOrganization
+     * @return
+     */
     @Transactional
     public ResultResponse add(RawOrganization rawOrganization) {
-
+        if (rawOrganization == null) {
+            throw new NotFoundException("Ошибка в аргументе запроса");
+        }
         Organization organization = new Organization();
         BeanUtils.copyProperties(rawOrganization, organization);
         Organization result = organizationRepo.save(organization);
@@ -65,8 +82,17 @@ public class OrganizationServiceImp implements OrganizationService {
         return new ResultResponse("success");
     }
 
+    /**
+     * Метод изменения информации сущевствующей организации
+     * @param rawOrganization
+     * @param orgDest
+     * @return
+     */
     @Transactional
     public ResultResponse update(RawOrganization rawOrganization, Organization orgDest) {
+        if (rawOrganization == null || orgDest == null) {
+            throw new NotFoundException("Ошибка в аргументе запроса");
+        }
         BeanUtils.copyProperties(rawOrganization, orgDest, "id");
         RawOffice updatedOffice = new RawOffice();
         BeanUtils.copyProperties(rawOrganization, updatedOffice);
@@ -76,10 +102,13 @@ public class OrganizationServiceImp implements OrganizationService {
     }
 
     public RawOrganization getOne(Integer id) {
+        if (id == null) {
+            throw new NotFoundException("Ошибка в аргументе запроса");
+        }
         Organization organization = organizationRepo.findOrgByOrgId(id);
         if (organization == null) {
             return new RawOrganization();
-        } ///Возвращаем пустую организацию в случае если нет такой
+        }
         Office mainOffice = officeRepo.findByOrganizationAndIsMain(organization, true);
         RawOrganization result = new RawOrganization();
         BeanUtils.copyProperties(organization, result);

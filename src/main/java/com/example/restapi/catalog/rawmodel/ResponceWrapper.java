@@ -11,8 +11,8 @@ public class ResponceWrapper {
         this.data = data;
     }
 
-    public ResponceWrapper() {
-    }
+    /*public ResponceWrapper() {
+    }*/
 
     public Object getData() {
         return data;

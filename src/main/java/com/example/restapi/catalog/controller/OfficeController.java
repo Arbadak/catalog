@@ -46,7 +46,7 @@ public class OfficeController {
      *               “isActive”
      * @return RawOffice
      */
-    @PostMapping(value = "/list", consumes =  APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/list", consumes = APPLICATION_JSON_VALUE)
     public List<RawOffice> officeList(@RequestBody @Validated({GroupList.class}) RawOffice office) {
         return officeService.getOfficeList(office);
     }
@@ -72,7 +72,7 @@ public class OfficeController {
      *               “isActive”:
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
-    @PostMapping(value = "save", consumes =  APPLICATION_JSON_VALUE)
+    @PostMapping(value = "save", consumes = APPLICATION_JSON_VALUE)
     public ResultResponse save(@RequestBody @Validated({GroupAdd.class}) RawOffice office) {
         return officeService.add(office);
     }
@@ -87,7 +87,7 @@ public class OfficeController {
      *               “isActive”:
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
-    @PostMapping(value = "update", consumes =  APPLICATION_JSON_VALUE)
+    @PostMapping(value = "update", consumes = APPLICATION_JSON_VALUE)
     public ResultResponse update(@RequestBody @Validated({GroupUpdate.class}) RawOffice office) {
         return officeService.update(office);
     }

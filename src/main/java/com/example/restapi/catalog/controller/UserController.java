@@ -10,7 +10,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -41,7 +46,7 @@ public class UserController {
      *             “citizenshipCode”:””
      * @return Список пользователя, либо пустой список если пользователи не найдены
      */
-    @PostMapping(value = "/list", consumes =  APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/list", consumes = APPLICATION_JSON_VALUE)
     public List<RawUser> userList(@RequestBody @Validated({GroupList.class}) RawUser user) {
         return userService.getUserList(user);
     }
@@ -73,12 +78,13 @@ public class UserController {
      *             “isIdentified”:
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
-    @PostMapping(value = "save", consumes =  APPLICATION_JSON_VALUE)
+    @PostMapping(value = "save", consumes = APPLICATION_JSON_VALUE)
     public ResultResponse save(@RequestBody @Validated({GroupAdd.class}) RawUser user) {
         return userService.add(user);
     }
 
     /**
+     * Метод изменения сущевствующего пользователя
      * @param user “id”:””, //обязательный параметр
      *             “firstName”:””, //обязательный параметр
      *             “secondName”:””,
@@ -92,7 +98,7 @@ public class UserController {
      *             “isIdentified”:
      * @return "result:success", либо "error:XXXXXXXXXXXXX" в случае если ошибка
      */
-    @PostMapping(value = "update", consumes =  APPLICATION_JSON_VALUE)
+    @PostMapping(value = "update", consumes = APPLICATION_JSON_VALUE)
     public ResultResponse update(@RequestBody @Validated({GroupUpdate.class}) RawUser user, BindingResult result) {
 
         return userService.update(user);

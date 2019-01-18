@@ -8,8 +8,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
-/** Модель для получения данных от запросов типа User
- *
+/**
+ * Модель для получения данных от запросов типа User
  */
 public class RawUser {
     @NotNull(message = "Не указан id", groups = {GroupUpdate.class})
